@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace ToDoList.Domain.ToDo.ValueObjects
 {
-    public enum ToDoStatus
+    public enum ToDoPriority
     {
-        Active,
-        Completed,
-        Expired,
-        ExpiringSoon,
-        Cancelled
+        Low,
+        Medium,
+        High,
+        Immediately
     }
-
 }
