@@ -16,7 +16,7 @@ namespace ToDoList.Domain.ToDo
         public DateTime CreationDate { get; private set; }
         public DateTime DateUpdate { get; private set; }
         public DateTime? DueDate { get; private set; }
-        public ToDoStatus? Status { get; private set; }
+        public ToDoStatus Status { get; private set; }
         public ToDoPriority? Priority { get; private set; }
     }
 }
