@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ToDoList.Infrostructure.Persistance.DataBaseCommon.EF
+namespace ToDoList.Infrastructure.Persistance.DataBaseCommon.EF
 {
     public class DbInitializer
     {
-        public static void Initialize(ToDoItemsDbContext context)
+        public static void Initialize(ToDoDbContext context)
         {
             context.Database.EnsureCreated();
         }
