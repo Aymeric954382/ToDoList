@@ -1,0 +1,11 @@
+﻿using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ToDoList.Application.Interfaces.Command_QuerySpliter
+{
+    public interface IWithResultCommand<T> : IRequest<T> { }
+}

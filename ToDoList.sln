@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Domain.ToDo", "ToD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Application", "ToDoList.Application\ToDoList.Application.csproj", "{0C4F7537-783E-45AF-8EBD-FB6BC6FA5593}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Infrostructure", "ToDoList.Infrostructure\ToDoList.Infrostructure.csproj", "{8F8EB9D0-95A6-4E07-B643-4F0C1846A727}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Infrastructure", "ToDoList.Infrostructure\ToDoList.Infrastructure.csproj", "{8F8EB9D0-95A6-4E07-B643-4F0C1846A727}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
