@@ -10,6 +10,7 @@ namespace ToDoList.Application.Interfaces.Repository
 {
     public interface IToDoRepository
     {
+        IQueryable<ToDoItem> AsQueryable();
         Task<ToDoItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
         Task<List<ToDoItem>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken);
         Task AddAsync(ToDoItem todo, CancellationToken cancellationToken);

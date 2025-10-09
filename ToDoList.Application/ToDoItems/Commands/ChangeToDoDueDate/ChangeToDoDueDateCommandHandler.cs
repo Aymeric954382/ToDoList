@@ -18,7 +18,7 @@ namespace ToDoList.Application.ToDoItems.Commands.ChangeDueDateToDo
         {
             var entity = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
-            if (entity != null || entity.UserId == request.Id)
+            if (entity == null || entity.UserId == request.Id)
             {
                 throw new NotFoundException(nameof(ToDoItems), request.Id);
             }
