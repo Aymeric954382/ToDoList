@@ -40,5 +40,10 @@ namespace ToDoList.Infrastructure.Persistance.DataBaseCommon.EF
             _context.ToDoItems.Remove(todo);
             await _context.SaveChangesAsync();
         }
+
+        public IQueryable<ToDoItem> AsQueryable()
+        {
+            return _context.ToDoItems.AsNoTracking();
+        }
     }
 }
