@@ -5,7 +5,7 @@ using ToDoList.Infrostructure.Persistance.DataBaseCommon.EF.EntityTypeConfigurat
 
 namespace ToDoList.Infrastructure.Persistance.DataBaseCommon.EF
 {
-    public class ToDoDbContext : DbContext, IToDoItemsDbContext
+    public class ToDoDbContext : DbContext, IToDoDbContext
     {
         public DbSet<ToDoItem> ToDoItems { get; set; }
         public ToDoDbContext(DbContextOptions<ToDoDbContext> options)
