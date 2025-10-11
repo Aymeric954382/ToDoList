@@ -8,9 +8,9 @@ using ToDoList.Application.Interfaces.MappingMark;
 using ToDoList.Domain.ToDo;
 using ToDoList.Domain.ToDo.ValueObjects;
 
-namespace ToDoList.Application.ToDoItems.Queries.Dtos
+namespace ToDoList.Application.ToDoItems.Queries.ResponseDtos
 {
-    public class ToDoDto : IMapWith<ToDoItem>
+    public class ToDoResponseDto : IMapWith<ToDoItem>
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
@@ -21,7 +21,7 @@ namespace ToDoList.Application.ToDoItems.Queries.Dtos
         public ToDoPriority? Priority { get; set; }
 
         public void Mapping(Profile profile) =>
-            profile.CreateMap<ToDoItem, ToDoDto>();
+            profile.CreateMap<ToDoItem, ToDoResponseDto>();
         
     }
 }

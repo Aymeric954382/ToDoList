@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToDoList.Application.Interfaces.Command_QuerySpliter;
 using ToDoList.Application.ToDoItems.Queries.Containers;
-using ToDoList.Application.ToDoItems.Queries.Dtos;
+using ToDoList.Application.ToDoItems.Queries.ResponseDtos;
 
 namespace ToDoList.Application.ToDoItems.Queries.GetOverdueToDos
 {

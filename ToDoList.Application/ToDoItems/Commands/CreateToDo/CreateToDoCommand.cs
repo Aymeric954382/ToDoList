@@ -13,7 +13,7 @@ namespace ToDoList.Application.ToDoItems.Commands.CreateToDoItem
         public Guid UserId { get; set; }
         public string Title { get; set; }
         public string Details { get; set; }
-        public DateTime DueDate { get; set; }
-        public ToDoPriority Priority { get; set; }
+        public DateTime? DueDate { get; set; }
+        public ToDoPriority? Priority { get; set; }
     }
 }

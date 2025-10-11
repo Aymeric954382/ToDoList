@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using ToDoList.Application.Common.Exceptions;
 using ToDoList.Application.Interfaces.Repository;
 using ToDoList.Application.ToDoItems.Queries.Containers;
-using ToDoList.Application.ToDoItems.Queries.Dtos;
+using ToDoList.Application.ToDoItems.Queries.ResponseDtos;
 using ToDoList.Domain.ToDo;
 
 namespace ToDoList.Application.ToDoItems.Queries.GetListToDo
@@ -29,7 +29,7 @@ namespace ToDoList.Application.ToDoItems.Queries.GetListToDo
             var query = _repository.AsQueryable()
                 .Where(i => i.UserId == request.UserId);
 
-            var itemsDto = await query.ProjectTo<ToDoDto>(_mapper.ConfigurationProvider)
+            var itemsDto = await query.ProjectTo<ToDoResponseDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
             return new ToDoListContainer {ToDoItems = itemsDto };
