@@ -13,6 +13,6 @@ namespace ToDoList.Application.ToDoItems.Commands.ChangeToDoPriority
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
-        public ToDoPriority Priority { get; set; }
+        public ToDoPriority? Priority { get; set; }
     }
 }

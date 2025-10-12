@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ToDoList.Application.Interfaces.Command_QuerySpliter;
 using ToDoList.Domain.ToDo.ValueObjects;
 
-namespace ToDoList.Application.ToDoItems.Commands.UpdateToDoItem
+namespace ToDoList.Application.ToDoItems.Commands.ChangeToDoContent
 {
     public class ChangeToDoContentCommand : IVoidCommand
     {

@@ -8,6 +8,6 @@ namespace ToDoList.Application.ToDoItems.Queries.GetByPriority
     public class GetToDoByPriorityQuery : IQuery<ToDoListContainer>
     {
         public Guid UserId { get; set; }
-        public ToDoPriority Priority { get; set; }
+        public ToDoPriority? Priority { get; set; }
     }
 }

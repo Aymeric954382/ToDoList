@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ToDoList.Application.Common.Exceptions;
 using ToDoList.Application.Interfaces.Repository;
 
-namespace ToDoList.Application.ToDoItems.Commands.ChangeDueDateToDo
+namespace ToDoList.Application.ToDoItems.Commands.ChangeToDoDueDate
 {
     public class ChangeToDoDueDateCommandHandler : IRequestHandler<ChangeToDoDueDateCommand, Unit>
     {

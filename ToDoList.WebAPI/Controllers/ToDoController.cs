@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ToDoList.Application.ToDoItems.Commands.ChangeToDoContent;
 using ToDoList.Application.ToDoItems.Commands.ChangeToDoPriority;
 using ToDoList.Application.ToDoItems.Commands.ChangeToDoStatus;
 using ToDoList.Application.ToDoItems.Commands.CreateToDoItem;
 using ToDoList.Application.ToDoItems.Commands.DeleteToDo;
-using ToDoList.Application.ToDoItems.Commands.UpdateToDoItem;
 using ToDoList.Application.ToDoItems.Queries.Containers;
 using ToDoList.Application.ToDoItems.Queries.GetByPriority;
 using ToDoList.Application.ToDoItems.Queries.GetByStatus;

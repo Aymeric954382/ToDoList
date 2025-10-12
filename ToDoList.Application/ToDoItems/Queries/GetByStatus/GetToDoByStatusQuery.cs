@@ -8,6 +8,6 @@ namespace ToDoList.Application.ToDoItems.Queries.GetByStatus
     public class GetToDoByStatusQuery : IQuery<ToDoListContainer>
     {
         public Guid UserId { get; set; }
-        public ToDoStatus Status { get; set; }
+        public ToDoStatus? Status { get; set; }
     }
 }

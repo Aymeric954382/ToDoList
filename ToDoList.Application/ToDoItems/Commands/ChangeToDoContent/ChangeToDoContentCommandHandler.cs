@@ -8,7 +8,7 @@ using ToDoList.Application.Common.Exceptions;
 using ToDoList.Application.Interfaces.Repository;
 using ToDoList.Domain.ToDo;
 
-namespace ToDoList.Application.ToDoItems.Commands.UpdateToDoItem
+namespace ToDoList.Application.ToDoItems.Commands.ChangeToDoContent
 {
     public class ChangeToDoContentCommandHandler : IRequestHandler<ChangeToDoContentCommand, Unit>
     {
