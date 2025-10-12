@@ -11,7 +11,7 @@ namespace ToDoList.Application.ToDoItems.Commands.CreateToDo
 {
     public class CreateToDoValidator : AbstractValidator<CreateToDoCommand>
     {
-        CreateToDoValidator()
+        public CreateToDoValidator()
         {
             RuleFor(command => 
                 command.UserId).NotEqual(Guid.Empty);
