@@ -1,9 +1,8 @@
 using System.Reflection;
-using ToDoList.Application.Common.Mappings.Profiles;
-using ToDoList.Application.DIAutoMapper;
+using ToDoList.Application.DI;
 using ToDoList.Application.Interfaces;
 using ToDoList.Infrastructure.Persistance.DataBaseCommon.EF;
-using ToDoList.Infrastructure.Persistance.DIDataBase;
+using ToDoList.Infrastructure.Persistance.DI;
 
 namespace ToDoList.WebAPI
 {
@@ -20,7 +19,7 @@ namespace ToDoList.WebAPI
 
             builder.Services.AddApplication();
             builder.Services.AddPersistance(builder.Configuration);
-            builder.Services.AddControllers();
+            builder.Services.AddControllers();            
 
             builder.Services.AddCors(options =>
             {

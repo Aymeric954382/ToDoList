@@ -9,10 +9,10 @@ using ToDoList.Domain.ToDo;
 
 namespace ToDoList.Infrastructure.Persistance.DataBaseCommon.EF
 {
-    public class TodoRepository : IToDoRepository
+    public class ToDoRepository : IToDoRepository
     {
         private readonly ToDoDbContext _context;
-        public TodoRepository(ToDoDbContext context)
+        public ToDoRepository(ToDoDbContext context)
         {
             _context = context;
         }

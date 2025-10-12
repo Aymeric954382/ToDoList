@@ -9,7 +9,7 @@ namespace ToDoList.Application.ToDoItems.Commands.ChangeToDoContent
 {
     public class ChangeToDoContentValidator : AbstractValidator<ChangeToDoContentCommand>
     {
-        ChangeToDoContentValidator()
+        public ChangeToDoContentValidator()
         {
             RuleFor(command => 
                 command.Id).NotEqual(Guid.Empty);

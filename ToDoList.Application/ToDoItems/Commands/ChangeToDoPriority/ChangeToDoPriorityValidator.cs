@@ -10,7 +10,7 @@ namespace ToDoList.Application.ToDoItems.Commands.ChangeToDoPriority
 {
     public class ChangeToDoPriorityValidator : AbstractValidator<ChangeToDoPriorityCommand>
     {
-        ChangeToDoPriorityValidator() 
+        public ChangeToDoPriorityValidator() 
         {
             RuleFor(command => 
                 command.Id).NotEqual(Guid.Empty);

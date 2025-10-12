@@ -10,7 +10,7 @@ using ToDoList.Application.Interfaces;
 using ToDoList.Application.Interfaces.Repository;
 using ToDoList.Infrastructure.Persistance.DataBaseCommon.EF;
 
-namespace ToDoList.Infrastructure.Persistance.DIDataBase
+namespace ToDoList.Infrastructure.Persistance.DI
 {
     public static class DependencyInjection
     {
@@ -24,6 +24,8 @@ namespace ToDoList.Infrastructure.Persistance.DIDataBase
             });
             services.AddScoped<IToDoDbContext, ToDoDbContext>(provider =>
                 provider.GetService<ToDoDbContext>());
+
+            services.AddScoped<IToDoRepository, ToDoRepository>();
 
             return services;
         }

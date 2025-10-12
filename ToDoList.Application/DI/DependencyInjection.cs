@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -6,8 +7,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using ToDoList.Application.Common.Behaviors;
 
-namespace ToDoList.Application.DIAutoMapper
+namespace ToDoList.Application.DI
 {
     public static class DependencyInjection
     {
@@ -16,6 +18,8 @@ namespace ToDoList.Application.DIAutoMapper
             services.AddMediatR(cfg => 
                 cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             services.AddValidatorsFromAssemblies(new[] { Assembly.GetExecutingAssembly() });
+            services.AddTransient(typeof(IPipelineBehavior<,>),
+                typeof(ValidationBehavior<,>));
             return services;
         }
     }

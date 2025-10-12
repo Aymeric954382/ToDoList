@@ -9,7 +9,7 @@ namespace ToDoList.Application.ToDoItems.Commands.ChangeToDoDueDate
 {
     public class ChangeToDoDueDateValidator : AbstractValidator<ChangeToDoDueDateCommand>
     {
-        ChangeToDoDueDateValidator()
+        public ChangeToDoDueDateValidator()
         {
             RuleFor(command => 
                 command.Id).NotEqual(Guid.Empty);
