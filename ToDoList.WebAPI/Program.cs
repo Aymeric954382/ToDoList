@@ -3,6 +3,7 @@ using ToDoList.Application.DI;
 using ToDoList.Application.Interfaces;
 using ToDoList.Infrastructure.Persistance.DataBaseCommon.EF;
 using ToDoList.Infrastructure.Persistance.DI;
+using ToDoList.WebAPI.Middleware;
 
 namespace ToDoList.WebAPI
 {
@@ -33,6 +34,7 @@ namespace ToDoList.WebAPI
 
             var app = builder.Build();
 
+            app.UseCustomExceptionHandler();
             app.UseHttpsRedirection();
             app.UseCors("AllowFrontend");
             app.MapControllers();
