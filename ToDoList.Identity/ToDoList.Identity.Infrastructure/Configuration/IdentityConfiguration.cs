@@ -29,10 +29,10 @@ namespace ToDoList.Identity.Infrastructure.Configuration
 
             services.AddIdentityServer()
             .AddAspNetIdentity<User>()
-            .AddInMemoryApiResources(AuthServerConfiguration.ApiResources)
-            .AddInMemoryIdentityResources(AuthServerConfiguration.IdentityResources)
-            .AddInMemoryApiScopes(AuthServerConfiguration.ApiScopes)
-            .AddInMemoryClients(AuthServerConfiguration.Clients)
+            .AddInMemoryApiResources(AuthServerConfiguration.GetApiResources(configuration))
+            .AddInMemoryIdentityResources(AuthServerConfiguration.GetIdentityResources())
+            .AddInMemoryApiScopes(AuthServerConfiguration.GetApiScopes(configuration))
+            .AddInMemoryClients(AuthServerConfiguration.GetClients(configuration))
             .AddDeveloperSigningCredential();
 
             services.ConfigureApplicationCookie(config =>
