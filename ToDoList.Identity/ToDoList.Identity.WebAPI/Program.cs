@@ -1,4 +1,7 @@
-namespace ToDoItems.Identity.WebAPI
+using ToDoList.Identity.Infrastructure.Configuration;
+using ToDoList.Identity.Infrastructure.Data;
+
+namespace ToDoList.Identity.WebAPI
 {
     public class Program
     {
@@ -6,29 +9,30 @@ namespace ToDoItems.Identity.WebAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Services.AddIdentityConfiguration(builder.Configuration);
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
+            using (var scope = app.Services.CreateScope())
             {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                var servicesProvider = scope.ServiceProvider;
+                try
+                {
+                    var context = servicesProvider.GetRequiredService<AuthDbContext>();
+                    DbInitializer.Initialize(context);
+                }
+                catch (Exception exception)
+                {
+                    var logger = servicesProvider.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(exception, "An error occurred while app initialization");
+                }
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
             app.UseRouting();
+            app.UseIdentityServer();
+            app.MapDefaultControllerRoute();
 
-            app.UseAuthorization();
-
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
         }

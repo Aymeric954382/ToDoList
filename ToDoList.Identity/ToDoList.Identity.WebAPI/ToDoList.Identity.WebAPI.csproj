@@ -6,4 +6,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Duende.IdentityServer" Version="7.3.2" />
+    <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="7.3.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ToDoList.Identity.Infrastructure\ToDoList.Identity.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

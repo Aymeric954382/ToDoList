@@ -1,4 +1,4 @@
-namespace ToDoItems.Identity.WebAPI.Models
+namespace ToDoList.Identity.WebAPI.Models
 {
     public class ErrorViewModel
     {

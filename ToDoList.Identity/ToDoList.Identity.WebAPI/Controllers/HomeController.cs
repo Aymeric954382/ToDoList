@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using ToDoItems.Identity.WebAPI.Models;
+using ToDoList.Identity.WebAPI.Models;
 
-namespace ToDoItems.Identity.WebAPI.Controllers
+namespace ToDoList.Identity.WebAPI.Controllers
 {
     public class HomeController : Controller
     {
