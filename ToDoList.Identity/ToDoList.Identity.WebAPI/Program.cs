@@ -1,3 +1,4 @@
+using ToDoList.Identity.Application.DI;
 using ToDoList.Identity.Infrastructure.Configuration;
 using ToDoList.Identity.Infrastructure.Data;
 
@@ -11,6 +12,7 @@ namespace ToDoList.Identity.WebAPI
 
             builder.Services.AddIdentityConfiguration(builder.Configuration);
             builder.Services.AddControllersWithViews();
+            builder.Services.AddApplication();
 
             var app = builder.Build();
 
