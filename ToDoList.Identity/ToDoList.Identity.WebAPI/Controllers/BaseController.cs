@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ToDoList.Identity.WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("identity/[controller]/[action]")]
     public abstract class BaseController : ControllerBase
     {
         private IMediator _mediator;

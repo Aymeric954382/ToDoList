@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using ToDoList.Identity.Application.Common.Interfaces;
 using ToDoList.Identity.Application.Users.RequestDto;
 
-namespace ToDoList.Identity.Application.Users.Commands
+namespace ToDoList.Identity.Application.Users.Queries
 {
-    public class LoginCommand : IWithResultCommand<LoginResult>
+    public class LoginQuery : IQuery<LoginResult>
     {
         public string Email { get; set; }
         public string Password { get; set; }

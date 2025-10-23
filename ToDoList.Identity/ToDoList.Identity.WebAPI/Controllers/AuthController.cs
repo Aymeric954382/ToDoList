@@ -1,11 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using ToDoList.Identity.WebAPI.Models;
+using ToDoList.Identity.Application.Users.Queries;
+using ToDoList.Identity.Application.Users.RequestDto;
 
 namespace ToDoList.Identity.WebAPI.Controllers
 {
     public class AuthController : BaseController
     {
-        
+        [HttpPost("login")]
+        public async Task<ActionResult<LoginResult>> Login([FromBody] LoginQuery query)
+        {
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
+
     }
 }

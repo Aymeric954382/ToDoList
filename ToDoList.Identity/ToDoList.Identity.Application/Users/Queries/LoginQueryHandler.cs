@@ -5,15 +5,15 @@ using ToDoList.Identity.Application.Common.Services.JWTTokenGeneration;
 using ToDoList.Identity.Application.Users.RequestDto;
 using ToDoList.Identity.Domain.Entities;
 
-namespace ToDoList.Identity.Application.Users.Commands
+namespace ToDoList.Identity.Application.Users.Queries
 {
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResult>
+    public class LoginQueryHandler : IRequestHandler<LoginQuery, LoginResult>
     {
 
         private readonly JWTTokenGenerator _tokenGenerator;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        public LoginCommandHandler(
+        public LoginQueryHandler(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             JWTTokenGenerator tokenGenerator)
@@ -22,7 +22,7 @@ namespace ToDoList.Identity.Application.Users.Commands
             _signInManager = signInManager;
             _tokenGenerator = tokenGenerator;
         }
-        public async Task<LoginResult> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<LoginResult> Handle(LoginQuery request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
