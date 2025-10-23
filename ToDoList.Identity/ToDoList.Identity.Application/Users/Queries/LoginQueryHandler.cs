@@ -32,15 +32,12 @@ namespace ToDoList.Identity.Application.Users.Queries
             if (!result.Succeeded)
                 return null; //NeedException
 
-            if (!Guid.TryParse(user.Id, out var userId))
-                return null; //NeedException
-
             var token = await _tokenGenerator.Generate(user);
 
             return new LoginResult 
             { 
                 Token = token, 
-                UserId = userId 
+                UserId = user.Id 
             };
         }
     }

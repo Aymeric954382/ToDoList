@@ -17,9 +17,9 @@ namespace ToDoList.Identity.Infrastructure.Configuration
                 options.UseSqlite(connectionString);
             });
 
-            services.AddIdentity<User, IdentityRole>(config =>
+            services.AddIdentity<User, IdentityRole<Guid>>(config =>
             {
-                config.Password.RequiredLength = 4;
+                config.Password.RequiredLength = 8;
                 config.Password.RequireDigit = false;
                 config.Password.RequireNonAlphanumeric = false;
                 config.Password.RequireUppercase = false;

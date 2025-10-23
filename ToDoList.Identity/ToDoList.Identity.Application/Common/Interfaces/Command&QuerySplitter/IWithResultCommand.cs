@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ToDoList.Identity.Application.Common.Interfaces
 {
-    public interface IQuery<T> : IRequest<T>
+    public interface IWithResultCommand<T> : IRequest<T>
     {
     }
 }

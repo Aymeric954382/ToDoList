@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace ToDoList.Identity.Domain.Entities
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<Guid>
     {
-
+        public override Guid Id { get; set; }
+        public DateTime BirthOfDate { get; set; }
     }
 }

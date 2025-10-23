@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Common\Behavior\" />
     <Folder Include="Common\Exceptions\" />
-    <Folder Include="Users\Commands\" />
   </ItemGroup>
 
   <ItemGroup>
