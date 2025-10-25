@@ -103,5 +103,12 @@ namespace ToDoList.WebAPI.Controllers
             await Mediator.Send(command);
             return NoContent();
         }
+
+        [HttpGet("all")]
+        public IActionResult GetAllUser()
+        {
+            var userId = User.FindFirst("sub")?.Value;
+            return Ok(new { Message = $"Authorized as {userId}" });
+        }
     }
 }
