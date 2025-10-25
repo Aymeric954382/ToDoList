@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToDoList.Identity.Application.Common.Exceptions;
 using ToDoList.Identity.Application.Common.Services.JWTTokenGeneration;
 using ToDoList.Identity.Application.Users.RequestDto;
 using ToDoList.Identity.Domain.Entities;
@@ -31,9 +32,7 @@ namespace ToDoList.Identity.Application.Users.Commands
                 UserName = request.UserName,
             };
 
-            var result = await _userManager.CreateAsync(user, request.Password);
-            if (!result.Succeeded)
-                return null; //NeedException
+            await _userManager.CreateAsync(user, request.Password);
 
             var token = await _tokenGenerator.Generate(user);
 

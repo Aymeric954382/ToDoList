@@ -1,6 +1,7 @@
 using ToDoList.Identity.Application.DI;
 using ToDoList.Identity.Infrastructure.Configuration;
 using ToDoList.Identity.Infrastructure.Data;
+using ToDoList.Identity.WebAPI.Middleware;
 
 namespace ToDoList.Identity.WebAPI
 {
@@ -13,6 +14,18 @@ namespace ToDoList.Identity.WebAPI
             builder.Services.AddIdentityConfiguration(builder.Configuration);
             builder.Services.AddControllersWithViews();
             builder.Services.AddApplication();
+
+            builder.Services.AddControllers();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend", policy =>
+                {
+                    policy.WithOrigins("Frontend will be ready soon") //Frontend will be ready soon
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
 
             var app = builder.Build();
 
@@ -31,9 +44,11 @@ namespace ToDoList.Identity.WebAPI
                 }
             }
 
-            app.UseRouting();
+            app.UseMiddleware<CustomExceptionHandlerMiddleware>();
             app.UseIdentityServer();
-            app.MapDefaultControllerRoute();
+            app.UseHttpsRedirection();
+            app.UseCors("AllowFrontend");
+            app.MapControllers();
 
 
             app.Run();
