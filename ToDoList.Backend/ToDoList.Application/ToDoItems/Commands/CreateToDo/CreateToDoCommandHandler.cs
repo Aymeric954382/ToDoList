@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 using ToDoList.Application.Interfaces.Repository;
+using ToDoList.Application.ToDoItems.Commands.CreateToDoItem;
 using ToDoList.Domain.ToDo;
 using ToDoList.Domain.ToDo.ValueObjects;
 
-namespace ToDoList.Application.ToDoItems.Commands.CreateToDoItem
+namespace ToDoList.Application.ToDoItems.Commands.CreateToDo
 {
     public class CreateToDoCommandHandler : IRequestHandler<CreateToDoCommand, Guid>
     {
