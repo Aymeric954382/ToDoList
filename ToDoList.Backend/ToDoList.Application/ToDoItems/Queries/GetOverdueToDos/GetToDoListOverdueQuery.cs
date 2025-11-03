@@ -9,7 +9,7 @@ using ToDoList.Application.ToDoItems.Queries.ResponseDtos;
 
 namespace ToDoList.Application.ToDoItems.Queries.GetOverdueToDos
 {
-    public class GetToDoOverdueListQuery : IQuery<ToDoListContainer>
+    public class GetToDoListOverdueQuery : IQuery<ToDoListContainer>
     {
         public Guid UserId { get; set; }
     }

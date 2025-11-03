@@ -13,6 +13,7 @@ namespace ToDoList.Tests.ToDos.Commands
 {
     public class ChangeToDoContentCommandHandlerTests
     {
+        [Fact]
         public async Task ChangeToDoContent_Success()
         {
             // Arrange

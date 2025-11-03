@@ -9,6 +9,7 @@ namespace ToDoList.Tests.ToDos.Commands
 {
     public class ChangeToDoStatusCommandHandlerTests
     {
+        [Fact]
         public async Task ChangeToDoStatus_Success()
         {
             var mockRepo = new Mock<IToDoRepository>();

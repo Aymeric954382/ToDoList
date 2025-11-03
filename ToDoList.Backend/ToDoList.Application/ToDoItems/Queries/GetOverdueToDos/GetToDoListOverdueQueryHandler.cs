@@ -9,17 +9,17 @@ using ToDoList.Domain.ToDo.ValueObjects;
 
 namespace ToDoList.Application.ToDoItems.Queries.GetOverdueToDos
 {
-    public class GetToDoOverdueListQueryHandler : IRequestHandler<GetToDoOverdueListQuery, ToDoListContainer>
+    public class GetToDoListOverdueQueryHandler : IRequestHandler<GetToDoListOverdueQuery, ToDoListContainer>
     {
         public readonly IToDoRepository _repository;
 
         public readonly IMapper _mapper;
-        public GetToDoOverdueListQueryHandler(IToDoRepository repository, IMapper mapper)
+        public GetToDoListOverdueQueryHandler(IToDoRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
-        public async Task<ToDoListContainer> Handle(GetToDoOverdueListQuery request, CancellationToken cancellationToken)
+        public async Task<ToDoListContainer> Handle(GetToDoListOverdueQuery request, CancellationToken cancellationToken)
         {
             var query = _repository.AsQueryable()
                 .Where(i => i.UserId == request.UserId && 

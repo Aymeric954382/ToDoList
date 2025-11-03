@@ -8,9 +8,9 @@ using ToDoList.Domain.ToDo.ValueObjects;
 
 namespace ToDoList.Application.ToDoItems.Queries.GetByStatus
 {
-    public class GetToDoByStatusValidator : AbstractValidator<GetToDoByStatusQuery>
+    public class GetToDoListByStatusValidator : AbstractValidator<GetToDoListByStatusQuery>
     {
-        public GetToDoByStatusValidator()
+        public GetToDoListByStatusValidator()
         {
             RuleFor(query =>
                 query.UserId).NotEqual(Guid.Empty);

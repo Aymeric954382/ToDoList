@@ -9,9 +9,9 @@ using ToDoList.Domain.ToDo.ValueObjects;
 
 namespace ToDoList.Application.ToDoItems.Queries.GetByPriority
 {
-    public class GetToDoByPriorityValidator : AbstractValidator<GetToDoByPriorityQuery>
+    public class GetToDoListByPriorityValidator : AbstractValidator<GetToDoListByPriorityQuery>
     {
-        public GetToDoByPriorityValidator()
+        public GetToDoListByPriorityValidator()
         {
             RuleFor(query =>
                 query.UserId).NotEqual(Guid.Empty);

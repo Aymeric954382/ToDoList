@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ToDoList.Application.ToDoItems.Queries.GetOverdueToDos
 {
-    public class GetToDoOverdueListValidator : AbstractValidator<GetToDoOverdueListQuery>
+    public class GetToDoListOverdueValidator : AbstractValidator<GetToDoListOverdueQuery>
     {
-        public GetToDoOverdueListValidator()
+        public GetToDoListOverdueValidator()
         {
             RuleFor(query =>
                 query.UserId).NotEqual(Guid.Empty);

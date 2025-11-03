@@ -16,6 +16,7 @@ namespace ToDoList.Tests.ToDos.Commands
 {
     public class ChangeToDoPriorityCommandHandlerTests
     {
+        [Fact]
         public async Task ChangeToDoPriority_Success()
         {
             var mockRepo = new Mock<IToDoRepository>();

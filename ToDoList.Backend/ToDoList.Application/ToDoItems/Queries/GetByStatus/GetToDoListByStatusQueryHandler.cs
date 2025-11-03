@@ -10,23 +10,23 @@ using ToDoList.Application.ToDoItems.Queries.Containers;
 using ToDoList.Application.ToDoItems.Queries.ResponseDtos;
 using ToDoList.Domain.ToDo.ValueObjects;
 
-namespace ToDoList.Application.ToDoItems.Queries.GetByPriority
+namespace ToDoList.Application.ToDoItems.Queries.GetByStatus
 {
-    public class GetToDoByPriorityQueryHandler : IRequestHandler<GetToDoByPriorityQuery, ToDoListContainer>
+    public class GetToDoListByStatusQueryHandler : IRequestHandler<GetToDoListByStatusQuery, ToDoListContainer>
     {
         private readonly IToDoRepository _repository;
         private readonly IMapper _mapper;
 
-        public GetToDoByPriorityQueryHandler(IMapper mapper, IToDoRepository repository)
+        public GetToDoListByStatusQueryHandler(IMapper mapper, IToDoRepository repository)
         {
             _mapper = mapper;
             _repository = repository;
         }
 
-        public async Task<ToDoListContainer> Handle(GetToDoByPriorityQuery request, CancellationToken cancellationToken)
+        public async Task<ToDoListContainer> Handle(GetToDoListByStatusQuery request, CancellationToken cancellationToken)
         {
             var query = _repository.AsQueryable()
-                .Where(i => i.UserId == request.UserId && i.Priority == request.Priority);
+                .Where(i => i.UserId == request.UserId && i.Status == request.Status);
 
             var itemsDto = await query.ProjectTo<ToDoResponseDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);

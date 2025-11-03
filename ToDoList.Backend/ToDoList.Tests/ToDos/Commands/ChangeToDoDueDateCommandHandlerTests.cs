@@ -8,6 +8,7 @@ namespace ToDoList.Tests.ToDos.Commands
 {
     public class ChangeToDoDueDateCommandHandlerTests
     {
+        [Fact]
         public async Task ChandeToDoDueDate_Success()
         {
             var mockRepo = new Mock<IToDoRepository>();

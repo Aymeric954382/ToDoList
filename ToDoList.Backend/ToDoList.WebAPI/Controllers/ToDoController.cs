@@ -23,15 +23,15 @@ namespace ToDoList.WebAPI.Controllers
 
         [HttpGet("by-status")]
         public async Task<ActionResult<ToDoListContainer>> GetByStatus([FromQuery] ToDoStatus status) =>
-            Ok(await Mediator.Send(new GetToDoByStatusQuery { UserId = UserId, Status = status }));
+            Ok(await Mediator.Send(new GetToDoListByStatusQuery { UserId = UserId, Status = status }));
 
         [HttpGet("by-priority")]
         public async Task<ActionResult<ToDoListContainer>> GetByPriority([FromQuery] ToDoPriority priority) =>
-            Ok(await Mediator.Send(new GetToDoByPriorityQuery { UserId = UserId, Priority = priority }));
+            Ok(await Mediator.Send(new GetToDoListByPriorityQuery { UserId = UserId, Priority = priority }));
 
         [HttpGet("overdue")]
         public async Task<ActionResult<ToDoListContainer>> GetAllOverDue() =>
-            Ok(await Mediator.Send(new GetToDoOverdueListQuery { UserId = UserId }));
+            Ok(await Mediator.Send(new GetToDoListOverdueQuery { UserId = UserId }));
 
         [HttpPut("content")]
         public async Task<IActionResult> ChangeContent([FromBody] ChangeToDoContentDto dto)

@@ -3,11 +3,11 @@ using ToDoList.Application.Interfaces.Command_QuerySpliter;
 using ToDoList.Application.ToDoItems.Queries.Containers;
 using ToDoList.Domain.ToDo.ValueObjects;
 
-namespace ToDoList.Application.ToDoItems.Queries.GetByPriority
+namespace ToDoList.Application.ToDoItems.Queries.GetByStatus
 {
-    public class GetToDoByPriorityQuery : IQuery<ToDoListContainer>
+    public class GetToDoListByStatusQuery : IQuery<ToDoListContainer>
     {
         public Guid UserId { get; set; }
-        public ToDoPriority? Priority { get; set; }
+        public ToDoStatus? Status { get; set; }
     }
 }
