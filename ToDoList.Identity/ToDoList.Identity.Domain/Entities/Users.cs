@@ -1,0 +1,15 @@
+﻿using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ToDoList.Identity.Domain.Entities
+{
+    public class User : IdentityUser<Guid>
+    {
+        public override Guid Id { get; set; }
+        public DateTime BirthOfDate { get; set; }
+    }
+}
