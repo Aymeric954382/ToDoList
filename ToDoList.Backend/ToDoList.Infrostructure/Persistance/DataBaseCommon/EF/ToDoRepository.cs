@@ -11,6 +11,7 @@ namespace ToDoList.Infrastructure.Persistance.DataBaseCommon.EF
 {
     public class ToDoRepository : IToDoRepository
     {
+        private static readonly SemaphoreSlim _semaphore = new(1, 1);
         private readonly ToDoDbContext _context;
         public ToDoRepository(ToDoDbContext context)
         {
@@ -30,9 +31,17 @@ namespace ToDoList.Infrastructure.Persistance.DataBaseCommon.EF
         }
 
         public async Task UpdateAsync(ToDoItem todo, CancellationToken cancellationToken)
-        {
-            _context.ToDoItems.Update(todo);
-            await _context.SaveChangesAsync();
+        {        
+            await _semaphore.WaitAsync(cancellationToken);
+            try
+            {
+                _context.ToDoItems.Update(todo);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
         }
 
         public async Task DeleteAsync(ToDoItem todo, CancellationToken cancellationToken)
