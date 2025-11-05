@@ -1,4 +1,5 @@
 using ToDoList.Application.Interfaces.Repository;
+using ToDoList.Domain.ToDo;
 using ToDoList.Domain.ToDo.ValueObjects;
 using ToDoList.Worker.Common.Helper;
 
@@ -17,33 +18,35 @@ namespace ToDoList.Worker
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("ToDoExpirationWorker started");
+            _logger.LogInformation("ToDoExpirationWorker started.");
 
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
                 {
-                    var now = DateTime.UtcNow;
                     var todos = _repository.AsQueryable()
-                        .Where(t => t.Status != ToDoStatus.Completed && 
-                        t.Status != ToDoStatus.Cancelled)
+                        .Where(t => t.Status != ToDoStatus.Completed &&
+                                    t.Status != ToDoStatus.Cancelled)
                         .ToList();
 
                     foreach (var todo in todos)
                     {
-                        var percent = StatusCalc.Calc(todo);
+                        var remainingPercent = StatusCalc.Calc(todo);
+                        var newStatus = todo.Status;
 
-                        switch (percent)
+                        if (remainingPercent > 66)
+                            newStatus = ToDoStatus.Active;
+                        else if (remainingPercent > 0)
+                            newStatus = ToDoStatus.ExpiringSoon;
+                        else
+                            newStatus = ToDoStatus.Expired;
+
+                        if (newStatus != todo.Status)
                         {
-                            case double n when (n >= 33 && n <= 66): todo.Status = ToDoStatus.ExpiringSoon;
-                                break;
-                            case double n when (n >= 66 && n <= 100): todo.Status = ToDoStatus.Expired;
-                                break;
+                            todo.Status = newStatus;
+                            await _repository.UpdateAsync(todo, stoppingToken);
+                            _logger.LogInformation($"Task '{todo.Title}' status updated to {newStatus}.");
                         }
-                        
-                        await _repository.UpdateAsync(todo, stoppingToken);
-
-                        _logger.LogInformation($"Task '{todo.Title}' marked as expired.");
                     }
                 }
                 catch (Exception ex)
