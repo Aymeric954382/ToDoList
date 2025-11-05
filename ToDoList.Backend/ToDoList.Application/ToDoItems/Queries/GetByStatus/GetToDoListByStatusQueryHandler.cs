@@ -17,7 +17,7 @@ namespace ToDoList.Application.ToDoItems.Queries.GetByStatus
         private readonly IToDoRepository _repository;
         private readonly IMapper _mapper;
 
-        public GetToDoListByStatusQueryHandler(IMapper mapper, IToDoRepository repository)
+        public GetToDoListByStatusQueryHandler(IToDoRepository repository, IMapper mapper)
         {
             _mapper = mapper;
             _repository = repository;

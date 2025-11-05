@@ -24,7 +24,8 @@ namespace ToDoList.Application.ToDoItems.Queries.GetOverdueToDos
             var query = _repository.AsQueryable()
                 .Where(i => i.UserId == request.UserId && 
                 i.DueDate <= DateTime.UtcNow &&
-                i.Status != ToDoStatus.Completed);
+                i.Status != ToDoStatus.Completed &&
+                i.Status != ToDoStatus.Cancelled);
 
             var listDto = await query.ProjectTo<ToDoResponseDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);

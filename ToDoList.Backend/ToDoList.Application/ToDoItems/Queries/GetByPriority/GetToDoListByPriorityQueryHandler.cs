@@ -17,7 +17,7 @@ namespace ToDoList.Application.ToDoItems.Queries.GetByPriority
         private readonly IToDoRepository _repository;
         private readonly IMapper _mapper;
 
-        public GetToDoListByPriorityQueryHandler(IMapper mapper, IToDoRepository repository)
+        public GetToDoListByPriorityQueryHandler(IToDoRepository repository, IMapper mapper)
         {
             _mapper = mapper;
             _repository = repository;

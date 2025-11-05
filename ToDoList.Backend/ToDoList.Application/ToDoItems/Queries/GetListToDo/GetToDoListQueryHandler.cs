@@ -19,7 +19,7 @@ namespace ToDoList.Application.ToDoItems.Queries.GetListToDo
     {
         private readonly IToDoRepository _repository;
         private readonly IMapper _mapper;
-        public GetToDoListQueryHandler(IMapper mapper, IToDoRepository repository)
+        public GetToDoListQueryHandler(IToDoRepository repository, IMapper mapper)
         {
             _mapper = mapper;
             _repository = repository;
