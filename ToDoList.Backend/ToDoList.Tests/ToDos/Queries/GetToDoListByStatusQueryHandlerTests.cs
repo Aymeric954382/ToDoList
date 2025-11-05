@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentAssertions;
+using MockQueryable;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using ToDoList.Application.ToDoItems.Queries.ResponseDtos;
 using ToDoList.Domain.ToDo;
 using ToDoList.Domain.ToDo.ValueObjects;
 using ToDoList.Tests.Common;
-using ToDoList.Tests.Common.InMemoryRepository;
+
 
 namespace ToDoList.Tests.ToDos.Queries
 {
@@ -23,7 +24,6 @@ namespace ToDoList.Tests.ToDos.Queries
         public async Task GetToDoListStatus_Success()
         {
             //Assets
-            var repo = new InMemoryToDoRepository();
 
             var userId = Guid.NewGuid();
             var status = ToDoStatus.Active;
@@ -35,12 +35,13 @@ namespace ToDoList.Tests.ToDos.Queries
                 new ToDoItem { Id = Guid.NewGuid(), UserId = userId, Title = "Task 1", Status = ToDoStatus.Active},
                 new ToDoItem { Id = Guid.NewGuid(), UserId = userId, Title = "Task 2", Status = ToDoStatus.Expired},
                 new ToDoItem { Id = Guid.NewGuid(), UserId = userId, Title = "Task 3", Status = ToDoStatus.Active}
-            }.AsQueryable();
+            };
 
-            foreach (var item in fakeData)
-                await repo.AddAsync(item);
+            var mock = fakeData.BuildMock().AsQueryable();
 
-            var handler = new GetToDoListByStatusQueryHandler(Mapper, repo);
+            mockRepo.Setup(x => x.AsQueryable()).Returns(mock);
+
+            var handler = new GetToDoListByStatusQueryHandler(mockRepo.Object, Mapper);
 
             var query = new GetToDoListByStatusQuery
             {

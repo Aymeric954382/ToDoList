@@ -8,6 +8,8 @@ using ToDoList.Application.ToDoItems.Queries.ResponseDtos;
 using ToDoList.Domain.ToDo;
 using ToDoList.Domain.ToDo.ValueObjects;
 using ToDoList.Tests.Common;
+using MockQueryable.Moq;
+using MockQueryable;
 
 namespace ToDoList.Tests.ToDos.Queries
 {
@@ -63,21 +65,13 @@ namespace ToDoList.Tests.ToDos.Queries
                     Priority = ToDoPriority.Immediately,
                     CreationDate = DateTime.UtcNow
                 }
-            }.AsQueryable();
+            };
 
-            var expectedDtos = fakeData
-                .Select(x => new ToDoResponseDto 
-                { 
-                    Id = x.Id, 
-                    Title = x.Title, 
-                    Details = x.Details, 
-                    DueDate = x.DueDate, 
-                    Status = x.Status, 
-                    Priority = x.Priority
-                })
-                .ToList();
-                  
-            var handler = new GetToDoListQueryHandler(Mapper, mockRepo.Object);
+            var mock = fakeData.BuildMock().AsQueryable();
+
+            mockRepo.Setup(x => x.AsQueryable()).Returns(mock);
+
+            var handler = new GetToDoListQueryHandler(mockRepo.Object, Mapper);
 
             var query = new GetToDoListQuery { UserId = userId };
 

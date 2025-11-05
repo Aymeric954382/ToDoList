@@ -1,18 +1,12 @@
-﻿using AutoMapper;
+﻿
 using FluentAssertions;
+using MockQueryable;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ToDoList.Application.Interfaces.Repository;
 using ToDoList.Application.ToDoItems.Queries.GetByPriority;
-using ToDoList.Application.ToDoItems.Queries.ResponseDtos;
 using ToDoList.Domain.ToDo;
 using ToDoList.Domain.ToDo.ValueObjects;
 using ToDoList.Tests.Common;
-using ToDoList.Tests.Common.InMemoryRepository;
 
 namespace ToDoList.Tests.ToDos.Queries
 {
@@ -22,7 +16,7 @@ namespace ToDoList.Tests.ToDos.Queries
         public async Task GetToDoByPriority_Success()
         {
             //Assets
-            var repo = new InMemoryToDoRepository();
+            var repo = new Mock<IToDoRepository>();
 
             var userId = Guid.NewGuid();
             var priority = ToDoPriority.High;
@@ -34,12 +28,13 @@ namespace ToDoList.Tests.ToDos.Queries
                 new() { Id = Guid.NewGuid(), UserId = userId, Title = "Task 1", Priority = ToDoPriority.High },
                 new() { Id = Guid.NewGuid(), UserId = userId, Title = "Task 2", Priority = ToDoPriority.Low },
                 new() { Id = Guid.NewGuid(), UserId = userId, Title = "Task 3", Priority = ToDoPriority.High }
-            }.AsQueryable();
+            };
 
-            foreach (var item in fakeData)
-                await repo.AddAsync(item);
+            var mock = fakeData.BuildMock().AsQueryable();
 
-            var handler = new GetToDoListByPriorityQueryHandler(Mapper, repo);
+            mockRepo.Setup(x => x.AsQueryable()).Returns(mock);
+
+            var handler = new GetToDoListByPriorityQueryHandler(mockRepo.Object, Mapper);
 
             var query = new GetToDoListByPriorityQuery
             {
