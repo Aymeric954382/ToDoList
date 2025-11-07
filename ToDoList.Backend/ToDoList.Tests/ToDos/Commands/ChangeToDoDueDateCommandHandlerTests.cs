@@ -51,10 +51,10 @@ namespace ToDoList.Tests.ToDos.Commands
             await handler.Handle(command, CancellationToken.None);
 
             //Assert
-            updatedEntity.Should().NotBeNull();                              
-            updatedEntity.DueDate.Should().Be(newDueDate);                   
-            updatedEntity.DueDate.Should().NotBe(oldDueDate);                
-            updatedEntity.Title.Should().Be("Old task");                     
+            updatedEntity.Should().NotBeNull();
+            updatedEntity.DueDate.Should().Be(newDueDate);
+            updatedEntity.DueDate.Should().NotBe(oldDueDate);
+            updatedEntity.Title.Should().Be("Old task");
 
             mockRepo.Verify(r => r.GetByIdAsync(todoId, It.IsAny<CancellationToken>()), Times.Once);
             mockRepo.Verify(r => r.UpdateAsync(It.IsAny<ToDoItem>(), It.IsAny<CancellationToken>()), Times.Once);

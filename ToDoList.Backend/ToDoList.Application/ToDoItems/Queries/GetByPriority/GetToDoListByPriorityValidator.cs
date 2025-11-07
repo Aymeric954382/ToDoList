@@ -1,10 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ToDoList.Application.ToDoItems.Queries.GetListToDo;
 using ToDoList.Domain.ToDo.ValueObjects;
 
 namespace ToDoList.Application.ToDoItems.Queries.GetByPriority

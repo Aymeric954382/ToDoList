@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ToDoList.Application.ToDoItems.Commands.ChangeToDoContent;
 using ToDoList.Application.ToDoItems.Commands.ChangeToDoPriority;
 using ToDoList.Application.ToDoItems.Commands.ChangeToDoStatus;
@@ -14,8 +15,10 @@ using ToDoList.WebAPI.Models;
 
 namespace ToDoList.WebAPI.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class ToDoController : BaseController
     {
         /// <summary>
@@ -137,7 +140,7 @@ namespace ToDoList.WebAPI.Controllers
         /// <returns>A <see cref="IActionResult"/> indicating the result of the operation. Returns a 200 OK status if the update
         /// is successful,  or a 401 Unauthorized status if the user is not authorized.</returns>
         [HttpPut("status")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> ChangeStatus([FromBody] ChangeToDoStatusDto dto)
         {

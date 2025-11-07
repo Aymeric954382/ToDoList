@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 using ToDoList.Application.Interfaces.Repository;
 using ToDoList.Application.ToDoItems.Commands.CreateToDoItem;
 using ToDoList.Domain.ToDo;
@@ -33,7 +28,7 @@ namespace ToDoList.Application.ToDoItems.Commands.CreateToDo
 
             await _repository.AddAsync(toDoItem, cancellationToken);
 
-            return toDoItem.Id; 
+            return toDoItem.Id;
         }
     }
 }

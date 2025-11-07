@@ -1,9 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ToDoList.Application.ToDoItems.Commands.ChangeToDoContent
 {
@@ -11,13 +6,13 @@ namespace ToDoList.Application.ToDoItems.Commands.ChangeToDoContent
     {
         public ChangeToDoContentValidator()
         {
-            RuleFor(command => 
+            RuleFor(command =>
                 command.Id).NotEqual(Guid.Empty);
-            RuleFor(command => 
+            RuleFor(command =>
                 command.UserId).NotEqual(Guid.Empty);
-            RuleFor(command => 
+            RuleFor(command =>
                 command.Title).MaximumLength(50).NotNull().NotEmpty();
-            RuleFor(command => 
+            RuleFor(command =>
                 command.Details).MaximumLength(200);
         }
     }

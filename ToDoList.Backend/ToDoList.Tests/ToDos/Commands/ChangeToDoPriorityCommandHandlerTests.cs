@@ -1,16 +1,9 @@
 ﻿using FluentAssertions;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ToDoList.Application.Interfaces.Repository;
-using ToDoList.Application.ToDoItems.Commands.ChangeToDoDueDate;
 using ToDoList.Application.ToDoItems.Commands.ChangeToDoPriority;
 using ToDoList.Domain.ToDo;
 using ToDoList.Domain.ToDo.ValueObjects;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ToDoList.Tests.ToDos.Commands
 {

@@ -1,13 +1,17 @@
-using System;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
+using System.Text;
 using ToDoList.Application.DI;
 using ToDoList.Application.Interfaces;
 using ToDoList.Infrastructure.Persistance.DataBaseCommon.EF;
 using ToDoList.Infrastructure.Persistance.DI;
+using ToDoList.Infrastructure.Persistance.Swagger;
 using ToDoList.WebAPI.Middleware;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
 namespace ToDoList.WebAPI
@@ -25,7 +29,7 @@ namespace ToDoList.WebAPI
 
             builder.Services.AddApplication();
             builder.Services.AddPersistance(builder.Configuration);
-            builder.Services.AddControllers();            
+            builder.Services.AddControllers();
 
             builder.Services.AddCors(options =>
             {
@@ -60,22 +64,48 @@ namespace ToDoList.WebAPI
                 };
             });
 
-            builder.Services.AddSwaggerGen(config =>
+            builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>,
+               ConfigureSwaggerOptions>();
+            builder.Services.AddSwaggerGen();
+
+            builder.Services.AddApiVersioning(options =>
             {
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                config.IncludeXmlComments(xmlPath);
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.ReportApiVersions = true;
             });
+
+            builder.Services.AddVersionedApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
+
 
             var app = builder.Build();
 
-            app.UseSwagger();
-            app.UseSwaggerUI(config => 
+            if (app.Environment.IsDevelopment())
             {
+                app.UseDeveloperExceptionPage();
+            }
+            app.UseSwagger();
+            app.UseSwaggerUI(config =>
+            {
+                var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    config.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
+                        description.GroupName.ToUpperInvariant());
+                }
+
                 config.RoutePrefix = string.Empty;
-                config.SwaggerEndpoint("swagger/v1/swagger.json", "ToDos API");
+
+                config.ConfigObject.AdditionalItems["cacheBuster"] = true;
             });
+
             app.UseCustomExceptionHandler();
+            app.UseRouting();
             app.UseHttpsRedirection();
             app.UseCors("AllowFrontend");
             app.UseAuthentication();

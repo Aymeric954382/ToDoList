@@ -1,14 +1,10 @@
 ﻿using FluentAssertions;
-using Microsoft.VisualBasic;
 using MockQueryable;
-using MockQueryable.Moq;
 using Moq;
 using ToDoList.Application.Interfaces.Repository;
 using ToDoList.Application.ToDoItems.Queries.GetOverdueToDos;
-using ToDoList.Application.ToDoItems.Queries.ResponseDtos;
 using ToDoList.Domain.ToDo;
 using ToDoList.Tests.Common;
-using Xunit.Abstractions;
 
 namespace ToDoList.Tests.ToDos.Queries
 {

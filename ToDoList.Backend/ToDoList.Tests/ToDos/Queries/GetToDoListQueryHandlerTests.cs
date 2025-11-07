@@ -1,15 +1,12 @@
-﻿using AutoMapper;
-using FluentAssertions;
+﻿using FluentAssertions;
+using MockQueryable;
 using Moq;
-using ToDoList.Application.Common.Mappings.Profiles;
 using ToDoList.Application.Interfaces.Repository;
 using ToDoList.Application.ToDoItems.Queries.GetListToDo;
 using ToDoList.Application.ToDoItems.Queries.ResponseDtos;
 using ToDoList.Domain.ToDo;
 using ToDoList.Domain.ToDo.ValueObjects;
 using ToDoList.Tests.Common;
-using MockQueryable.Moq;
-using MockQueryable;
 
 namespace ToDoList.Tests.ToDos.Queries
 {

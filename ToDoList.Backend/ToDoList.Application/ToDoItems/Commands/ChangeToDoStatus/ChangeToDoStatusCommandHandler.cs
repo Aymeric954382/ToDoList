@@ -1,9 +1,4 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ToDoList.Application.Common.Exceptions;
 using ToDoList.Application.Interfaces.Repository;
 using ToDoList.Domain.ToDo;
