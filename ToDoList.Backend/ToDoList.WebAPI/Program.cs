@@ -60,9 +60,21 @@ namespace ToDoList.WebAPI
                 };
             });
 
+            builder.Services.AddSwaggerGen(config =>
+            {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                config.IncludeXmlComments(xmlPath);
+            });
 
             var app = builder.Build();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(config => 
+            {
+                config.RoutePrefix = string.Empty;
+                config.SwaggerEndpoint("swagger/v1/swagger.json", "ToDos API");
+            });
             app.UseCustomExceptionHandler();
             app.UseHttpsRedirection();
             app.UseCors("AllowFrontend");
