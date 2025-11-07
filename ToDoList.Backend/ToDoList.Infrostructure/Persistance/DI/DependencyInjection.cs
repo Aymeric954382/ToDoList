@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ToDoList.Application.Interfaces;
 using ToDoList.Application.Interfaces.Repository;
 using ToDoList.Infrastructure.Persistance.DataBaseCommon.EF;

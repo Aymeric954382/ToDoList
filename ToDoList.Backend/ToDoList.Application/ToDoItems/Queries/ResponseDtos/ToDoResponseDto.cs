@@ -1,9 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ToDoList.Application.Interfaces.MappingMark;
 using ToDoList.Domain.ToDo;
 using ToDoList.Domain.ToDo.ValueObjects;
@@ -22,6 +17,6 @@ namespace ToDoList.Application.ToDoItems.Queries.ResponseDtos
 
         public void Mapping(Profile profile) =>
             profile.CreateMap<ToDoItem, ToDoResponseDto>();
-        
+
     }
 }

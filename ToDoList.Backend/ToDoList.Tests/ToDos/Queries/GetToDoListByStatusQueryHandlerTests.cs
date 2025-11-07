@@ -1,16 +1,8 @@
-﻿using AutoMapper;
-using FluentAssertions;
+﻿using FluentAssertions;
 using MockQueryable;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ToDoList.Application.Interfaces.Repository;
-using ToDoList.Application.ToDoItems.Queries.GetByPriority;
 using ToDoList.Application.ToDoItems.Queries.GetByStatus;
-using ToDoList.Application.ToDoItems.Queries.ResponseDtos;
 using ToDoList.Domain.ToDo;
 using ToDoList.Domain.ToDo.ValueObjects;
 using ToDoList.Tests.Common;

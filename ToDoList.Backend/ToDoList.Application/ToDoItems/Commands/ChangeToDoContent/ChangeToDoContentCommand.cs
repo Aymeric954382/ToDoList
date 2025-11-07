@@ -1,11 +1,4 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ToDoList.Application.Interfaces.Command_QuerySpliter;
-using ToDoList.Domain.ToDo.ValueObjects;
+﻿using ToDoList.Application.Interfaces.Command_QuerySpliter;
 
 namespace ToDoList.Application.ToDoItems.Commands.ChangeToDoContent
 {

@@ -39,7 +39,7 @@ namespace ToDoList.Tests.ToDos.Commands
 
             // Assert
             resultId.Should().NotBe(Guid.Empty);
-                        
+
             mockRepo.Verify(r => r.AddAsync(It.IsAny<ToDoItem>(), It.IsAny<CancellationToken>()), Times.Once);
 
             savedEntity.Should().NotBeNull();

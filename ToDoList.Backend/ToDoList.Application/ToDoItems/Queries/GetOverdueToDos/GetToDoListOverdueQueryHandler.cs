@@ -22,7 +22,7 @@ namespace ToDoList.Application.ToDoItems.Queries.GetOverdueToDos
         public async Task<ToDoListContainer> Handle(GetToDoListOverdueQuery request, CancellationToken cancellationToken)
         {
             var query = _repository.AsQueryable()
-                .Where(i => i.UserId == request.UserId && 
+                .Where(i => i.UserId == request.UserId &&
                 i.DueDate <= DateTime.UtcNow &&
                 i.Status != ToDoStatus.Completed &&
                 i.Status != ToDoStatus.Cancelled);

@@ -12,7 +12,7 @@ namespace ToDoList.WebAPI.Middleware
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
-        
+
         public CustomExceptionHandlerMiddleware(RequestDelegate next) =>
             _next = next;
 
@@ -48,7 +48,7 @@ namespace ToDoList.WebAPI.Middleware
             }
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
-;
+            ;
             var serializedResult = JsonSerializer.Serialize(result, _jsonOptions);
 
             return context.Response.WriteAsync(serializedResult);

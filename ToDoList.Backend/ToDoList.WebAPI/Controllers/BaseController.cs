@@ -1,15 +1,13 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using ToDoList.Application.Interfaces.Repository;
 
 namespace ToDoList.WebAPI.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
     public abstract class BaseController : ControllerBase
     {
         private IMediator _mediator;

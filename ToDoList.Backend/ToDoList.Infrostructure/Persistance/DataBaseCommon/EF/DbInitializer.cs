@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ToDoList.Infrastructure.Persistance.DataBaseCommon.EF
+﻿namespace ToDoList.Infrastructure.Persistance.DataBaseCommon.EF
 {
     public class DbInitializer
     {

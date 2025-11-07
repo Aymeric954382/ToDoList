@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using AutoMapper;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
 using ToDoList.Application.Interfaces.MappingMark;
 
 namespace ToDoList.Application.Common.Mappings.Profiles
@@ -30,6 +25,6 @@ namespace ToDoList.Application.Common.Mappings.Profiles
             }
         }
 
-        
+
     }
 }

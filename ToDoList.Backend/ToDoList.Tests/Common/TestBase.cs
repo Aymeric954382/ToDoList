@@ -12,7 +12,7 @@ namespace ToDoList.Tests.Common
         {
             var assembly = typeof(ToDoResponseDto).Assembly;
 
-            var loggerFactory = LoggerFactory.Create(builder => { }); 
+            var loggerFactory = LoggerFactory.Create(builder => { });
 
             var configuration = new MapperConfiguration(cfg =>
             {

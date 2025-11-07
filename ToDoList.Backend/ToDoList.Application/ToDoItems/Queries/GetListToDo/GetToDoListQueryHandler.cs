@@ -2,16 +2,9 @@
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ToDoList.Application.Common.Exceptions;
 using ToDoList.Application.Interfaces.Repository;
 using ToDoList.Application.ToDoItems.Queries.Containers;
 using ToDoList.Application.ToDoItems.Queries.ResponseDtos;
-using ToDoList.Domain.ToDo;
 
 namespace ToDoList.Application.ToDoItems.Queries.GetListToDo
 {
@@ -32,7 +25,7 @@ namespace ToDoList.Application.ToDoItems.Queries.GetListToDo
             var itemsDto = await query.ProjectTo<ToDoResponseDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
-            return new ToDoListContainer {ToDoItems = itemsDto };
+            return new ToDoListContainer { ToDoItems = itemsDto };
         }
     }
 }
