@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using Serilog.Events;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 using System.Text;
@@ -12,6 +14,7 @@ using ToDoList.Infrastructure.Persistance.DataBaseCommon.EF;
 using ToDoList.Infrastructure.Persistance.DI;
 using ToDoList.Infrastructure.Persistance.Swagger;
 using ToDoList.WebAPI.Middleware;
+using ToDoList.WebAPI.Services;
 
 
 namespace ToDoList.WebAPI
@@ -21,6 +24,14 @@ namespace ToDoList.WebAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .WriteTo.File("Logs/ToDoListWebAppLog-.txt", rollingInterval:
+                    RollingInterval.Day)
+                .CreateLogger();
+
+            builder.Host.UseSerilog();
 
             builder.Services.AddAutoMapper(
                 Assembly.GetExecutingAssembly(),
@@ -81,6 +92,8 @@ namespace ToDoList.WebAPI
                 options.SubstituteApiVersionInUrl = true;
             });
 
+            builder.Services.AddSingleton<ICurrentUserService, CurrentUserService>();
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 
@@ -111,7 +124,7 @@ namespace ToDoList.WebAPI
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapControllers();
+            app.MapControllers();             
 
             using (var scope = app.Services.CreateScope())
             {
@@ -123,8 +136,7 @@ namespace ToDoList.WebAPI
                 }
                 catch (Exception exception)
                 {
-                    var logger = servicesProvider.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(exception, "An error occurred while app initialization");
+                    Log.Fatal(exception, "An error occurred while app initialization");
                 }
             }
 

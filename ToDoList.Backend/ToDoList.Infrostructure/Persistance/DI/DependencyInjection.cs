@@ -12,10 +12,10 @@ namespace ToDoList.Infrastructure.Persistance.DI
         public static IServiceCollection AddPersistance(this IServiceCollection
             services, IConfiguration configuration)
         {
-            var connectionString = configuration["DbConnection"];
+            var connectionString = configuration["DbConnectionString"];
             services.AddDbContext<ToDoDbContext>(options =>
             {
-                options.UseSqlite(connectionString);
+                options.UseSqlServer(connectionString);
             });
             services.AddScoped<IToDoDbContext, ToDoDbContext>(provider =>
                 provider.GetService<ToDoDbContext>());

@@ -7,17 +7,13 @@ namespace ToDoList.Worker
     public class ToDoExpirationWorker : BackgroundService
     {
         private readonly IToDoRepository _repository;
-        private readonly ILogger<ToDoExpirationWorker> _logger;
-
-        public ToDoExpirationWorker(IToDoRepository repository, ILogger<ToDoExpirationWorker> logger)
+        public ToDoExpirationWorker(IToDoRepository repository)
         {
             _repository = repository;
-            _logger = logger;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("ToDoExpirationWorker started.");
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -44,13 +40,12 @@ namespace ToDoList.Worker
                         {
                             todo.Status = newStatus;
                             await _repository.UpdateAsync(todo, stoppingToken);
-                            _logger.LogInformation($"Task '{todo.Title}' status updated to {newStatus}.");
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Error while processing overdue ToDo items.");
+                    //Log
                 }
 
                 await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
