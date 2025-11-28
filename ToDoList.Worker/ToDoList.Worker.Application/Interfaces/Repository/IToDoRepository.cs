@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToDoList.Worker.Domain;
 
-namespace ToDoList.Worker.Application.Repository
+namespace ToDoList.Worker.Application.Interfaces.Repository
 {
     public interface IToDoRepository
     {

@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToDoList.Worker.Application.Interfaces;
 using ToDoList.Worker.Domain;
 using ToDoList.Worker.Infrastructure.DataBaseCommon.EF.EntityTypeConfiguration;
 
 namespace ToDoList.Worker.Infrastructure.DataBaseCommon.EF
 {
-    public class ToDoDbContext : DbContext
+    public class ToDoDbContext : DbContext, IToDoDbContext
     {
         public DbSet<ToDoItem> ToDoItems { get; set; }
 

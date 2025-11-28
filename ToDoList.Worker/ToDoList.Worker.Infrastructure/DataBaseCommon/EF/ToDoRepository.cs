@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ToDoList.Worker.Application.Repository;
+using ToDoList.Worker.Application.Interfaces.Repository;
 using ToDoList.Worker.Domain;
 
 namespace ToDoList.Worker.Infrastructure.DataBaseCommon.EF

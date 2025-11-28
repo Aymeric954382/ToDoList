@@ -10,4 +10,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ToDoList.Worker.Application\ToDoList.Worker.Application.csproj" />
+    <ProjectReference Include="..\ToDoList.Worker.Infrastructure\ToDoList.Worker.Infrastructure.csproj" />
+  </ItemGroup>
 </Project>
