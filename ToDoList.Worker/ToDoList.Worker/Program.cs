@@ -1,6 +1,6 @@
 using ToDoList.Worker.Application.DI;
 using ToDoList.Worker.Infrastructure.DI;
-namespace ToDoList.Worker
+namespace ToDoList.Worker.WebAPI
 {
     public class Program
     {

@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ToDoList.Worker.Application.Interfaces.Exceptions
+namespace ToDoList.Worker.Application.Common.Exceptions
 {
-    internal class NotFoundException
+    public class NotFoundException : Exception
     {
+        public NotFoundException(string name, object key)
+            : base($"Entity \"{name}\" ({key}) not found.") { }
     }
 }

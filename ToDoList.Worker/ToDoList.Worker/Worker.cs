@@ -1,4 +1,4 @@
-namespace ToDoList.Worker
+namespace ToDoList.Worker.WebAPI
 {
     public class Worker : BackgroundService
     {

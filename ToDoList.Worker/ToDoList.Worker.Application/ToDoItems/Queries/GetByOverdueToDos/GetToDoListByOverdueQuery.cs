@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ToDoList.Worker.Application.Interfaces.Command_QuerySplitter;
 using ToDoList.Worker.Application.ToDoItems.Queries.Contatiners;
 
-namespace ToDoList.Worker.Application.ToDoItems.Queries.GetOverdueToDos
+namespace ToDoList.Worker.Application.ToDoItems.Queries.GetByOverdueToDos
 {
     public class GetToDoListOverdueQuery : IQuery<ToDoListContainer>
     {
