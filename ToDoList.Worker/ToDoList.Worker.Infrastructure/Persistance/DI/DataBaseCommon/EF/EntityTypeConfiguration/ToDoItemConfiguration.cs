@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToDoList.Worker.Domain;
 
-namespace ToDoList.Worker.Infrastructure.DataBaseCommon.EF.EntityTypeConfiguration
+namespace ToDoList.Worker.Infrastructure.Persistance.DI.DataBaseCommon.EF.EntityTypeConfiguration
 {
     public class ToDoItemConfiguration : IEntityTypeConfiguration<ToDoItem>
     {

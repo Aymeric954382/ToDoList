@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ToDoList.Worker.Application.Interfaces.Repository;
 using ToDoList.Worker.Domain;
 
-namespace ToDoList.Worker.Infrastructure.DataBaseCommon.EF
+namespace ToDoList.Worker.Infrastructure.Persistance.DI.DataBaseCommon.EF
 {
     public class ToDoRepository : IToDoRepository
     {

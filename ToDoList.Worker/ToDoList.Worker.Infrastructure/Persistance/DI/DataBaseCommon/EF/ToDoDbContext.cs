@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using ToDoList.Worker.Application.Interfaces;
 using ToDoList.Worker.Domain;
-using ToDoList.Worker.Infrastructure.DataBaseCommon.EF.EntityTypeConfiguration;
+using ToDoList.Worker.Infrastructure.Persistance.DI.DataBaseCommon.EF.EntityTypeConfiguration;
 
-namespace ToDoList.Worker.Infrastructure.DataBaseCommon.EF
+namespace ToDoList.Worker.Infrastructure.Persistance.DI.DataBaseCommon.EF
 {
     public class ToDoDbContext : DbContext, IToDoDbContext
     {

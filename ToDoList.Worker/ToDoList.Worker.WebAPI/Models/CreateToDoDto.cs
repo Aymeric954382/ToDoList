@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ToDoList.Worker.Application.Interfaces.Command_QuerySplitter;
 using ToDoList.Worker.Domain.ValueObjects;
 
-namespace ToDoList.Worker.Application.ToDoItems.Commands.CreateToDo
+namespace ToDoList.Worker.WebAPI.Models
 {
-    public class CreateToDoCommand : IWithResultCommand<Guid>
+    public class CreateToDoDto
     {
-        public Guid UserId { get; set; }
+        [Required]
         public DateTime? DueDate { get; set; }
         public ToDoPriority? Priority { get; set; }
     }

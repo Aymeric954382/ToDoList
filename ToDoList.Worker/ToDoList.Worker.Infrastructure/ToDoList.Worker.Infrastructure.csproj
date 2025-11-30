@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DataBaseCommon\DI\" />
+    <Folder Include="Persistance\DI\DataBaseCommon\DI\" />
   </ItemGroup>
 
   <ItemGroup>

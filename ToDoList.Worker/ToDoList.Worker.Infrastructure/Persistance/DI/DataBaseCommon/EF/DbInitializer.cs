@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ToDoList.Worker.Infrastructure.DataBaseCommon.EF
+namespace ToDoList.Worker.Infrastructure.Persistance.DI.DataBaseCommon.EF
 {
     public class DbInitializer
     {

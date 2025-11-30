@@ -7,11 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToDoList.Worker.Application.Interfaces.Repository;
-using ToDoList.Worker.Infrastructure.DataBaseCommon.EF;
-using ToDoList.Worker.Application.Interfaces.Repository;
 using ToDoList.Worker.Application.Interfaces;
+using ToDoList.Worker.Infrastructure.Persistance.DI.DataBaseCommon.EF;
 
-namespace ToDoList.Worker.Infrastructure.DI
+namespace ToDoList.Worker.Infrastructure.Persistance.DI
 {
     public static class DependancyInjection
     {
@@ -32,4 +31,4 @@ namespace ToDoList.Worker.Infrastructure.DI
         }
     }
 }
-}
+
