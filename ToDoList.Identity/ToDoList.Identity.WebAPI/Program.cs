@@ -12,7 +12,6 @@ namespace ToDoList.Identity.WebAPI
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddIdentityConfiguration(builder.Configuration);
-            builder.Services.AddControllersWithViews();
             builder.Services.AddApplication();
 
             builder.Services.AddControllers();
