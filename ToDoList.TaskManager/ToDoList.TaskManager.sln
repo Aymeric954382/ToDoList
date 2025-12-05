@@ -1,0 +1,73 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36511.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToDoList.TaskManager", "ToDoList.TaskManager", "{36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToDoList.TaskManager.Domain", "ToDoList.TaskManager.Domain", "{090EB3FF-EB6D-476F-8739-714C8F45EDFA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToDoList.TaskManager.WebAPI", "ToDoList.TaskManager.WebAPI", "{D132C6B6-AEEE-41E9-8217-3AD445126F73}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToDoList.TaskManager.Tests", "ToDoList.TaskManager.Tests", "{455B9EFF-902B-4FA0-921F-384E2A85B3DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToDoList.TaskManager.Application", "ToDoList.TaskManager.Application", "{3E5F362E-FD41-4D2C-B77B-79E86A393EF4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToDoList.TaskManager.Infrastructure", "ToDoList.TaskManager.Infrastructure", "{FC6108EB-5C08-4107-B6D3-163F8D17B306}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.TaskManager.Application", "ToDoList.TaskManager.Application\ToDoList.TaskManager.Application.csproj", "{A188411E-3B4C-EA15-FE56-86C5BE9B6107}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.TaskManager.Domain", "ToDoList.TaskManager.Domain\ToDoList.TaskManager.Domain.csproj", "{0394CAAF-D00A-39E6-7A71-65DC402629F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.TaskManager.Infrastructure", "ToDoList.TaskManager.Infrastructure\ToDoList.TaskManager.Infrastructure.csproj", "{377FE2E2-08DD-332C-2EBA-CFFAFB1D9AFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.TaskManager.Tests", "ToDoList.TaskManager.Tests\ToDoList.TaskManager.Tests.csproj", "{397D014B-8C0C-F060-7FB0-B28381404FA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.TaskManager.WebAPI", "ToDoList.TaskManager.WebAPI\ToDoList.TaskManager.WebAPI.csproj", "{A2614790-CBB6-2132-0C0F-A217141D76D0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A188411E-3B4C-EA15-FE56-86C5BE9B6107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A188411E-3B4C-EA15-FE56-86C5BE9B6107}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A188411E-3B4C-EA15-FE56-86C5BE9B6107}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A188411E-3B4C-EA15-FE56-86C5BE9B6107}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0394CAAF-D00A-39E6-7A71-65DC402629F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0394CAAF-D00A-39E6-7A71-65DC402629F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0394CAAF-D00A-39E6-7A71-65DC402629F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0394CAAF-D00A-39E6-7A71-65DC402629F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{377FE2E2-08DD-332C-2EBA-CFFAFB1D9AFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{377FE2E2-08DD-332C-2EBA-CFFAFB1D9AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{377FE2E2-08DD-332C-2EBA-CFFAFB1D9AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{377FE2E2-08DD-332C-2EBA-CFFAFB1D9AFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{397D014B-8C0C-F060-7FB0-B28381404FA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{397D014B-8C0C-F060-7FB0-B28381404FA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{397D014B-8C0C-F060-7FB0-B28381404FA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{397D014B-8C0C-F060-7FB0-B28381404FA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2614790-CBB6-2132-0C0F-A217141D76D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2614790-CBB6-2132-0C0F-A217141D76D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2614790-CBB6-2132-0C0F-A217141D76D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2614790-CBB6-2132-0C0F-A217141D76D0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{090EB3FF-EB6D-476F-8739-714C8F45EDFA} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
+		{D132C6B6-AEEE-41E9-8217-3AD445126F73} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
+		{455B9EFF-902B-4FA0-921F-384E2A85B3DE} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
+		{3E5F362E-FD41-4D2C-B77B-79E86A393EF4} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
+		{FC6108EB-5C08-4107-B6D3-163F8D17B306} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
+		{A188411E-3B4C-EA15-FE56-86C5BE9B6107} = {3E5F362E-FD41-4D2C-B77B-79E86A393EF4}
+		{0394CAAF-D00A-39E6-7A71-65DC402629F2} = {090EB3FF-EB6D-476F-8739-714C8F45EDFA}
+		{377FE2E2-08DD-332C-2EBA-CFFAFB1D9AFE} = {FC6108EB-5C08-4107-B6D3-163F8D17B306}
+		{397D014B-8C0C-F060-7FB0-B28381404FA3} = {455B9EFF-902B-4FA0-921F-384E2A85B3DE}
+		{A2614790-CBB6-2132-0C0F-A217141D76D0} = {D132C6B6-AEEE-41E9-8217-3AD445126F73}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BAA3AC02-EDD5-481D-8D0D-07F57F88B252}
+	EndGlobalSection
+EndGlobal
