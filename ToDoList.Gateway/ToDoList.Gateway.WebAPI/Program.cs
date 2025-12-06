@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 using System.Text;
@@ -16,6 +17,19 @@ namespace ToDoList.GatewayAPI
             builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
             {
                 return ConnectionMultiplexer.Connect(redisConnection);
+            });
+
+            builder.Services.AddApiVersioning(options =>
+            {
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.ReportApiVersions = true;
+            });
+
+            builder.Services.AddVersionedApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
             });
 
             var jwtSettings = builder.Configuration.GetSection("UserJwt");

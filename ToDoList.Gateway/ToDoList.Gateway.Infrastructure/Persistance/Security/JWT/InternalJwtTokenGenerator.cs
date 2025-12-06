@@ -1,18 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ToDoList.Gateway.Application.Services.JWT
+namespace ToDoList.Gateway.Infrastructure.Persistance.Security.JWT
 {
     public class InternalJwtTokenGenerator
     {
         private readonly IConfiguration _configuration;
-
+        public DateTime ExpirationTime = DateTime.UtcNow.AddMinutes(5);
         public InternalJwtTokenGenerator(IConfiguration config)
         {
             _configuration = config;
@@ -29,7 +25,7 @@ namespace ToDoList.Gateway.Application.Services.JWT
             var token = new JwtSecurityToken(
                 issuer: _configuration["InternalJwt:Issuer"],
                 audience: _configuration["InternalJwt:Audience"],
-                expires: DateTime.UtcNow.AddMinutes(5),
+                expires: ExpirationTime,
                 signingCredentials: creds
             );
 
