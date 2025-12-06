@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ToDoList.Gateway.Application\ToDoList.Gateway.Application.csproj" />
+    <ProjectReference Include="..\ToDoList.Gateway.Contracts\ToDoList.Gateway.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

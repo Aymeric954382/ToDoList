@@ -7,10 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.0.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<ProjectReference Include="..\ToDoList.Gateway.Contracts\ToDoList.Gateway.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
