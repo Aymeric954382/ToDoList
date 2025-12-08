@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ToDoList.StateUpdater.Application.Interfaces
 {
-    internal class ITaskStateClient
+    internal interface ITaskStateClient
     {
     }
 }

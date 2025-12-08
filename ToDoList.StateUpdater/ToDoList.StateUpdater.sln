@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36511.14 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.StateUpdater", "ToDoList.StateUpdater\ToDoList.StateUpdater.csproj", "{41151FFF-06F5-4A32-AE6F-1BF1BAB59DF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.StateUpdater.Worker", "ToDoList.StateUpdater\ToDoList.StateUpdater.Worker.csproj", "{41151FFF-06F5-4A32-AE6F-1BF1BAB59DF8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToDoList.StateUpdater.Worker", "ToDoList.StateUpdater.Worker", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject

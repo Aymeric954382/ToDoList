@@ -1,4 +1,4 @@
-namespace ToDoList.StateUpdater
+namespace ToDoList.StateUpdater.Worker
 {
     public class Program
     {

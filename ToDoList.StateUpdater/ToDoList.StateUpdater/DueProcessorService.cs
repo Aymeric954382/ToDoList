@@ -1,23 +1,34 @@
-namespace ToDoList.StateUpdater
+using ToDoList.StateUpdater.Application.Interfaces;
+
+namespace ToDoList.StateUpdater.Worker
 {
     public class DueProcessorService : BackgroundService
     {
-        private readonly ILogger<DueProcessorService> _logger;
+        private readonly IRedisClient _redisClient;
 
-        public DueProcessorService(ILogger<DueProcessorService> logger)
+        public DueProcessorService(IRedisClient redisClient)
         {
-            _logger = logger;
+            _redisClient = redisClient;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            int circleTime = 55;
+
             while (!stoppingToken.IsCancellationRequested)
             {
-                if (_logger.IsEnabled(LogLevel.Information))
+                var tasks = await _redisClient.PopDueStubsAsync();
+
+                if (tasks.Length < 0)
+                    continue;
+
+                foreach (var task in tasks)
                 {
-                    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                   //need N 
                 }
-                await Task.Delay(1000, stoppingToken);
+
+                
+                await Task.Delay(TimeSpan.FromSeconds(circleTime), stoppingToken);
             }
         }
     }
