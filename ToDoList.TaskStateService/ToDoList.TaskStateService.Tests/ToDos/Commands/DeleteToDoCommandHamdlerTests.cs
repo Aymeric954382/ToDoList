@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
 using Moq;
-using ToDoList.TaskManager.Application.Interfaces.Repository;
-using ToDoList.TaskManager.Application.ToDoItems.Commands.DeleteToDo;
-using ToDoList.TaskManager.Domain;
-using ToDoList.TaskManager.Domain.ValueObjects;
+using ToDoList.TaskStateService.Application.Interfaces.Repository;
+using ToDoList.TaskStateService.Application.ToDoItems.Commands.DeleteToDo;
+using ToDoList.TaskStateService.Domain;
+using ToDoList.TaskStateService.Domain.ValueObjects;
 
-namespace ToDoList.TaskManager.Tests.ToDos.Commands
+namespace ToDoList.TaskStateService.Tests.ToDos.Commands
 {
     public class DeleteToDoCommandHandlerTests
     {
@@ -22,8 +22,9 @@ namespace ToDoList.TaskManager.Tests.ToDos.Commands
             {
                 Id = todoId,
                 UserId = userId,
-                Title = "Test task",
-                Details = "Some details",
+                Priority = ToDoPriority.Low,
+                Status = ToDoStatus.Active,
+                CreationDate = DateTime.UtcNow
             };
 
             mockRepo

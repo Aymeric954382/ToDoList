@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
 using Moq;
-using ToDoList.TaskManager.Application.Interfaces.Repository;
-using ToDoList.TaskManager.Application.ToDoItems.Commands.ChangeToDoPriority;
-using ToDoList.TaskManager.Domain;
-using ToDoList.TaskManager.Domain.ValueObjects;
+using ToDoList.TaskStateService.Application.Interfaces.Repository;
+using ToDoList.TaskStateService.Application.ToDoItems.Commands.ChangeToDoPriority;
+using ToDoList.TaskStateService.Domain;
+using ToDoList.TaskStateService.Domain.ValueObjects;
 
-namespace ToDoList.TaskManager.Tests.ToDos.Commands
+namespace ToDoList.TaskStateService.Tests.ToDos.Commands
 {
     public class ChangeToDoPriorityCommandHandlerTests
     {
@@ -24,7 +24,6 @@ namespace ToDoList.TaskManager.Tests.ToDos.Commands
             {
                 Id = todoId,
                 UserId = userId,
-                Title = "Old task",
                 Priority = oldPriority,
             };
 
@@ -53,7 +52,6 @@ namespace ToDoList.TaskManager.Tests.ToDos.Commands
             updatedEntity.Should().NotBeNull();
             updatedEntity.Priority.Should().Be(newPriority);
             updatedEntity.Priority.Should().NotBe(oldPriority);
-            updatedEntity.Title.Should().Be("Old task");
 
             mockRepo.Verify(r => r.GetByIdAsync(todoId, It.IsAny<CancellationToken>()), Times.Once);
             mockRepo.Verify(r => r.UpdateAsync(It.IsAny<ToDoItem>(), It.IsAny<CancellationToken>()), Times.Once);

@@ -1,14 +1,14 @@
 ﻿using FluentAssertions;
 using MockQueryable;
 using Moq;
-using ToDoList.TaskManager.Application.Interfaces.Repository;
-using ToDoList.TaskManager.Application.ToDoItems.Queries.GetListToDo;
-using ToDoList.TaskManager.Application.ToDoItems.Queries.ResponseDtos;
-using ToDoList.TaskManager.Domain;
-using ToDoList.TaskManager.Domain.ValueObjects;
-using ToDoList.TaskManager.Tests.Common;
+using ToDoList.TaskStateService.Application.Interfaces.Repository;
+using ToDoList.TaskStateService.Application.ToDoItems.Queries.GetListToDo;
+using ToDoList.TaskStateService.Application.ToDoItems.Queries.ResponseDtos;
+using ToDoList.TaskStateService.Domain;
+using ToDoList.TaskStateService.Domain.ValueObjects;
+using ToDoList.TaskStateService.Tests.Common;
 
-namespace ToDoList.TaskManager.Tests.ToDos.Queries
+namespace ToDoList.TaskStateService.Tests.ToDos.Queries
 {
     public class GetToDoListQueryHandlerTests : TestBase
     {
@@ -28,29 +28,31 @@ namespace ToDoList.TaskManager.Tests.ToDos.Queries
                 {
                     Id = Guid.NewGuid(),
                     UserId = userId,
-                    Title = "Task 1",
-                    Details = "Task 1",
+                    Status = ToDoStatus.Active,
+                    CreationDate = DateTime.UtcNow
                 },
                 new ToDoItem()
                 {
                     Id = Guid.NewGuid(),
                     UserId = userId,
-                    Title = "Task 2",
-                    Details = "Task 2",
+                    Status = ToDoStatus.Cancelled,
+                    Priority = ToDoPriority.Low,
+                    CreationDate = DateTime.UtcNow
                 },
                 new ToDoItem()
                 {
                     Id = Guid.NewGuid(),
                     UserId = userId,
-                    Title = "Task 3",
-                    Details = "Task 3",
+                    Status = ToDoStatus.Expired,
+                    CreationDate = DateTime.UtcNow
                 },
                 new ToDoItem()
                 {
                     Id = Guid.NewGuid(),
                     UserId = userId,
-                    Title = "Task 4",
-                    Details = "Task 4",
+                    Status = ToDoStatus.ExpiringSoon,
+                    Priority = ToDoPriority.Immediately,
+                    CreationDate = DateTime.UtcNow
                 }
             };
 

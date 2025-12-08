@@ -1,30 +1,30 @@
 ﻿using FluentAssertions;
 using Moq;
-using ToDoList.TaskManager.Application.Interfaces.Repository;
-using ToDoList.TaskManager.Application.ToDoItems.Commands.ChangeToDoDueDate;
-using ToDoList.TaskManager.Domain;
+using ToDoList.TaskStateService.Application.Interfaces.Repository;
+using ToDoList.TaskStateService.Application.ToDoItems.Commands.ChangeToDoStatus;
+using ToDoList.TaskStateService.Domain;
+using ToDoList.TaskStateService.Domain.ValueObjects;
 
-namespace ToDoList.TaskManager.Tests.ToDos.Commands
+namespace ToDoList.TaskStateService.Tests.ToDos.Commands
 {
-    public class ChangeToDoDueDateCommandHandlerTests
+    public class ChangeToDoStatusCommandHandlerTests
     {
         [Fact]
-        public async Task ChandeToDoDueDate_Success()
+        public async Task ChangeToDoStatus_Success()
         {
             var mockRepo = new Mock<IToDoRepository>();
 
             var userId = Guid.NewGuid();
             var todoId = Guid.NewGuid();
 
-            var oldDueDate = DateTime.UtcNow.AddDays(3);
-            var newDueDate = DateTime.UtcNow.AddDays(10);
+            var oldStatus = ToDoStatus.Active;
+            var newStatus = ToDoStatus.Completed;
 
             var existingItem = new ToDoItem
             {
                 Id = todoId,
                 UserId = userId,
-                Title = "Old task",
-                DueDate = oldDueDate,
+                Status = oldStatus,
             };
 
             mockRepo
@@ -38,23 +38,20 @@ namespace ToDoList.TaskManager.Tests.ToDos.Commands
                 .Callback<ToDoItem, CancellationToken>((ent, ct) => updatedEntity = ent)
                 .Returns(Task.CompletedTask);
 
-            var handler = new ChangeToDoDueDateCommandHandler(mockRepo.Object);
+            var handler = new ChangeToDoStatusCommandHandler(mockRepo.Object);
 
-            var command = new ChangeToDoDueDateCommand
+            var command = new ChangeToDoStatusCommand
             {
                 Id = todoId,
                 UserId = userId,
-                DueDate = newDueDate
+                Status = newStatus
             };
 
-            //Act
             await handler.Handle(command, CancellationToken.None);
 
-            //Assert
             updatedEntity.Should().NotBeNull();
-            updatedEntity.DueDate.Should().Be(newDueDate);
-            updatedEntity.DueDate.Should().NotBe(oldDueDate);
-            updatedEntity.Title.Should().Be("Old task");
+            updatedEntity.Status.Should().Be(newStatus);
+            updatedEntity.Status.Should().NotBe(oldStatus);
 
             mockRepo.Verify(r => r.GetByIdAsync(todoId, It.IsAny<CancellationToken>()), Times.Once);
             mockRepo.Verify(r => r.UpdateAsync(It.IsAny<ToDoItem>(), It.IsAny<CancellationToken>()), Times.Once);

@@ -1,12 +1,13 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using MockQueryable;
 using Moq;
-using ToDoList.TaskManager.Application.Interfaces.Repository;
-using ToDoList.TaskManager.Application.ToDoItems.Queries.GetOverdueToDos;
-using ToDoList.TaskManager.Domain;
-using ToDoList.TaskManager.Tests.Common;
+using ToDoList.TaskStateService.Application.Interfaces.Repository;
+using ToDoList.TaskStateService.Application.ToDoItems.Queries.GetByOverdueToDos;
+using ToDoList.TaskStateService.Domain;
+using ToDoList.TaskStateService.Tests.Common;
 
-namespace ToDoList.TaskManager.Tests.ToDos.Queries
+namespace ToDoList.TaskStateService.Tests.ToDos.Queries
 {
     public class GetToDoListByOverdueQueryHandlerTests : TestBase
     {
@@ -21,9 +22,9 @@ namespace ToDoList.TaskManager.Tests.ToDos.Queries
 
             var fakeData = new List<ToDoItem>()
             {
-                new ToDoItem() { Id = Guid.NewGuid(), UserId = userId, Title = "Task 1", CreationDate = date.AddDays(-5), DueDate = date.AddDays(-2) },
-                new ToDoItem() { Id = Guid.NewGuid(), UserId = userId, Title = "Task 2", CreationDate = date.AddDays(-3), DueDate = date.AddDays(-1) },
-                new ToDoItem() { Id = Guid.NewGuid(), UserId = userId, Title = "Task 3", CreationDate = date, DueDate = date.AddDays(+3) }
+                new ToDoItem() { Id = Guid.NewGuid(), UserId = userId, CreationDate = date.AddDays(-5), DueDate = date.AddDays(-2) },
+                new ToDoItem() { Id = Guid.NewGuid(), UserId = userId, CreationDate = date.AddDays(-3), DueDate = date.AddDays(-1) },
+                new ToDoItem() { Id = Guid.NewGuid(), UserId = userId, CreationDate = date, DueDate = date.AddDays(+3) }
             };
 
             var mock = fakeData.BuildMock().AsQueryable();

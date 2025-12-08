@@ -17,7 +17,7 @@ namespace ToDoList.TaskStateService.WebAPI.Controllers.ControllerV1
     [ApiController]
     [Authorize]
     [Route("api/v{version:apiVersion}/[controller]")]
-    public class ToDoControllerV1 : BaseController
+    public class ToDoStateController : BaseController
     {
         /// <summary>
         /// Retrieves all to-do lists associated with the current user.

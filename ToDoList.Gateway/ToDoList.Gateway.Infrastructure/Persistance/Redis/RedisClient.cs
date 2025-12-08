@@ -29,10 +29,10 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.Redis
 
             var entries = new HashEntry[]
             {
-            new HashEntry("taskId", stub.TaskId.ToString()),
-            new HashEntry("userId", stub.UserId.ToString()),
-            new HashEntry("deadline", stub.DeadlineUnix),
-            new HashEntry("createdAt", DateTimeOffset.UtcNow.ToUnixTimeSeconds())
+                new HashEntry("taskId", stub.TaskId.ToString()),
+                new HashEntry("userId", stub.UserId.ToString()),
+                new HashEntry("deadline", stub.DeadlineUnix),
+                new HashEntry("createdAt", DateTimeOffset.UtcNow.ToUnixTimeSeconds())
             };
 
             await _db.HashSetAsync(metaKey, entries);

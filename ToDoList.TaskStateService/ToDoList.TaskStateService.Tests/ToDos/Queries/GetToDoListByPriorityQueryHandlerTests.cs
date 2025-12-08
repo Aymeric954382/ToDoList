@@ -2,13 +2,13 @@
 using FluentAssertions;
 using MockQueryable;
 using Moq;
-using ToDoList.TaskManager.Application.Interfaces.Repository;
-using ToDoList.TaskManager.Application.ToDoItems.Queries.GetByPriority;
-using ToDoList.TaskManager.Domain;
-using ToDoList.TaskManager.Domain.ValueObjects;
-using ToDoList.TaskManager.Tests.Common;
+using ToDoList.TaskStateService.Application.Interfaces.Repository;
+using ToDoList.TaskStateService.Application.ToDoItems.Queries.GetByPriority;
+using ToDoList.TaskStateService.Domain;
+using ToDoList.TaskStateService.Domain.ValueObjects;
+using ToDoList.TaskStateService.Tests.Common;
 
-namespace ToDoList.TaskManager.Tests.ToDos.Queries
+namespace ToDoList.TaskStateService.Tests.ToDos.Queries
 {
     public class GetToDoListByPriorityQueryHandlerTests : TestBase
     {
@@ -25,9 +25,9 @@ namespace ToDoList.TaskManager.Tests.ToDos.Queries
 
             var fakeData = new List<ToDoItem>
             {
-                new() { Id = Guid.NewGuid(), UserId = userId, Title = "Task 1", Priority = ToDoPriority.High },
-                new() { Id = Guid.NewGuid(), UserId = userId, Title = "Task 2", Priority = ToDoPriority.Low },
-                new() { Id = Guid.NewGuid(), UserId = userId, Title = "Task 3", Priority = ToDoPriority.High }
+                new() { Id = Guid.NewGuid(), UserId = userId, Priority = ToDoPriority.High },
+                new() { Id = Guid.NewGuid(), UserId = userId, Priority = ToDoPriority.Low },
+                new() { Id = Guid.NewGuid(), UserId = userId, Priority = ToDoPriority.High }
             };
 
             var mock = fakeData.BuildMock().AsQueryable();
