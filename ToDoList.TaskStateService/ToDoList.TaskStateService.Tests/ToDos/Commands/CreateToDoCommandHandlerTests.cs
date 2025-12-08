@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
 using Moq;
-using ToDoList.TaskManager.Application.Interfaces.Repository;
-using ToDoList.TaskManager.Application.ToDoItems.Commands.CreateToDo;
-using ToDoList.TaskManager.Domain;
-using ToDoList.TaskManager.Domain.ValueObjects;
+using ToDoList.TaskStateService.Application.Interfaces.Repository;
+using ToDoList.TaskStateService.Application.ToDoItems.Commands.CreateToDo;
+using ToDoList.TaskStateService.Domain;
+using ToDoList.TaskStateService.Domain.ValueObjects;
 
-namespace ToDoList.TaskManager.Tests.ToDos.Commands
+namespace ToDoList.TaskStateService.Tests.ToDos.Commands
 {
     public class CreateToDoCommandHandlerTests
     {
@@ -27,8 +27,8 @@ namespace ToDoList.TaskManager.Tests.ToDos.Commands
             var command = new CreateToDoCommand
             {
                 UserId = Guid.NewGuid(),
-                Title = "Test title",
-                Details = "Test details",
+                DueDate = DateTime.UtcNow.AddDays(1),
+                Priority = ToDoPriority.Medium
             };
 
             // Act
@@ -40,9 +40,8 @@ namespace ToDoList.TaskManager.Tests.ToDos.Commands
             mockRepo.Verify(r => r.AddAsync(It.IsAny<ToDoItem>(), It.IsAny<CancellationToken>()), Times.Once);
 
             savedEntity.Should().NotBeNull();
-            savedEntity.Title.Should().Be(command.Title);
-            savedEntity.Details.Should().Be(command.Details);
             savedEntity.UserId.Should().Be(command.UserId);
+            savedEntity.Priority.Should().Be(command.Priority);
         }
 
         [Fact]
@@ -59,9 +58,8 @@ namespace ToDoList.TaskManager.Tests.ToDos.Commands
             var command = new CreateToDoCommand
             {
                 UserId = Guid.NewGuid(),
-                Title = "T",
-                Details = "D",
                 DueDate = DateTime.UtcNow.AddDays(1),
+                Priority = ToDoPriority.Low
             };
 
             // Act & Assert

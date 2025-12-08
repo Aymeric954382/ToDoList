@@ -4,32 +4,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ToDoList.Gateway.Application.interfaces;
+using ToDoList.Gateway.Application.Services.Redis;
 
 namespace ToDoList.Gateway.Infrastructure.Persistance.Redis
 {
+    using StackExchange.Redis;
+    using System.Text.Json;
+    using System.Threading.Tasks;
+    using ToDoList.Gateway.Contracts.ApiClients.Stubs;
+
     public class RedisClient : IRedisClient
     {
         private readonly IDatabase _db;
+        private const string DeadlinesKey = "zset:deadlines";
+        private const string TaskMetaPrefix = "taskmeta:";
 
-        public RedisClient(IConnectionMultiplexer redis)
+        public RedisClient(IConnectionMultiplexer mux)
         {
-            _db = redis.GetDatabase();
+            _db = mux.GetDatabase();
         }
-        public Task<bool> DeleteAsync(string key)
+        public async Task AddDeadlineStubAsync(DeadLineStub stub)
         {
-            return _db.StringDeleteAsync(key, ValueCondition.Exists, CommandFlags.None);
-        }
+            var metaKey = TaskMetaPrefix + stub.TaskId.ToString("N");
 
-        public async Task<string?> GetStringAsync(string key)
-        {
-            var value = await _db.StringGetAsync(key);
-            return value.HasValue ? value.ToString() : null;
-        }
+            var entries = new HashEntry[]
+            {
+                new HashEntry("taskId", stub.TaskId.ToString()),
+                new HashEntry("userId", stub.UserId.ToString()),
+                new HashEntry("deadline", stub.DeadlineUnix),
+                new HashEntry("createdAt", DateTimeOffset.UtcNow.ToUnixTimeSeconds())
+            };
 
-        public Task SetStringAsync(string key, string value, TimeSpan? expiry = null)
-        {
-           return _db.StringSetAsync(key, value, expiry, When.Always);
+            await _db.HashSetAsync(metaKey, entries);
+
+            var ttlSeconds = Math.Max((stub.DeadlineUnix - DateTimeOffset.UtcNow.ToUnixTimeSeconds()) + 3600, 3600);
+            await _db.KeyExpireAsync(metaKey, TimeSpan.FromSeconds(ttlSeconds));
+
+            await _db.SortedSetAddAsync(DeadlinesKey, stub.TaskId.ToString(), stub.DeadlineUnix);
         }
     }
+
+
 }

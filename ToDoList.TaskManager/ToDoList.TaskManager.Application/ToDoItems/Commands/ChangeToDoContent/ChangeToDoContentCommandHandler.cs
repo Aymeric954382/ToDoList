@@ -21,7 +21,6 @@ namespace ToDoList.TaskManager.Application.ToDoItems.Commands.ChangeToDoContent
                 throw new NotFoundException(nameof(ToDoItem), request.Id);
             }
 
-            entity.EditDate = DateTime.UtcNow;
             entity.Title = request.Title;
             entity.Details = request.Details;
 

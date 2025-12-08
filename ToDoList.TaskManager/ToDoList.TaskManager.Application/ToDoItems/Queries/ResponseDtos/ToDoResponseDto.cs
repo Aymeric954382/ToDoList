@@ -11,10 +11,6 @@ namespace ToDoList.TaskManager.Application.ToDoItems.Queries.ResponseDtos
         public Guid UserId { get; set; }
         public string Title { get; set; }
         public string Details { get; set; }
-        public DateTime? DueDate { get; set; }
-        public ToDoStatus Status { get; set; }
-        public ToDoPriority? Priority { get; set; }
-
         public void Mapping(Profile profile) =>
             profile.CreateMap<ToDoItem, ToDoResponseDto>();
 

@@ -18,11 +18,6 @@ namespace ToDoList.TaskManager.Application.ToDoItems.Commands.CreateToDo
                 Id = Guid.NewGuid(),
                 Title = request.Title,
                 Details = request.Details,
-                Status = ToDoStatus.Active,
-                DueDate = request.DueDate,
-                CreationDate = DateTime.UtcNow,
-                EditDate = null,
-                Priority = request.Priority
             };
 
             await _repository.AddAsync(toDoItem, cancellationToken);
