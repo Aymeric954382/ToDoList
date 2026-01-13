@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Worker">
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -13,5 +13,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ToDoList.StateUpdater.Application\ToDoList.StateUpdater.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Sevices\" />
   </ItemGroup>
 </Project>
