@@ -12,7 +12,10 @@ namespace ToDoList.TaskStateService.Application.ToDoItems.Commands.ChangeToDoSta
             RuleFor(command =>
                 command.UserId).NotEqual(Guid.Empty);
             RuleFor(command =>
-                command.Status).Must(status => Enum.IsDefined(typeof(ToDoStatus), status));
+                command.Status)
+                .Must(status =>
+                    Enum.IsDefined(typeof(ToDoStatus), status));
+
         }
     }
 }

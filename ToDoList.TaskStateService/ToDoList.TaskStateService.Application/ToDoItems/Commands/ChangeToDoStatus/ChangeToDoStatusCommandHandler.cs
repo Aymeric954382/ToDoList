@@ -19,6 +19,10 @@ namespace ToDoList.TaskStateService.Application.ToDoItems.Commands.ChangeToDoSta
             {
                 throw new NotFoundException(nameof(ToDoItem), request.Id);
             }
+            if (entity.Status == request.Status)
+            {
+                throw new IdenticalReplacementException(nameof(ToDoItem), entity.Status, entity.Id);
+            }
 
             entity.Status = request.Status;
             entity.EditDate = DateTime.UtcNow;

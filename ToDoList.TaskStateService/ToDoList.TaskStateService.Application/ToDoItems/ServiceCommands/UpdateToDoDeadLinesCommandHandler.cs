@@ -7,15 +7,18 @@ using System.Threading.Tasks;
 using ToDoList.TaskStateService.Application.Common.Exceptions;
 using ToDoList.TaskStateService.Application.Interfaces.Repository;
 using ToDoList.TaskStateService.Domain;
+using ToDoList.TaskStateService.Domain.ValueObjects;
 
-namespace ToDoList.TaskStateService.Application.ToDoItems.Commands.ChangeToDoPriority
+namespace ToDoList.TaskStateService.Application.ToDoItems.ServiceCommands
 {
-    public class ChangeToDoPriorityCommandHandler : IRequestHandler<ChangeToDoPriorityCommand, Unit>
+    public class UpdateToDoDeadLinesCommandHandler : IRequestHandler<UpdateToDoDeadLinesCommand, Unit>
     {
-        public readonly IToDoRepository _repository;
-        public ChangeToDoPriorityCommandHandler(IToDoRepository repository) =>
+        private readonly IToDoRepository _repository;
+        public UpdateToDoDeadLinesCommandHandler(IToDoRepository repository)
+        {
             _repository = repository;
-        public async Task<Unit> Handle(ChangeToDoPriorityCommand request, CancellationToken cancellationToken)
+        }
+        public async Task<Unit> Handle(UpdateToDoDeadLinesCommand request, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
@@ -23,13 +26,15 @@ namespace ToDoList.TaskStateService.Application.ToDoItems.Commands.ChangeToDoPri
             {
                 throw new NotFoundException(nameof(ToDoItem), request.Id);
             }
-            if (entity.Priority == request.Priority)
-            {
-                throw new IdenticalReplacementException(nameof(ToDoItem), entity.Priority, entity.Id);
-            }
 
+            if (entity.DueDate > DateTime.UtcNow)
+                return Unit.Value;
+
+            if (entity.Status == ToDoStatus.Expired)
+                return Unit.Value;
+
+            entity.Status = ToDoStatus.Expired;
             entity.EditDate = DateTime.UtcNow;
-            entity.Priority = request.Priority;
 
             await _repository.UpdateAsync(entity, cancellationToken);
 
