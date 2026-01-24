@@ -12,6 +12,7 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.Security.JWT
         private readonly InternalJwtTokenGenerator _generator;
         private string _cachedToken;
         private DateTime _expiresAt;
+        private readonly object _lock = new();
 
         public InternalJwtTokenProvider(InternalJwtTokenGenerator generator)
         {
@@ -20,11 +21,14 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.Security.JWT
 
         public string GetToken()
         {
-            if (_cachedToken == null || DateTime.UtcNow >= _expiresAt)
+            lock (_lock)
             {
-                var result = _generator.Generate();
-                _cachedToken = result;
-                _expiresAt = _generator.ExpirationTime;
+                if (_cachedToken == null || DateTime.UtcNow >= _expiresAt.AddSeconds(-30))
+                {
+                    var result = _generator.Generate();
+                    _cachedToken = result.Token;
+                    _expiresAt = result.ExpiredAt;
+                }
             }
 
             return _cachedToken;
