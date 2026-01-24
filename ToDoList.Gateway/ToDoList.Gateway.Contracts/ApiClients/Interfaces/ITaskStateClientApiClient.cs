@@ -3,7 +3,7 @@ using ToDoList.Gateway.Contracts.ApiClients.ResponseDtos;
 
 namespace ToDoList.Gateway.Contracts.ApiClients.Interfaces
 {
-    public interface ITaskStateManagerApiClient
+    public interface ITaskStateClientApiClient
     {
         Task<ToDoResponseDto> CreateAsync(CreateToDoDto dto);
         Task<ToDoResponseDto> DeleteAsync(DeleteToDoDto dto);

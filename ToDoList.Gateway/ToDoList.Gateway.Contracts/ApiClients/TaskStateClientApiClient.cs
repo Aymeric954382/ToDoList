@@ -8,12 +8,12 @@ using ToDoList.Gateway.Contracts.Providers;
 
 namespace ToDoList.Gateway.Contracts.ApiClients
 {
-    public class TaskStateManagerApiClient : ITaskStateManagerApiClient
+    public class TaskStateClientApiClient : ITaskStateClientApiClient
     {
         private readonly HttpClient _http;
         private readonly IInternalJwtTokenProvider _tokenProvider;
 
-        public TaskStateManagerApiClient(HttpClient http, IInternalJwtTokenProvider tokenProvider)
+        public TaskStateClientApiClient(HttpClient http, IInternalJwtTokenProvider tokenProvider)
         {
             _http = http;
             _tokenProvider = tokenProvider;

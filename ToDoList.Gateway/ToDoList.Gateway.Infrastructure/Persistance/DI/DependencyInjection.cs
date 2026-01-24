@@ -27,7 +27,7 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.DI
             })
                         .AddHttpMessageHandler<JwtAuthorizationHandler>();
 
-            services.AddHttpClient<ITaskStateManagerApiClient, TaskStateManagerApiClient>(client =>
+            services.AddHttpClient<ITaskStateClientApiClient, TaskStateClientApiClient>(client =>
             {
                 client.BaseAddress = new Uri(config["TaskStateManagerApi:BaseUrl"]);
             })
