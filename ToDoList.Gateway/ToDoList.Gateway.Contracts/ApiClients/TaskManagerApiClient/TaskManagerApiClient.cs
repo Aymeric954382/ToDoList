@@ -1,12 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using ToDoList.Gateway.Contracts.ApiClients.Interfaces;
 using ToDoList.Gateway.Contracts.ApiClients.RequestDtos;
 using ToDoList.Gateway.Contracts.ApiClients.ResponseDtos;
 using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Routes;
-using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Routes;
-using ToDoList.Gateway.Contracts.Providers;
 
 namespace ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient
 {
@@ -29,28 +26,26 @@ namespace ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient
             }
         }
 
-        public async Task<ToDoResponseDto> ChangeContentAsync(ChangeToDoContentDto dto)
+        public async Task<HttpResponseMessage> ChangeContentAsync(ChangeToDoContentDto dto)
         {
             var response = await _http.PatchAsJsonAsync(_options.Routes.ChangeContent, dto);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<ToDoResponseDto>()
-                      ?? throw new InvalidOperationException($"Response body was null from {_options.Routes.ChangeContent}");
+            return response;
         }
 
-        public async Task<ToDoResponseDto> DeleteAsync(DeleteToDoDto dto)
+        public async Task<HttpResponseMessage> DeleteAsync(DeleteToDoDto dto)
         {
             var response = await _http.PatchAsJsonAsync(_options.Routes.Delete, dto);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<ToDoResponseDto>()
-                      ?? throw new InvalidOperationException($"Response body was null from {_options.Routes.Delete}");
+            return response;
         }
 
-        public async Task<ToDoResponseDto> CreateAsync(CreateToDoDto dto)
+        public async Task<ToDoResponseDto> CreateAsync(CreateForManagerToDoDto dto)
         {
             var response = await _http.PatchAsJsonAsync(_options.Routes.Create, dto);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<ToDoResponseDto>()
-                      ?? throw new InvalidOperationException($"Response body was null from {_options.Routes.Create}");
+                ?? throw new InvalidOperationException($"Response body was null from {_options.Routes.Create}");
         }
     }
 

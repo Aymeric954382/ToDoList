@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ToDoList.Gateway.Application.Mappings.Profiles;
 using ToDoList.Gateway.Contracts.ApiClients.Interfaces;
 using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient;
 using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Routes;
@@ -27,7 +28,7 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.DI
 
             services.AddHttpClient<ITaskStateClientApiClient, TaskStateServiceApiClient>(client =>
             {
-                client.BaseAddress = new Uri(config["TaskStateManagerApi:BaseUrl"]);
+                client.BaseAddress = new Uri(config["TaskStateServiceApi:BaseUrl"]);
             })
             .AddHttpMessageHandler<JwtAuthorizationHandler>();
 
@@ -38,6 +39,12 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.DI
             services.Configure<TaskManagerApiOptions>(
                 config.GetSection("TaskManagerApi")
             );
+
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile(new AssemblyMappingProfile(.Assembly));
+            });
+
 
             return services;
         }

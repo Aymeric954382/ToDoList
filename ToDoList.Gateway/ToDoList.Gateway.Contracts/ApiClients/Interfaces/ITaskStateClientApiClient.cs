@@ -3,13 +3,13 @@ using ToDoList.Gateway.Contracts.ApiClients.ResponseDtos;
 
 namespace ToDoList.Gateway.Contracts.ApiClients.Interfaces
 {
-    public interface ITaskStateClientApiClient
+    public interface ITaskStateServiceApiClient
     {
-        Task<ToDoResponseDto> CreateAsync(CreateToDoDto dto);
-        Task<ToDoResponseDto> DeleteAsync(DeleteToDoDto dto);
-        Task<ToDoResponseDto> ChangePriorityAsync(ChangeToDoPriorityDto dto);
-        Task<ToDoResponseDto> ChangeStatusAsync(ChangeToDoStatusDto dto);
-        Task<ToDoResponseDto> ChangeDueDateAsync(ChangeToDoDueDateDto dto);
+        Task<HttpResponseMessage> CreateAsync(CreateForServiceToDoDto dto);
+        Task<HttpResponseMessage> DeleteAsync(DeleteToDoDto dto);
+        Task<HttpResponseMessage> ChangePriorityAsync(ChangeToDoPriorityDto dto);
+        Task<HttpResponseMessage> ChangeStatusAsync(ChangeToDoStatusDto dto);
+        Task<HttpResponseMessage> ChangeDueDateAsync(ChangeToDoDueDateDto dto);
 
     }
 }

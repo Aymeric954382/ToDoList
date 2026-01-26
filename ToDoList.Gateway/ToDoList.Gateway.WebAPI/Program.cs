@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 using System.Text;
 
-namespace ToDoList.GatewayAPI
+namespace ToDoList.Gateway.WebAPI
 {
     public class Program
     {

@@ -1,16 +1,13 @@
 ﻿using Microsoft.Extensions.Options;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using ToDoList.Gateway.Contracts.ApiClients.Interfaces;
 using ToDoList.Gateway.Contracts.ApiClients.RequestDtos;
-using ToDoList.Gateway.Contracts.ApiClients.ResponseDtos;
 using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Routes;
-using ToDoList.Gateway.Contracts.Providers;
 
 
 namespace ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient
 {
-    public class TaskStateServiceApiClient : ITaskStateClientApiClient
+    public class TaskStateServiceApiClient : ITaskStateServiceApiClient
     {
         private readonly HttpClient _http;
         private readonly TaskStateServiceApiOptions _options;
@@ -29,44 +26,39 @@ namespace ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient
             }
         }
 
-        public async Task<ToDoResponseDto> ChangeDueDateAsync(ChangeToDoDueDateDto dto)
+        public async Task<HttpResponseMessage> ChangeDueDateAsync(ChangeToDoDueDateDto dto)
         {
             var response = await _http.PatchAsJsonAsync(_options.Routes.ChangeDueDate, dto);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<ToDoResponseDto>()
-                      ?? throw new InvalidOperationException($"Response body was null from {_options.Routes.ChangeDueDate}");
+            return response;
         }
 
-        public async Task<ToDoResponseDto> ChangePriorityAsync(ChangeToDoPriorityDto dto)
+        public async Task<HttpResponseMessage> ChangePriorityAsync(ChangeToDoPriorityDto dto)
         {
             var response = await _http.PatchAsJsonAsync(_options.Routes.ChangePriority, dto);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<ToDoResponseDto>()
-                      ?? throw new InvalidOperationException($"Response body was null from {_options.Routes.ChangePriority}");
+            return response;
         }
 
-        public async Task<ToDoResponseDto> ChangeStatusAsync(ChangeToDoStatusDto dto)
+        public async Task<HttpResponseMessage> ChangeStatusAsync(ChangeToDoStatusDto dto)
         {
             var response = await _http.PatchAsJsonAsync(_options.Routes.ChangeStatus, dto);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<ToDoResponseDto>()
-                      ?? throw new InvalidOperationException($"Response body was null from {_options.Routes.ChangeStatus}");
+            return response;
         }
 
-        public async Task<ToDoResponseDto> CreateAsync(CreateToDoDto dto)
+        public async Task<HttpResponseMessage> CreateAsync(CreateForServiceToDoDto dto)
         {
             var response = await _http.PostAsJsonAsync(_options.Routes.Create, dto);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<ToDoResponseDto>()
-                      ?? throw new InvalidOperationException($"Response body was null from {_options.Routes.Create}");
+            return response;
         }
 
-        public async Task<ToDoResponseDto> DeleteAsync(DeleteToDoDto dto)
+        public async Task<HttpResponseMessage> DeleteAsync(DeleteToDoDto dto)
         {
             var response = await _http.PostAsJsonAsync(_options.Routes.Delete, dto);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<ToDoResponseDto>()
-                   ?? throw new InvalidOperationException($"Response body was null from {_options.Routes.Delete}");
+            return response;
         }
     }
 }
