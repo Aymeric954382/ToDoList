@@ -146,8 +146,7 @@ namespace ToDoList.TaskStateService.WebAPI.Controllers.ControllerV1
                 Priority = dto.Priority
             };
 
-            var id = await Mediator.Send(command);
-            return Ok(id);
+            return NoContent();
         }
 
         /// <summary>

@@ -5,6 +5,7 @@ namespace ToDoList.TaskStateService.Application.ToDoItems.Commands.CreateToDo
 {
     public class CreateToDoCommand : IWithResultCommand<Guid>
     {
+        public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public DateTime? DueDate { get; set; }
         public ToDoPriority? Priority { get; set; }

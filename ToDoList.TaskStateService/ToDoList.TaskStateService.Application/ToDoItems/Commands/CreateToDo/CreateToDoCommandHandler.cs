@@ -15,7 +15,7 @@ namespace ToDoList.TaskStateService.Application.ToDoItems.Commands.CreateToDo
             var toDoItem = new ToDoItem
             {
                 UserId = request.UserId,
-                Id = Guid.NewGuid(),
+                Id = request.Id,
                 Status = ToDoStatus.Active,
                 DueDate = request.DueDate,
                 CreationDate = DateTime.UtcNow,
