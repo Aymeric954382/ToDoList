@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ToDoList.Gateway.Contracts.ApiClients.RequestDtos
+namespace ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Create
 {
-    public class ChangeToDoDueDateDto
+    public class CreateForServiceToDoDto
     {
         public Guid Id { get; set; }
-        public Guid UserId { get; set; }
         public DateTime? DueDate { get; set; }
     }
 }

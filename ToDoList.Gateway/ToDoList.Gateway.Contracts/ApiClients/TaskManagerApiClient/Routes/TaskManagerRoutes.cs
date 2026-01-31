@@ -11,5 +11,6 @@ namespace ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Routes
         public string ChangeContent { get; set; }
         public string Delete { get; set; }
         public string Create { get; set; }
+        public string GetToDoList { get; set; }
     }
 }

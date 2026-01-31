@@ -2,7 +2,7 @@
 
 namespace ToDoList.Gateway.Contracts.ApiClients.ResponseDtos
 {
-    public class ToDoResponseDto
+    public class GetToDoIdDto
     {
         public Guid Id { get; set; }
     }

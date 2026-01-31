@@ -1,5 +1,5 @@
 ﻿using ToDoList.Gateway.Contracts.ApiClients.ValueObjects;
-namespace ToDoList.Gateway.Contracts.ApiClients.RequestDtos
+namespace ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Change
 {
     public class ChangeToDoStatusDto
     {

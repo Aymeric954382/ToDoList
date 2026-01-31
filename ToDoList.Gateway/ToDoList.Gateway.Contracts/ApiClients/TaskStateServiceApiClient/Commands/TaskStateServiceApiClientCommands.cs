@@ -1,18 +1,20 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 using ToDoList.Gateway.Contracts.ApiClients.Interfaces;
-using ToDoList.Gateway.Contracts.ApiClients.RequestDtos;
+using ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Change;
+using ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Create;
+using ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Get;
 using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Routes;
 
 
-namespace ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient
+namespace ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Commands
 {
-    public class TaskStateServiceApiClient : ITaskStateServiceApiClient
+    public class TaskStateServiceApiClientCommands : ITaskStateServiceApiClientCommands
     {
         private readonly HttpClient _http;
         private readonly TaskStateServiceApiOptions _options;
 
-        public TaskStateServiceApiClient(HttpClient http, IOptions<TaskStateServiceApiOptions> options)
+        public TaskStateServiceApiClientCommands(HttpClient http, IOptions<TaskStateServiceApiOptions> options)
         {
             _http = http;
             _options = options.Value ?? throw new ArgumentNullException(nameof(options));
@@ -21,7 +23,7 @@ namespace ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient
             {
                 throw new InvalidOperationException(
                 $"TaskStateServiceApiOptions.Routes is null. Called from " +
-                $"{nameof(TaskStateServiceApiClient)} constructor."
+                $"{nameof(TaskStateServiceApiClientCommands)} constructor."
                 );
             }
         }
@@ -54,7 +56,7 @@ namespace ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient
             return response;
         }
 
-        public async Task<HttpResponseMessage> DeleteAsync(DeleteToDoDto dto)
+        public async Task<HttpResponseMessage> DeleteAsync(GetToDoListOverdueDto dto)
         {
             var response = await _http.PostAsJsonAsync(_options.Routes.Delete, dto);
             response.EnsureSuccessStatusCode();

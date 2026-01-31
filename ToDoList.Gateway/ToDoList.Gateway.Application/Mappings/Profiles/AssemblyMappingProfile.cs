@@ -18,8 +18,10 @@ namespace ToDoList.Gateway.Application.Mappings.Profiles
         {
             var types = assembly.GetExportedTypes()
                 .Where(type => type.GetInterfaces()
-                .Any(i => i.IsGenericType &&
-                i.GetGenericTypeDefinition() == typeof(IMapWith<>)))
+                .Any(i => (i.IsGenericType &&
+                i.GetGenericTypeDefinition() == typeof(IMapWith<>)) ||
+                (i.IsGenericType && 
+                i.GetGenericTypeDefinition() == typeof(IMapWithTwo<,>))))
                 .ToList();
 
             foreach (var type in types)

@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ToDoList.Gateway.Contracts.ApiClients.RequestDtos
+namespace ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Change
 {
-    public class CreateForManagerToDoDto
+    public class ChangeToDoContentDto
     {
+        public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public string Title { get; set; }
-        public string? Description { get; set; }
+        public string? Details { get; set; }
     }
 }

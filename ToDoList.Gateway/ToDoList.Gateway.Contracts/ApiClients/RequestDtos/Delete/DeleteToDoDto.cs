@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ToDoList.Gateway.Contracts.ApiClients.RequestDtos
+namespace ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Get
 {
-    public class ChangeToDoContentDto
+    public class GetToDoListOverdueDto
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
-        public string Title { get; set; }
-        public string? Details { get; set; }
     }
 }

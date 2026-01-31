@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ToDoList.Gateway.Application.Interfaces.Command_QuerySplitter;
 using ToDoList.Gateway.Application.Interfaces.MappingMark;
-using ToDoList.Gateway.Contracts.ApiClients.RequestDtos;
+using ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Change;
 
 namespace ToDoList.Gateway.Application.ToDoItem.Commands.ChangeToDoContent
 {

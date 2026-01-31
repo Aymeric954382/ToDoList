@@ -2,9 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using ToDoList.Gateway.Application.Mappings.Profiles;
 using ToDoList.Gateway.Contracts.ApiClients.Interfaces;
-using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Commands;
 using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Routes;
-using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient;
+using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Commands;
 using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Routes;
 using ToDoList.Gateway.Contracts.Providers;
 using ToDoList.Gateway.Infrastructure.Persistance.Security.JWT;
@@ -20,13 +20,13 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.DI
 
             services.AddTransient<JwtAuthorizationHandler>();
 
-            services.AddHttpClient<ITaskManagerApiClient, TaskManagerApiClient>(client =>
+            services.AddHttpClient<ITaskManagerApiClientCommands, TaskManagerApiClientCommands>(client =>
             {
                 client.BaseAddress = new Uri(config["TaskManagerApi:BaseUrl"]);
             })
             .AddHttpMessageHandler<JwtAuthorizationHandler>();
 
-            services.AddHttpClient<ITaskStateClientApiClient, TaskStateServiceApiClient>(client =>
+            services.AddHttpClient<ITaskStateClientApiClient, TaskStateServiceApiClientCommands>(client =>
             {
                 client.BaseAddress = new Uri(config["TaskStateServiceApi:BaseUrl"]);
             })
