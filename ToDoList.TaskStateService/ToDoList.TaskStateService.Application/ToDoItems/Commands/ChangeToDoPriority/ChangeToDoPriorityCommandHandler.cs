@@ -23,6 +23,10 @@ namespace ToDoList.TaskStateService.Application.ToDoItems.Commands.ChangeToDoPri
             {
                 throw new NotFoundException(nameof(ToDoItem), request.Id);
             }
+            if (entity.Priority == request.Priority)
+            {
+                throw new IdenticalReplacementException(nameof(ToDoItem), entity.Priority, entity.Id);
+            }
 
             entity.EditDate = DateTime.UtcNow;
             entity.Priority = request.Priority;

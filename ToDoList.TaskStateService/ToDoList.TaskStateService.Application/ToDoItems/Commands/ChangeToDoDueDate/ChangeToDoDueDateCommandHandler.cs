@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using ToDoList.TaskStateService.Application.Common.Exceptions;
 using ToDoList.TaskStateService.Application.Interfaces.Repository;
+using ToDoList.TaskStateService.Domain;
 
 namespace ToDoList.TaskStateService.Application.ToDoItems.Commands.ChangeToDoDueDate
 {
@@ -16,6 +17,10 @@ namespace ToDoList.TaskStateService.Application.ToDoItems.Commands.ChangeToDoDue
             if (entity == null || entity.UserId == request.Id)
             {
                 throw new NotFoundException(nameof(ToDoItems), request.Id);
+            }
+            if (request.DueDate == entity.DueDate)
+            {
+                throw new IdenticalReplacementException(nameof(ToDoItem), request.DueDate, request.Id);
             }
 
             entity.EditDate = DateTime.UtcNow;

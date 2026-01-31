@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ToDoList.Gateway.Application\ToDoList.Gateway.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Model\" />
   </ItemGroup>
 

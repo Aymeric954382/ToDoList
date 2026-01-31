@@ -10,7 +10,11 @@ namespace ToDoList.TaskStateService.Application.ToDoItems.Commands.CreateToDo
             RuleFor(command =>
                 command.UserId).NotEqual(Guid.Empty);
             RuleFor(command =>
-                command.DueDate).Must(date => date > DateTime.Now || date == null);
+                command.DueDate)
+                .Must(date => date > DateTime.Now || date == null);
+            RuleFor(c => c.DueDate)
+                .Must(d => d == null || 
+                d.Value.Second == 0 && d.Value.Millisecond == 0);
             RuleFor(command =>
             command.Priority).Must(priority =>
             priority == null ||

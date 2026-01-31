@@ -39,7 +39,6 @@ namespace ToDoList.TaskStateService.WebAPI
                 options.SubstituteApiVersionInUrl = true;
             });
 
-
             string redisConnection = builder.Configuration.GetConnectionString("Redis");
 
             builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>

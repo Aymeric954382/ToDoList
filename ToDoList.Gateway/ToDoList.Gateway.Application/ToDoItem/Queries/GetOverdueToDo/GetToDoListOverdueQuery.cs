@@ -8,7 +8,7 @@ using ToDoList.Gateway.Application.ToDoItem.Queries.Containers;
 
 namespace ToDoList.Gateway.Application.ToDoItem.Queries.GetOverdueToDo
 {
-    public class GetToDoListOverdueQuery : IQuery<ToDoListContainer>
+    public class GetToDoListByOverdueQuery : IQuery<ToDoListContainer>
     {
         public Guid UserId { get; set; }
     }

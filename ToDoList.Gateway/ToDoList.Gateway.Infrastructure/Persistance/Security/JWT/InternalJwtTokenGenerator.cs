@@ -8,14 +8,16 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.Security.JWT
     public class InternalJwtTokenGenerator
     {
         private readonly IConfiguration _configuration;
-        public DateTime ExpirationTime = DateTime.UtcNow.AddMinutes(5);
+        
         public InternalJwtTokenGenerator(IConfiguration config)
         {
             _configuration = config;
         }
 
-        public string Generate()
+        public (string Token, DateTime ExpiredAt) Generate()
         {
+            var expiresAt = DateTime.UtcNow.AddMinutes(5);
+
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_configuration["InternalJwt:Key"])
             );
@@ -25,11 +27,11 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.Security.JWT
             var token = new JwtSecurityToken(
                 issuer: _configuration["InternalJwt:Issuer"],
                 audience: _configuration["InternalJwt:Audience"],
-                expires: ExpirationTime,
+                expires: expiresAt,
                 signingCredentials: creds
             );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return (new JwtSecurityTokenHandler().WriteToken(token), expiresAt);
         }
     }
 }

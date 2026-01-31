@@ -1,12 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ToDoList.Gateway.Contracts.ApiClients;
+using ToDoList.Gateway.Application.Mappings.Profiles;
 using ToDoList.Gateway.Contracts.ApiClients.Interfaces;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Commands;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Routes;
+using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Commands;
+using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Routes;
 using ToDoList.Gateway.Contracts.Providers;
 using ToDoList.Gateway.Infrastructure.Persistance.Security.JWT;
 
@@ -21,17 +20,30 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.DI
 
             services.AddTransient<JwtAuthorizationHandler>();
 
-            services.AddHttpClient<ITaskManagerApiClient, TaskManagerApiClient>(client =>
+            services.AddHttpClient<ITaskManagerApiClientCommands, TaskManagerApiClientCommands>(client =>
             {
                 client.BaseAddress = new Uri(config["TaskManagerApi:BaseUrl"]);
             })
-                        .AddHttpMessageHandler<JwtAuthorizationHandler>();
+            .AddHttpMessageHandler<JwtAuthorizationHandler>();
 
-            services.AddHttpClient<ITaskStateManagerApiClient, TaskStateManagerApiClient>(client =>
+            services.AddHttpClient<ITaskStateClientApiClient, TaskStateServiceApiClientCommands>(client =>
             {
-                client.BaseAddress = new Uri(config["TaskStateManagerApi:BaseUrl"]);
+                client.BaseAddress = new Uri(config["TaskStateServiceApi:BaseUrl"]);
             })
             .AddHttpMessageHandler<JwtAuthorizationHandler>();
+
+            services.Configure<TaskStateServiceApiOptions>(
+                config.GetSection("TaskStateServiceApi")
+            );
+
+            services.Configure<TaskManagerApiOptions>(
+                config.GetSection("TaskManagerApi")
+            );
+
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile(new AssemblyMappingProfile(.Assembly));
+            });
 
 
             return services;
