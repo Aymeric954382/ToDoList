@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 using System.Text;
+using ToDoList.Gateway.Application.Common.Mappings.Helpers;
+using ToDoList.Gateway.Application.Common.Mappings.Profiles;
+using ToDoList.Gateway.Contracts.Helpers;
 
 namespace ToDoList.Gateway.WebAPI
 {
@@ -11,6 +14,12 @@ namespace ToDoList.Gateway.WebAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile(new AssemblyMappingProfile(typeof(AssemblyMarkerContracts).Assembly));
+                cfg.AddProfile(new AssemblyMappingProfile(typeof(AssemblyMarkerApplication).Assembly));
+            });
 
             string redisConnection = builder.Configuration.GetConnectionString("Redis");
 

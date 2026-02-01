@@ -24,10 +24,10 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.Adapter
 {
     public class TaskStateServiceApiClientAdapter : ITaskStateServiceApiClientAdapter
     {
-        private readonly ITaskStateServiceApiClientCommands _clientCommand;
+        private readonly ITaskStateServiceApiClientQueries _clientCommand;
         private readonly ITaskStateClientApiClientQueries _clientQuery;
         private readonly IMapper _mapper;
-        public TaskStateServiceApiClientAdapter(ITaskStateServiceApiClientCommands clientCommand, ITaskStateClientApiClientQueries clientQuery, IMapper mapper)
+        public TaskStateServiceApiClientAdapter(ITaskStateServiceApiClientQueries clientCommand, ITaskStateClientApiClientQueries clientQuery, IMapper mapper)
         {
             _clientCommand = clientCommand;
             _clientQuery = clientQuery;

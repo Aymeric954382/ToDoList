@@ -11,11 +11,11 @@ using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Routes;
 
 namespace ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Queries
 {
-    public class TaskStateClientApiClientQueries : ITaskStateClientApiClientQueries
+    public class TaskStateServiceApiClientQueries : ITaskStateClientApiClientQueries
     {
         private readonly HttpClient _http;
         private readonly TaskStateServiceApiOptions _options;
-        public TaskStateClientApiClientQueries(HttpClient http, TaskStateServiceApiOptions options)
+        public TaskStateServiceApiClientQueries(HttpClient http, TaskStateServiceApiOptions options)
         {
             _http = http;
             _options = options;

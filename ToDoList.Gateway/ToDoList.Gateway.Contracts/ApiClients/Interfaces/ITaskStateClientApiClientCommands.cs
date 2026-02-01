@@ -4,7 +4,7 @@ using ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Get;
 
 namespace ToDoList.Gateway.Contracts.ApiClients.Interfaces
 {
-    public interface ITaskStateServiceApiClientCommands
+    public interface ITaskStateServiceApiClientQueries
     {
         Task<HttpResponseMessage> CreateAsync(CreateForServiceToDoDto dto);
         Task<HttpResponseMessage> DeleteAsync(GetToDoListOverdueDto dto);

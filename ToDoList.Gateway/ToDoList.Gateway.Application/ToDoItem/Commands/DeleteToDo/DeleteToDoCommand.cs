@@ -2,7 +2,7 @@
 using ToDoList.Gateway.Application.Interfaces.Command_QuerySplitter;
 using ToDoList.Gateway.Application.Interfaces.MappingMark;
 using ToDoList.Gateway.Application.ToDoItem.Commands.ChangeToDoContent;
-using ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Delete;
+using ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Get;
 
 namespace ToDoList.Gateway.Application.ToDoItem.Commands.DeleteToDo
 {

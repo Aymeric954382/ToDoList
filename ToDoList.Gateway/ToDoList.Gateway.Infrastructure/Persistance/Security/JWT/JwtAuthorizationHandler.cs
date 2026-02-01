@@ -4,15 +4,14 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using ToDoList.Gateway.Contracts.Providers;
 
 namespace ToDoList.Gateway.Infrastructure.Persistance.Security.JWT
 {
     public class JwtAuthorizationHandler : DelegatingHandler
     {
-        private readonly IInternalJwtTokenProvider _tokenProvider;
+        private readonly InternalJwtTokenProvider _tokenProvider;
 
-        public JwtAuthorizationHandler(IInternalJwtTokenProvider tokenProvider)
+        public JwtAuthorizationHandler(InternalJwtTokenProvider tokenProvider)
         {
             _tokenProvider = tokenProvider;
         }

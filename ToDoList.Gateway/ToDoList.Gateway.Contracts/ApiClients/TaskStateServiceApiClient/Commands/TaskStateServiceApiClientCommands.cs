@@ -9,12 +9,12 @@ using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Routes;
 
 namespace ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Commands
 {
-    public class TaskStateServiceApiClientCommands : ITaskStateServiceApiClientCommands
+    public class TaskStateServiceApiClientQueries : ITaskStateServiceApiClientQueries
     {
         private readonly HttpClient _http;
         private readonly TaskStateServiceApiOptions _options;
 
-        public TaskStateServiceApiClientCommands(HttpClient http, IOptions<TaskStateServiceApiOptions> options)
+        public TaskStateServiceApiClientQueries(HttpClient http, IOptions<TaskStateServiceApiOptions> options)
         {
             _http = http;
             _options = options.Value ?? throw new ArgumentNullException(nameof(options));
@@ -23,7 +23,7 @@ namespace ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Comman
             {
                 throw new InvalidOperationException(
                 $"TaskStateServiceApiOptions.Routes is null. Called from " +
-                $"{nameof(TaskStateServiceApiClientCommands)} constructor."
+                $"{nameof(TaskStateServiceApiClientQueries)} constructor."
                 );
             }
         }
