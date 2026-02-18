@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToDoList.Gateway.Contracts"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Gateway.Contracts", "ToDoList.Gateway.Contracts\ToDoList.Gateway.Contracts.csproj", "{FE75A3F6-5539-44A4-9B30-639D926ECDEB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToDoList.Gateway.Tests", "ToDoList.Gateway.Tests", "{92CDC866-CFB9-48DA-B353-C09980216D44}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

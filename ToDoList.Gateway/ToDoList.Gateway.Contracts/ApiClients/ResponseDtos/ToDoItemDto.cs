@@ -10,6 +10,7 @@ namespace ToDoList.Gateway.Contracts.ApiClients.ResponseDtos
 {
     public class ToDoItemDto
     {
+        public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public string Title { get; set; }
         public string Details { get; set; }
