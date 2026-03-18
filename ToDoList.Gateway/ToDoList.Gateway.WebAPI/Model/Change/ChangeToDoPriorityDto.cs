@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ToDoList.Gateway.Contracts.ApiClients.ValueObjects;
+using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.ValueObjects;
 
 namespace ToDoList.Gateway.WebAPI.Model.Change
 {

@@ -1,14 +1,16 @@
-﻿using ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Change;
-using ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Create;
-using ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Get;
-using ToDoList.Gateway.Contracts.ApiClients.ResponseDtos;
+﻿using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerRequestDtos.RequestDtos.Change;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerRequestDtos.RequestDtos.Create;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerRequestDtos.RequestDtos.Delete;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerResponseDtos.ResponseDtos.Change;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerResponseDtos.ResponseDtos.Create;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerResponseDtos.ResponseDtos.Delete;
 namespace ToDoList.Gateway.Contracts.ApiClients.Interfaces
 {
     public interface ITaskManagerApiClientCommands
     {
-        Task<GetToDoIdDto> CreateAsync(CreateForManagerToDoDto dto);
-        Task<HttpResponseMessage> DeleteAsync(GetToDoListOverdueDto dto);
-        Task<HttpResponseMessage> ChangeContentAsync(ChangeToDoContentDto dto);
+        Task<TaskManagerCreateResponseDto> CreateAsync(TaskManagerCreateRequestDto dto);
+        Task<TaskManagerDeleteResponseDto> DeleteAsync(TaskManagerDeleteRequestDto dto);
+        Task<TaskManagerChangeContentResponseDto> ChangeContentAsync(TaskManagerChangeContentRequestDto dto);
 
     }
 }

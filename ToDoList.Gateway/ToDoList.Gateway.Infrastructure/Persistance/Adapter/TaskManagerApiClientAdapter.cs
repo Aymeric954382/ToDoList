@@ -1,69 +1,96 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ToDoList.Gateway.Application.Features.ResponseServiceResultsContainer;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.ChangeToDoContent;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.CreateToDo;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.DeleteToDo;
+using ToDoList.Gateway.Application.Features.ToDoItem.Queries.GetListToDo;
+using ToDoList.Gateway.Application.Features.ToDoItem.Queries.ServiceQueries;
+using ToDoList.Gateway.Application.Features.ToDoItem.Queries.ServiceQueries.GetByIds;
 using ToDoList.Gateway.Application.Interfaces.ContractsClientAdapter;
-using ToDoList.Gateway.Application.ToDoItem.Commands.ChangeToDoContent;
-using ToDoList.Gateway.Application.ToDoItem.Commands.CreateToDo;
-using ToDoList.Gateway.Application.ToDoItem.Commands.DeleteToDo;
-using ToDoList.Gateway.Application.ToDoItem.Queries.Containers;
-using ToDoList.Gateway.Application.ToDoItem.Queries.CriteriaSplitter;
-using ToDoList.Gateway.Application.ToDoItem.Queries.GetListToDo;
 using ToDoList.Gateway.Contracts.ApiClients.Interfaces;
-using ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Change;
-using ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Create;
-using ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Get;
-using ToDoList.Gateway.Contracts.ApiClients.ResponseDtos;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerRequestDtos.RequestDtos.Change;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerRequestDtos.RequestDtos.Create;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerRequestDtos.RequestDtos.Delete;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerRequestDtos.RequestDtos.Get;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerRequestDtos.RequestDtos.Get.ServiceQueries;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerResponseDtos.ResponseDtos.Change;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerResponseDtos.ResponseDtos.Create;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerResponseDtos.ResponseDtos.Delete;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerResponseDtos.ResponseDtos.Get.ResponseContainers;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerResponseDtos.ResponseDtos.ServiceQueries;
+
+
 
 namespace ToDoList.Gateway.Infrastructure.Persistance.Adapter
 {
     public class TaskManagerApiClientAdapter : ITaskManagerApiClientAdapter
     {
         private readonly ITaskManagerApiClientCommands _clientCommand;
-        private readonly ITaskStateClientApiClientQueries _clientQuery;
+        private readonly ITaskManagerApiClientQueries _clientQuery;
         private readonly IMapper _mapper;
-        public TaskManagerApiClientAdapter(ITaskManagerApiClientCommands clientCommand, ITaskStateClientApiClientQueries clientQuery, IMapper mapper)
+        public TaskManagerApiClientAdapter(ITaskManagerApiClientCommands clientCommand, 
+            ITaskManagerApiClientQueries clientQuery, IMapper mapper)
         {
             _clientCommand = clientCommand;
             _clientQuery = clientQuery;
             _mapper = mapper;
         }
-        public async Task<HttpResponseMessage> ChangeContentAsync(ChangeToDoContentCommand command)
+        public async Task<ServiceResult<TaskManagerChangeContentResponseDto>> ChangeContentAsync(ChangeToDoContentCommand command, 
+            CancellationToken cancellationToken)
         {
-            var dto = _mapper.Map<ChangeToDoContentDto>(command);
+            var dto = _mapper.Map<TaskManagerChangeContentRequestDto>(command);
 
-            var result = await _clientCommand.ChangeContentAsync(dto);
+            var response = await _clientCommand.ChangeContentAsync(dto);
+
+            var result = _mapper.Map<ServiceResult<TaskManagerChangeContentResponseDto>>(response);
 
             return result;
         }
 
-        public async Task<Guid> CreateAsync(CreateToDoCommand command)
+        public async Task<ServiceResult<TaskManagerCreateResponseDto>> CreateAsync(CreateToDoCommand command, 
+            CancellationToken cancellationToken)
         {
-            var dto = _mapper.Map<CreateForManagerToDoDto>(command);
+            var dto = _mapper.Map<TaskManagerCreateRequestDto>(command);
 
-            var result = await _clientCommand.CreateAsync(dto);
+            var response = await _clientCommand.CreateAsync(dto);
 
-            return result.Id;
-        }
-
-        public async Task<HttpResponseMessage> DeleteAsync(DeleteToDoCommand command)
-        {
-            var dto = _mapper.Map<GetToDoListOverdueDto>(command);
-
-            var result = await _clientCommand.DeleteAsync(dto);
+            var result = _mapper.Map<ServiceResult<TaskManagerCreateResponseDto>>(response);
 
             return result;
         }
 
-        public async Task<ToDoListContainer> GetToDoListAsync(CriteriaSplitterQuery query)
+        public async Task<ServiceResult<TaskManagerDeleteResponseDto>> DeleteAsync(DeleteToDoCommand command, 
+            CancellationToken cancellationToken)
         {
-            var dto = _mapper.Map<GetToDoListDto>(query);
+            var dto = _mapper.Map<TaskManagerDeleteRequestDto>(command);
 
-            var result = await _clientQuery.GetToDoListAsync(dto);
+            var response = await _clientCommand.DeleteAsync(dto);
 
-            var container = _mapper.Map<ToDoListContainer>(result);
+            var result = _mapper.Map<ServiceResult<TaskManagerDeleteResponseDto>>(response);
+
+            return result;
+        }
+
+        public async Task<ServiceResult<TaskManagerGetToDoListResponseDto>> GetToDoListAsync(GetToDoListQuery query, 
+            CancellationToken cancellationToken)
+        {
+            var dto = _mapper.Map<TaskManagerGetToDoListRequestDto>(query);
+
+            var response = await _clientQuery.GetToDoListAsync(dto);
+
+            var result = _mapper.Map<ServiceResult<TaskManagerGetToDoListResponseDto>>(response);
+
+            return result;
+        }
+
+        public async Task<ServiceResult<TaskManagerGetToDoListByIdsResponseDto>> GetToDoListByIdAsync(GetToDoListByIdsRequestQuery query, 
+            CancellationToken cancellationToken)
+        {
+            var dto = _mapper.Map<TaskManagerGetToDoListByIdsRequestDto>(query);
+
+            var result = await _clientQuery.GetToDoListByIdAsync(dto);
+
+            var container = _mapper.Map<ServiceResult<TaskManagerGetToDoListByIdsResponseDto>>(result);
 
             return container;
         }

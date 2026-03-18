@@ -1,15 +1,14 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using ToDoList.Gateway.Application.ToDoItem.Commands.ChangeToDoPriority;
-using ToDoList.Gateway.Application.ToDoItem.Commands.ChangeToDoStatus;
-using ToDoList.Gateway.Application.ToDoItem.Commands.CreateToDo;
-using ToDoList.Gateway.Application.ToDoItem.Commands.DeleteToDo;
-using ToDoList.Gateway.Application.ToDoItem.Queries.Containers;
-using ToDoList.Gateway.Application.ToDoItem.Queries.GetByPriority;
-using ToDoList.Gateway.Application.ToDoItem.Queries.GetByStatus;
-using ToDoList.Gateway.Application.ToDoItem.Queries.GetListToDo;
-using ToDoList.Gateway.Application.ToDoItem.Queries.GetOverdueToDo;
-using ToDoList.Gateway.Contracts.ApiClients.ValueObjects;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.ChangeToDoPriority;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.ChangeToDoStatus;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.CreateToDo;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.DeleteToDo;
+using ToDoList.Gateway.Application.Features.ToDoItem.Queries.GetByPriority;
+using ToDoList.Gateway.Application.Features.ToDoItem.Queries.GetByStatus;
+using ToDoList.Gateway.Application.Features.ToDoItem.Queries.GetListToDo;
+using ToDoList.Gateway.Application.Features.ToDoItem.Queries.GetOverdueToDo;
+using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.ValueObjects;
 using ToDoList.Gateway.WebAPI.Model.Change;
 using ToDoList.Gateway.WebAPI.Model.Create;
 
