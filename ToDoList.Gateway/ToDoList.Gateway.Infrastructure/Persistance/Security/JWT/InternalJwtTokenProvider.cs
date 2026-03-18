@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ToDoList.Gateway.Contracts.Providers;
 
 namespace ToDoList.Gateway.Infrastructure.Persistance.Security.JWT
 {
-    public class InternalJwtTokenProvider : IInternalJwtTokenProvider
+    public class InternalJwtTokenProvider
     {
         private readonly InternalJwtTokenGenerator _generator;
         private string _cachedToken;

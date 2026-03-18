@@ -1,12 +1,15 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ToDoList.Gateway.Application.Mappings.Profiles;
+using ToDoList.Gateway.Application.Common.Mappings.Helpers;
+using ToDoList.Gateway.Application.Common.Mappings.Profiles;
 using ToDoList.Gateway.Contracts.ApiClients.Interfaces;
 using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Commands;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Queries;
 using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Routes;
 using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Commands;
+using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Queries;
 using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Routes;
-using ToDoList.Gateway.Contracts.Providers;
+using ToDoList.Gateway.Contracts.Helpers;
 using ToDoList.Gateway.Infrastructure.Persistance.Security.JWT;
 
 namespace ToDoList.Gateway.Infrastructure.Persistance.DI
@@ -16,7 +19,7 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.DI
         public static IServiceCollection AddPersistance(this IServiceCollection services, IConfiguration config)
         {
             services.AddSingleton<InternalJwtTokenGenerator>();
-            services.AddSingleton<IInternalJwtTokenProvider, InternalJwtTokenProvider>();
+            services.AddSingleton<InternalJwtTokenProvider>();
 
             services.AddTransient<JwtAuthorizationHandler>();
 
@@ -26,7 +29,19 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.DI
             })
             .AddHttpMessageHandler<JwtAuthorizationHandler>();
 
-            services.AddHttpClient<ITaskStateClientApiClient, TaskStateServiceApiClientCommands>(client =>
+            services.AddHttpClient<ITaskStateServiceApiClientCommands, TaskStateServiceApiClientCommands>(client =>
+            {
+                client.BaseAddress = new Uri(config["TaskStateServiceApi:BaseUrl"]);
+            })
+            .AddHttpMessageHandler<JwtAuthorizationHandler>();
+
+            services.AddHttpClient<ITaskManagerApiClientQueries, TaskManagerApiClientQueries>(client =>
+            {
+                client.BaseAddress = new Uri(config["TaskManagerApi:BaseUrl"]);
+            })
+            .AddHttpMessageHandler<JwtAuthorizationHandler>();
+
+            services.AddHttpClient<ITaskStateServiceApiClientQueries, TaskStateServiceApiClientQueries>(client =>
             {
                 client.BaseAddress = new Uri(config["TaskStateServiceApi:BaseUrl"]);
             })
@@ -39,12 +54,6 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.DI
             services.Configure<TaskManagerApiOptions>(
                 config.GetSection("TaskManagerApi")
             );
-
-            services.AddAutoMapper(cfg =>
-            {
-                cfg.AddProfile(new AssemblyMappingProfile(.Assembly));
-            });
-
 
             return services;
         }

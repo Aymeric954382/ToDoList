@@ -17,6 +17,7 @@ namespace ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Routes
         public string GetToDoListByOverdue { get; set; }
         public string GetToDoListByStatus { get; set; }
         public string GetToDoListByPriority { get; set; }
+        public string GetToDoByIdList { get; set; }
 
 
     }

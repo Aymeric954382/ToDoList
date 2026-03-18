@@ -1,11 +1,13 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 using ToDoList.Gateway.Contracts.ApiClients.Interfaces;
-using ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Change;
-using ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Create;
-using ToDoList.Gateway.Contracts.ApiClients.RequestDtos.Get;
-using ToDoList.Gateway.Contracts.ApiClients.ResponseDtos;
 using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Routes;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerRequestDtos.RequestDtos.Change;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerRequestDtos.RequestDtos.Create;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerRequestDtos.RequestDtos.Delete;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerResponseDtos.ResponseDtos.Change;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerResponseDtos.ResponseDtos.Create;
+using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerResponseDtos.ResponseDtos.Delete;
 
 namespace ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Commands
 {
@@ -28,25 +30,28 @@ namespace ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Commands
             }
         }
 
-        public async Task<HttpResponseMessage> ChangeContentAsync(ChangeToDoContentDto dto)
+        public async Task<TaskManagerChangeContentResponseDto> ChangeContentAsync(TaskManagerChangeContentRequestDto dto)
         {
             var response = await _http.PatchAsJsonAsync(_options.Routes.ChangeContent, dto);
             response.EnsureSuccessStatusCode();
-            return response;
+            return await response.Content.ReadFromJsonAsync<TaskManagerChangeContentResponseDto>()
+                ?? throw new InvalidOperationException($"Response body was null from {_options.Routes.ChangeContent}");
         }
 
-        public async Task<HttpResponseMessage> DeleteAsync(GetToDoListOverdueDto dto)
+        public async Task<TaskManagerDeleteResponseDto> DeleteAsync(TaskManagerDeleteRequestDto dto)
         {
             var response = await _http.PatchAsJsonAsync(_options.Routes.Delete, dto);
             response.EnsureSuccessStatusCode();
-            return response;
+            return await response.Content.ReadFromJsonAsync<TaskManagerDeleteResponseDto>()
+                ?? throw new InvalidOperationException($"Response body was null from {_options.Routes.Delete}");
+
         }
 
-        public async Task<GetToDoIdDto> CreateAsync(CreateForManagerToDoDto dto)
+        public async Task<TaskManagerCreateResponseDto> CreateAsync(TaskManagerCreateRequestDto dto)
         {
             var response = await _http.PatchAsJsonAsync(_options.Routes.Create, dto);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<GetToDoIdDto>()
+            return await response.Content.ReadFromJsonAsync<TaskManagerCreateResponseDto>()
                 ?? throw new InvalidOperationException($"Response body was null from {_options.Routes.Create}");
         }
     }
