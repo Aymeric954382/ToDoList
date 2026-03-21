@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace ToDoList.TaskManager.Application.ToDoItems.Commands.ChangeToDoContent
+namespace ToDoList.TaskManager.Application.Features.ToDoItems.Commands.ChangeToDoContent
 {
     public class ChangeToDoContentValidator : AbstractValidator<ChangeToDoContentCommand>
     {

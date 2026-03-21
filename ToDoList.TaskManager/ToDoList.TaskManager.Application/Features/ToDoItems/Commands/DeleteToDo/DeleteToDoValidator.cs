@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace ToDoList.TaskManager.Application.ToDoItems.Commands.DeleteToDo
+namespace ToDoList.TaskManager.Application.Features.ToDoItems.Commands.DeleteToDo
 {
     public class DeleteToDoValidator : AbstractValidator<DeleteToDoCommand>
     {

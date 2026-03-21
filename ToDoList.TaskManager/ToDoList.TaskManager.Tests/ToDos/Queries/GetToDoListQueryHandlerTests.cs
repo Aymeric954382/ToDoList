@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using MockQueryable;
 using Moq;
+using ToDoList.TaskManager.Application.Features.ToDoItems.Queries.ResponseDtos;
 using ToDoList.TaskManager.Application.Interfaces.Repository;
 using ToDoList.TaskManager.Application.ToDoItems.Queries.GetListToDo;
-using ToDoList.TaskManager.Application.ToDoItems.Queries.ResponseDtos;
 using ToDoList.TaskManager.Domain;
 using ToDoList.TaskManager.Domain.ValueObjects;
 using ToDoList.TaskManager.Tests.Common;

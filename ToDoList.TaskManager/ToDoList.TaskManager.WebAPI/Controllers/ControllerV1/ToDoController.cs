@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ToDoList.TaskManager.Application.Features.ToDoItems.Queries.Containers;
 using ToDoList.TaskManager.Application.ToDoItems.Commands.ChangeToDoContent;
 using ToDoList.TaskManager.Application.ToDoItems.Commands.CreateToDo;
 using ToDoList.TaskManager.Application.ToDoItems.Commands.DeleteToDo;
-using ToDoList.TaskManager.Application.ToDoItems.Queries.Containers;
 using ToDoList.TaskManager.Application.ToDoItems.Queries.GetListToDo;
 using ToDoList.TaskManager.Domain.ValueObjects;
 using ToDoList.TaskManager.WebAPI.Models;
@@ -17,12 +17,12 @@ namespace ToDoList.TaskManager.WebAPI.Controllers.ControllerV1
         /// </summary>
         /// <remarks>This method returns a container object that includes all to-do lists for the
         /// authenticated user.  The user must be authenticated to access this endpoint.</remarks>
-        /// <returns>An <see cref="ActionResult{T}"/> containing a <see cref="ToDoListContainer"/> with the user's to-do lists.
+        /// <returns>An <see cref="ActionResult{T}"/> containing a <see cref="ToDoListItemsResponseDto"/> with the user's to-do lists.
         /// Returns a 200 OK status code if the operation is successful.</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<ToDoListContainer>> GetAll() =>
+        public async Task<ActionResult<ToDoListItemsResponseDto>> GetAll() =>
            Ok(await Mediator.Send(new GetToDoListQuery { UserId = UserId }));
 
         /// <summary>

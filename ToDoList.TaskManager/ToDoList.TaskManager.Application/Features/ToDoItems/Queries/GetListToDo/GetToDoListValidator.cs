@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace ToDoList.TaskManager.Application.ToDoItems.Queries.GetListToDo
+namespace ToDoList.TaskManager.Application.Features.ToDoItems.Queries.GetListToDo
 {
     public class GetToDoListValidator : AbstractValidator<GetToDoListQuery>
     {

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using ToDoList.TaskManager.Domain.ValueObjects;
 
-namespace ToDoList.TaskManager.Application.ToDoItems.Commands.CreateToDo
+namespace ToDoList.TaskManager.Application.Features.ToDoItems.Commands.CreateToDo
 {
     public class CreateToDoValidator : AbstractValidator<CreateToDoCommand>
     {
