@@ -3,7 +3,6 @@ using ToDoList.TaskManager.Application.Common.Exceptions.ServiceErrorCodeToRespo
 using ToDoList.TaskManager.Application.Features.ResponseServiceResultsContainer;
 using ToDoList.TaskManager.Application.Interfaces.Repository;
 using ToDoList.TaskManager.Domain;
-using ToDoList.TaskManager.Domain.ValueObjects;
 
 namespace ToDoList.TaskManager.Application.Features.ToDoItems.Commands.CreateToDo
 {

@@ -1,9 +1,8 @@
 ﻿using FluentAssertions;
 using Moq;
+using ToDoList.TaskManager.Application.Features.ToDoItems.Commands.DeleteToDo;
 using ToDoList.TaskManager.Application.Interfaces.Repository;
-using ToDoList.TaskManager.Application.ToDoItems.Commands.DeleteToDo;
 using ToDoList.TaskManager.Domain;
-using ToDoList.TaskManager.Domain.ValueObjects;
 
 namespace ToDoList.TaskManager.Tests.ToDos.Commands
 {

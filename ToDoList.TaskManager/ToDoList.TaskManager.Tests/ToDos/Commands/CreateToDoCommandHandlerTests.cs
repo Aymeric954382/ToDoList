@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using Moq;
+using ToDoList.TaskManager.Application.Common.Exceptions.ServiceErrorCodeToResponse;
+using ToDoList.TaskManager.Application.Features.ToDoItems.Commands.CreateToDo;
 using ToDoList.TaskManager.Application.Interfaces.Repository;
-using ToDoList.TaskManager.Application.ToDoItems.Commands.CreateToDo;
 using ToDoList.TaskManager.Domain;
-using ToDoList.TaskManager.Domain.ValueObjects;
 
 namespace ToDoList.TaskManager.Tests.ToDos.Commands
 {
@@ -65,7 +65,10 @@ namespace ToDoList.TaskManager.Tests.ToDos.Commands
             };
 
             // Act & Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(() => handler.Handle(command, CancellationToken.None));
+            var result = await handler.Handle(command, CancellationToken.None);
+
+            Assert.False(result.ExecutionSuccess);
+            Assert.Equal(ServiceErrorCode.Unknown, result.Error);
 
             mockRepo.Verify(r => r.AddAsync(It.IsAny<ToDoItem>(), It.IsAny<CancellationToken>()), Times.Once);
         }

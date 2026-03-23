@@ -16,7 +16,7 @@ namespace ToDoList.TaskManager.Infrastructure.Persistance.DataBaseCommon.EF
         public async Task<ToDoItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
             => await _context.ToDoItems.FindAsync(id);
 
-        public async Task<List<ToDoItem>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+        public async Task<List<ToDoItem>> GetListByUserIdAsync(Guid userId, CancellationToken cancellationToken)
             => await _context.ToDoItems.Where(t => t.UserId == userId).ToListAsync();
 
         public async Task AddAsync(ToDoItem todo, CancellationToken cancellationToken)

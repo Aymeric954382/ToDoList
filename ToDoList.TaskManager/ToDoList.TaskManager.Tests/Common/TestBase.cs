@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using ToDoList.TaskManager.Application.Common.Mappings.Profiles;
-using ToDoList.TaskManager.Application.Features.ToDoItems.Queries.ResponseDtos;
+using ToDoList.TaskManager.Application.Features.ToDoItems.Queries.GetListToDo;
 
 namespace ToDoList.TaskManager.Tests.Common
 {
@@ -10,7 +10,7 @@ namespace ToDoList.TaskManager.Tests.Common
         protected readonly IMapper Mapper;
         public TestBase()
         {
-            var assembly = typeof(ToDoResponseDto).Assembly;
+            var assembly = typeof(GetToDoListResponseDto).Assembly;
 
             var loggerFactory = LoggerFactory.Create(builder => { });
 

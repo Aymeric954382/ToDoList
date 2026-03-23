@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using ToDoList.TaskManager.Application.Common.Exceptions.ServiceErrorCodeToResponse;
 using ToDoList.TaskManager.Application.Features.ResponseServiceResultsContainer;
 using ToDoList.TaskManager.Application.Interfaces.Repository;
-using ToDoList.TaskManager.Domain;
 
 namespace ToDoList.TaskManager.Application.Features.ToDoItems.Queries.GetListToDo
 {
@@ -24,21 +21,12 @@ namespace ToDoList.TaskManager.Application.Features.ToDoItems.Queries.GetListToD
         {
             try
             {
-                var query = _repository.AsQueryable()
-                    .Where(i => i.UserId == request.UserId);
-
-                var itemsDto = await query.ProjectTo<ToDoItem>(_mapper.ConfigurationProvider)
-                    .ToListAsync(cancellationToken);
+                var items = await _repository.GetListByUserIdAsync(request.UserId ,cancellationToken);
+                var itemsDto = _mapper.Map<List<ToDoItemDto>>(items);
 
                 var response = new GetToDoListResponseDto()
                 {
-                    Items = itemsDto.Select(x => new ToDoItem()
-                    {
-                        Id = x.Id,
-                        UserId = x.UserId,
-                        Details = x.Details,
-                        Title = x.Title
-                    })
+                    Items = itemsDto
                 };
 
                 return ServiceResult<GetToDoListResponseDto>.Success(response);
@@ -46,7 +34,6 @@ namespace ToDoList.TaskManager.Application.Features.ToDoItems.Queries.GetListToD
             catch(Exception ex)
             {
                 //logger
-
                 return ServiceResult<GetToDoListResponseDto>.Fail(ServiceErrorCode.Unknown);
             }
         }

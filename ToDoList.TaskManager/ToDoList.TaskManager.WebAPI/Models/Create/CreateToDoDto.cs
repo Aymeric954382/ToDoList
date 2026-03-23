@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ToDoList.TaskManager.Domain.ValueObjects;
 
-namespace ToDoList.TaskManager.WebAPI.Models
+namespace ToDoList.TaskManager.WebAPI.Models.Create
 {
     public class CreateToDoDto
     {

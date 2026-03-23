@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ToDoList.TaskManager.Domain.ValueObjects;
 
-namespace ToDoList.TaskManager.WebAPI.Models
+namespace ToDoList.TaskManager.WebAPI.Models.Change
 {
-    public class ChangeToDoStatusDto
+    public class ChangeToDoPriorityDto
     {
         [Required]
         public Guid Id { get; set; }
-        public ToDoStatus Status { get; set; }
+        public ToDoPriority Priority { get; set; }
     }
 }

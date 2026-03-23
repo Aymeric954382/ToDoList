@@ -9,6 +9,6 @@ namespace ToDoList.TaskManager.Application.Features.ToDoItems.Queries.GetListToD
 {
     public class GetToDoListResponseDto
     {
-        public IEnumerable<ToDoItem>? Items { get; set; }
+        public IEnumerable<ToDoItemDto>? Items { get; set; }
     }
 }

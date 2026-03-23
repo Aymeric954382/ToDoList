@@ -6,7 +6,7 @@ namespace ToDoList.TaskManager.Application.Interfaces.Repository
     {
         IQueryable<ToDoItem> AsQueryable();
         Task<ToDoItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-        Task<List<ToDoItem>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken);
+        Task<List<ToDoItem>> GetListByUserIdAsync(Guid userId, CancellationToken cancellationToken);
         Task AddAsync(ToDoItem todo, CancellationToken cancellationToken);
         Task UpdateAsync(ToDoItem todo, CancellationToken cancellationToken);
         Task DeleteAsync(ToDoItem todo, CancellationToken cancellationToken);

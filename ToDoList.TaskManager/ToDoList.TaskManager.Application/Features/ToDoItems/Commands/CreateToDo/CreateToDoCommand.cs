@@ -4,7 +4,8 @@ using ToDoList.TaskManager.Domain.ValueObjects;
 
 namespace ToDoList.TaskManager.Application.Features.ToDoItems.Commands.CreateToDo
 {
-    public class CreateToDoCommand : IWithResultCommand<ServiceResult<CreateToDoResponseDto>>
+    public class CreateToDoCommand 
+        : IWithResultCommand<ServiceResult<CreateToDoResponseDto>>
     {
         public Guid UserId { get; set; }
         public string Title { get; set; }

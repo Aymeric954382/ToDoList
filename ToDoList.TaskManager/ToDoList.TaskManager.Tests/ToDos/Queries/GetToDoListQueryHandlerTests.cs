@@ -1,11 +1,11 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using MockQueryable;
+using MockQueryable.Moq;
 using Moq;
-using ToDoList.TaskManager.Application.Features.ToDoItems.Queries.ResponseDtos;
+using ToDoList.TaskManager.Application.Features.ToDoItems.Queries.GetListToDo;
 using ToDoList.TaskManager.Application.Interfaces.Repository;
-using ToDoList.TaskManager.Application.ToDoItems.Queries.GetListToDo;
 using ToDoList.TaskManager.Domain;
-using ToDoList.TaskManager.Domain.ValueObjects;
 using ToDoList.TaskManager.Tests.Common;
 
 namespace ToDoList.TaskManager.Tests.ToDos.Queries
@@ -20,7 +20,7 @@ namespace ToDoList.TaskManager.Tests.ToDos.Queries
 
             var mockRepo = new Mock<IToDoRepository>();
 
-            var assembly = typeof(ToDoResponseDto).Assembly;
+            var assembly = typeof(GetToDoListResponseDto).Assembly;
 
             var fakeData = new List<ToDoItem>()
             {
@@ -54,9 +54,9 @@ namespace ToDoList.TaskManager.Tests.ToDos.Queries
                 }
             };
 
-            var mock = fakeData.BuildMock().AsQueryable();
-
-            mockRepo.Setup(x => x.AsQueryable()).Returns(mock);
+            mockRepo
+                .Setup(x => x.GetListByUserIdAsync(userId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(fakeData);
 
             var handler = new GetToDoListQueryHandler(mockRepo.Object, Mapper);
 
@@ -67,9 +67,14 @@ namespace ToDoList.TaskManager.Tests.ToDos.Queries
 
             // Assert
             result.Should().NotBeNull();
-            result.ToDoItems.Should().HaveCount(4);
+            result.Data.Items.Should().HaveCount(4);
 
-            mockRepo.Verify(r => r.AsQueryable(), Times.Once);
+            result.ExecutionSuccess.Should().BeTrue();
+            result.Error.Should().BeNull();
+
+            mockRepo.Verify(
+                r => r.GetListByUserIdAsync(userId, It.IsAny<CancellationToken>()),
+                Times.Once);
         }
     }
 }

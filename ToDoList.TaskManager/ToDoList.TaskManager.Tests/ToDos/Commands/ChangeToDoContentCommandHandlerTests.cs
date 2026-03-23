@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
+using ToDoList.TaskManager.Application.Features.ToDoItems.Commands.ChangeToDoContent;
 using ToDoList.TaskManager.Application.Interfaces.Repository;
-using ToDoList.TaskManager.Application.ToDoItems.Commands.ChangeToDoContent;
 using ToDoList.TaskManager.Domain;
 
 namespace ToDoList.TaskManager.Tests.ToDos.Commands
@@ -45,6 +45,7 @@ namespace ToDoList.TaskManager.Tests.ToDos.Commands
             await handler.Handle(command, CancellationToken.None);
 
             // Assert
+            
             existingItem.Title.Should().Be(command.Title);
             existingItem.Details.Should().Be(command.Details);
 

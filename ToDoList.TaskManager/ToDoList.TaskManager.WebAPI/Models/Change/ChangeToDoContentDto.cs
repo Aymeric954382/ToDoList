@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ToDoList.TaskManager.WebAPI.Models
+namespace ToDoList.TaskManager.WebAPI.Models.Change
 {
     public class ChangeToDoContentDto
     {
