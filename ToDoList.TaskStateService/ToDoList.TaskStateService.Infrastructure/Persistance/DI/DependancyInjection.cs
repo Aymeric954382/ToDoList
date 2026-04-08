@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ToDoList.TaskStateService.Application.Interfaces;
 using ToDoList.TaskStateService.Application.Interfaces.Repository;
-using ToDoList.TaskStateService.Infrastructure.Persistance.DI.DataBaseCommon.EF;
+using ToDoList.TaskStateService.Infrastructure.Persistance.DataBaseCommon.EF;
 
 namespace ToDoList.TaskStateService.Infrastructure.Persistance.DI
 {

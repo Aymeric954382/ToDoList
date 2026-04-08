@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using ToDoList.TaskStateService.Application.Common.Mappings.Profiles;
-using ToDoList.TaskStateService.Application.ToDoItems.Queries.ResponseDtos;
+using ToDoList.TaskStateService.Application.Features.ToDoItems.Queries.ResponseDtos;
 
 namespace ToDoList.TaskStateService.Tests.Common
 {

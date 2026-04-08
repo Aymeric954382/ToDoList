@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ToDoList.TaskStateService.Domain;
 
-namespace ToDoList.TaskStateService.Infrastructure.Persistance.DI.DataBaseCommon.EF.EntityTypeConfiguration
+namespace ToDoList.TaskStateService.Infrastructure.Persistance.DataBaseCommon.EF.EntityTypeConfiguration
 {
     public class ToDoItemConfiguration : IEntityTypeConfiguration<ToDoItem>
     {
@@ -10,7 +10,6 @@ namespace ToDoList.TaskStateService.Infrastructure.Persistance.DI.DataBaseCommon
         {
             builder.HasKey(x => x.Id);
             builder.HasIndex(x => x.Id).IsUnique();
-
         }
     }
 }

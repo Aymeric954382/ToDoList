@@ -1,8 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
+using ToDoList.TaskStateService.Application.Features.ToDoItems.Filter;
 using ToDoList.TaskStateService.Application.Interfaces.Repository;
 using ToDoList.TaskStateService.Domain;
+using ToDoList.TaskStateService.Domain.ValueObjects;
 
-namespace ToDoList.TaskStateService.Infrastructure.Persistance.DI.DataBaseCommon.EF
+namespace ToDoList.TaskStateService.Infrastructure.Persistance.DataBaseCommon.EF
 {
     public class ToDoRepository : IToDoRepository
     {
@@ -15,7 +18,7 @@ namespace ToDoList.TaskStateService.Infrastructure.Persistance.DI.DataBaseCommon
         public async Task<ToDoItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
             => await _context.ToDoItems.FindAsync(id);
 
-        public async Task<List<ToDoItem>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+        public async Task<List<ToDoItem>> GetListByUserIdAsync(Guid userId, CancellationToken cancellationToken)
             => await _context.ToDoItems.Where(t => t.UserId == userId).ToListAsync();
 
         public async Task AddAsync(ToDoItem todo, CancellationToken cancellationToken)
@@ -36,9 +39,36 @@ namespace ToDoList.TaskStateService.Infrastructure.Persistance.DI.DataBaseCommon
             await _context.SaveChangesAsync();
         }
 
-        public IQueryable<ToDoItem> AsQueryable()
+        public async Task<List<ToDoItem>> GetByFilterAsync(
+            ToDoFilter filter,
+            CancellationToken cancellationToken)
         {
-            return _context.ToDoItems.AsNoTracking();
+            var query = _context.ToDoItems
+                .Where(x => x.UserId == filter.UserId);
+
+            if (filter.Status.HasValue)
+                query = query.Where(x => x.Status == filter.Status);
+
+            if (filter.Priority.HasValue)
+                query = query.Where(x => x.Priority == filter.Priority);
+
+            if (filter.DueBefore.HasValue)
+                query = query.Where(x => x.DueDate <= filter.DueBefore);
+
+            if (filter.DueAfter.HasValue)
+                query = query.Where(x => x.DueDate >= filter.DueAfter);
+
+            if (filter.IsOverdue == true)
+            {
+                var now = DateTime.UtcNow;
+
+                query = query.Where(x =>
+                    x.DueDate <= now &&
+                    x.Status != ToDoStatus.Completed &&
+                    x.Status != ToDoStatus.Cancelled);
+            }
+
+            return await query.ToListAsync(cancellationToken);
         }
     }
 }

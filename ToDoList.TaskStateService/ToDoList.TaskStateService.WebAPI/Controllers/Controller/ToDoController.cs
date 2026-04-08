@@ -1,24 +1,36 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ToDoList.TaskStateService.Application.ToDoItems.Commands.ChangeToDoPriority;
-using ToDoList.TaskStateService.Application.ToDoItems.Commands.ChangeToDoStatus;
-using ToDoList.TaskStateService.Application.ToDoItems.Commands.CreateToDo;
-using ToDoList.TaskStateService.Application.ToDoItems.Commands.DeleteToDo;
-using ToDoList.TaskStateService.Application.ToDoItems.Queries.Contatiners;
-using ToDoList.TaskStateService.Application.ToDoItems.Queries.GetByOverdueToDos;
-using ToDoList.TaskStateService.Application.ToDoItems.Queries.GetByPriority;
-using ToDoList.TaskStateService.Application.ToDoItems.Queries.GetByStatus;
-using ToDoList.TaskStateService.Application.ToDoItems.Queries.GetListToDo;
+using ToDoList.TaskStateService.Application.Features.ToDoItems.Commands.ChangeToDoPriority;
+using ToDoList.TaskStateService.Application.Features.ToDoItems.Commands.ChangeToDoStatus;
+using ToDoList.TaskStateService.Application.Features.ToDoItems.Commands.CreateToDo;
+using ToDoList.TaskStateService.Application.Features.ToDoItems.Commands.DeleteToDo;
+using ToDoList.TaskStateService.Application.Features.ToDoItems.Queries.GetByOverdueToDos;
+using ToDoList.TaskStateService.Application.Features.ToDoItems.Queries.GetByPriority;
+using ToDoList.TaskStateService.Application.Features.ToDoItems.Queries.GetByStatus;
+using ToDoList.TaskStateService.Application.Features.ToDoItems.Queries.GetListToDo;
 using ToDoList.TaskStateService.Domain.ValueObjects;
-using ToDoList.TaskStateService.WebAPI.Models;
+using ToDoList.TaskStateService.WebAPI.Models.RequestDto.Change;
+using ToDoList.TaskStateService.WebAPI.Models.RequestDto.Create;
+using ToDoList.TaskStateService.WebAPI.Models.RequestDto.Delete;
+using ToDoList.TaskStateService.WebAPI.Models.ResponseDto.Change;
+using ToDoList.TaskStateService.WebAPI.Models.ResponseDto.Create;
+using ToDoList.TaskStateService.WebAPI.Models.ResponseDto.Delete;
+using ToDoList.TaskStateService.WebAPI.Models.ResponseDto.Get;
 
-namespace ToDoList.TaskStateService.WebAPI.Controllers.ControllerV1
+namespace ToDoList.TaskStateService.WebAPI.Controllers.Controller
 {
     [ApiController]
     [Authorize]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class ToDoStateController : BaseController
     {
+        public ToDoStateController(IMediator mediator, IMapper mapper)
+            : base(mediator, mapper)
+        {
+        }
+
         /// <summary>
         /// Retrieves all to-do lists associated with the current user.
         /// </summary>
@@ -29,8 +41,20 @@ namespace ToDoList.TaskStateService.WebAPI.Controllers.ControllerV1
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<ToDoListContainer>> GetAll() =>
-           Ok(await Mediator.Send(new GetToDoListQuery { UserId = UserId }));
+        public async Task<ActionResult<GetToDoListResponse>> GetAll()
+        {
+            var query = new GetToDoListQuery
+            {
+                UserId = UserId
+            };
+
+            var response = await Mediator.Send(query);
+
+            if (!response.ExecutionSuccess)
+                return BadRequest(response.Error);
+
+            return Ok(Mapper.Map<GetToDoListResponse>(response.Data));
+        }
 
         /// <summary>
         /// Retrieves a list of to-do items filtered by their status.
@@ -44,8 +68,21 @@ namespace ToDoList.TaskStateService.WebAPI.Controllers.ControllerV1
         [HttpGet("by-status")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<ToDoListContainer>> GetByStatus([FromQuery] ToDoStatus status) =>
-            Ok(await Mediator.Send(new GetToDoListByStatusQuery { UserId = UserId, Status = status }));
+        public async Task<ActionResult<GetToDoListByStatusResponse>> GetByStatus([FromQuery] ToDoStatus status)
+        {
+            var query = new GetToDoListByStatusQuery
+            {
+                UserId = UserId,
+                Status = status
+            };
+
+            var response = await Mediator.Send(query);
+
+            if (!response.ExecutionSuccess)
+                return BadRequest(response.Error);
+
+            return Ok(Mapper.Map<GetToDoListByStatusResponse>(response.Data));
+        }
 
         /// <summary>
         /// Retrieves a to-do list filtered by the specified priority level.
@@ -59,8 +96,21 @@ namespace ToDoList.TaskStateService.WebAPI.Controllers.ControllerV1
         [HttpGet("by-priority")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<ToDoListContainer>> GetByPriority([FromQuery] ToDoPriority priority) =>
-            Ok(await Mediator.Send(new GetToDoListByPriorityQuery { UserId = UserId, Priority = priority }));
+        public async Task<ActionResult<GetToDoListByPriorityResponse>> GetByPriority([FromQuery] ToDoPriority priority)
+        {
+            var query = new GetToDoListByPriorityQuery
+            {
+                UserId = UserId,
+                Priority = priority
+            };
+
+            var response = await Mediator.Send(query);
+
+            if (!response.ExecutionSuccess)
+                return BadRequest(response.Error);
+
+            return Ok(Mapper.Map<GetToDoListByPriorityResponse>(response.Data));
+        }
 
         /// <summary>
         /// Retrieves all overdue to-do items for the current user.
@@ -72,8 +122,20 @@ namespace ToDoList.TaskStateService.WebAPI.Controllers.ControllerV1
         [HttpGet("overdue")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<ToDoListContainer>> GetAllOverDue() =>
-            Ok(await Mediator.Send(new GetToDoListOverdueQuery { UserId = UserId }));
+        public async Task<ActionResult<GetToDoListByOverdueResponse>> GetAllOverDue()
+        {
+            var query = new GetToDoListOverdueQuery
+            {
+                UserId = UserId
+            };
+
+            var response = await Mediator.Send(query);
+
+            if (!response.ExecutionSuccess)
+                return BadRequest(response.Error);
+
+            return Ok(Mapper.Map<GetToDoListByOverdueResponse>(response.Data));
+        }
 
 
         /// <summary>
@@ -88,7 +150,7 @@ namespace ToDoList.TaskStateService.WebAPI.Controllers.ControllerV1
         [HttpPut("priority")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> ChangePriority([FromBody] ChangeToDoPriorityDto dto)
+        public async Task<ActionResult<ChangeToDoPriorityResponse>> ChangePriority([FromBody] ChangeToDoPriorityRequestDto dto)
         {
             var command = new ChangeToDoPriorityCommand
             {
@@ -97,8 +159,12 @@ namespace ToDoList.TaskStateService.WebAPI.Controllers.ControllerV1
                 Priority = dto.Priority
             };
 
-            await Mediator.Send(command);
-            return NoContent();
+            var response = await Mediator.Send(command);
+
+            if (!response.ExecutionSuccess)
+                return BadRequest(response.Error);
+
+            return Ok(Mapper.Map<GetToDoListByPriorityResponse>(response.Data));
         }
 
         /// <summary>
@@ -113,7 +179,7 @@ namespace ToDoList.TaskStateService.WebAPI.Controllers.ControllerV1
         [HttpPut("status")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> ChangeStatus([FromBody] ChangeToDoStatusDto dto)
+        public async Task<ActionResult<GetToDoListByStatusResponse>> ChangeStatus([FromBody] ChangeToDoStatusRequestDto dto)
         {
             var command = new ChangeToDoStatusCommand
             {
@@ -122,8 +188,12 @@ namespace ToDoList.TaskStateService.WebAPI.Controllers.ControllerV1
                 Status = dto.Status
             };
 
-            await Mediator.Send(command);
-            return NoContent();
+            var response = await Mediator.Send(command);
+
+            if (!response.ExecutionSuccess)
+                return BadRequest(response.Error);
+
+            return Ok(Mapper.Map<GetToDoListByStatusResponse>(response.Data));
         }
 
         /// <summary>
@@ -137,7 +207,7 @@ namespace ToDoList.TaskStateService.WebAPI.Controllers.ControllerV1
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<Guid>> Create([FromBody] CreateToDoDto dto)
+        public async Task<ActionResult<CreateToDoResponse>> Create([FromBody] CreateToDoRequestDto dto)
         {
             var command = new CreateToDoCommand
             {
@@ -146,7 +216,12 @@ namespace ToDoList.TaskStateService.WebAPI.Controllers.ControllerV1
                 Priority = dto.Priority
             };
 
-            return NoContent();
+            var response = await Mediator.Send(command);
+
+            if (!response.ExecutionSuccess)
+                return BadRequest(response.Error);
+
+            return Ok(Mapper.Map<CreateToDoResponse>(response.Data));
         }
 
         /// <summary>
@@ -159,15 +234,20 @@ namespace ToDoList.TaskStateService.WebAPI.Controllers.ControllerV1
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<ActionResult<DeleteToDoResponse>> Delete([FromBody] DeleteToDoRequestDto dto)
         {
             var command = new DeleteToDoCommand
             {
-                Id = id,
+                Id = dto.Id,
                 UserId = UserId
             };
-            await Mediator.Send(command);
-            return NoContent();
+
+            var response = await Mediator.Send(command);
+
+            if (!response.ExecutionSuccess)
+                return BadRequest(response.Error);
+
+            return Ok(Mapper.Map<DeleteToDoResponse>(response.Data));
         }
     }
 }

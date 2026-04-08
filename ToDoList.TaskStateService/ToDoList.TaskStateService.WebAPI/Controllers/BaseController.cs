@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,11 +16,32 @@ namespace ToDoList.TaskStateService.WebAPI.Controllers
     [Route("api/v{version:apiVersion}/[controller]/[action]")]
     public abstract class BaseController : ControllerBase
     {
-        private IMediator _mediator;
-        protected IMediator Mediator =>
-            _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
-        internal Guid UserId => !User.Identity.IsAuthenticated
-            ? Guid.Empty
-            : Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        protected IMediator Mediator { get; }
+        protected IMapper Mapper { get; }
+
+        protected BaseController(IMediator mediator, IMapper mapper)
+        {
+            Mediator = mediator;
+            Mapper = mapper;
+        }
+
+        protected Guid UserId
+        {
+            get
+            {
+                if (User?.Identity?.IsAuthenticated != true)
+                    throw new UnauthorizedAccessException();
+
+                var value = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (value is null)
+                    throw new UnauthorizedAccessException("UserId claim missing");
+
+                if (!Guid.TryParse(value, out var userId))
+                    throw new UnauthorizedAccessException("Invalid UserId");
+
+                return userId;
+            }
+        }
     }
 }

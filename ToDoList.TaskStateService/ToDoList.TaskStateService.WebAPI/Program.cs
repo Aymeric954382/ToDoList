@@ -1,10 +1,10 @@
 using System.Reflection;
 using ToDoList.TaskStateService.Application.Interfaces;
-using ToDoList.TaskStateService.Infrastructure.Persistance.DI.DataBaseCommon.EF;
 using ToDoList.TaskStateService.Application.DI;
 using ToDoList.TaskStateService.Infrastructure.Persistance.DI;
 using StackExchange.Redis;
 using Microsoft.AspNetCore.Mvc;
+using ToDoList.TaskStateService.Infrastructure.Persistance.DataBaseCommon.EF;
 
 namespace ToDoList.TaskStateService.WebAPI
 {

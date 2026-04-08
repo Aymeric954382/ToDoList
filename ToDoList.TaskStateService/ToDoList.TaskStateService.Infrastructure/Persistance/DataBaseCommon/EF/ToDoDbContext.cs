@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ToDoList.TaskStateService.Application.Interfaces;
 using ToDoList.TaskStateService.Domain;
-using ToDoList.TaskStateService.Infrastructure.Persistance.DI.DataBaseCommon.EF.EntityTypeConfiguration;
+using ToDoList.TaskStateService.Infrastructure.Persistance.DataBaseCommon.EF.EntityTypeConfiguration;
 
-namespace ToDoList.TaskStateService.Infrastructure.Persistance.DI.DataBaseCommon.EF
+namespace ToDoList.TaskStateService.Infrastructure.Persistance.DataBaseCommon.EF
 {
     public class ToDoDbContext : DbContext, IToDoDbContext
     {
