@@ -8,6 +8,6 @@ namespace ToDoList.TaskManager.Application.Features.ToDoItems.Commands.CreateToD
 {
     public class CreateToDoResponseDto
     {
-
+        public Guid Id { get; set; }
     }
 }

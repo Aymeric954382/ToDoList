@@ -8,8 +8,8 @@ namespace ToDoList.TaskManager.Application.Features.ToDoItems.Commands.CreateToD
         : IWithResultCommand<ServiceResult<CreateToDoResponseDto>>
     {
         public Guid UserId { get; set; }
-        public string Title { get; set; }
-        public string Details { get; set; }
+        public required string Title { get; set; }
+        public string? Details { get; set; }
         public DateTime? DueDate { get; set; }
         public ToDoPriority? Priority { get; set; }
     }

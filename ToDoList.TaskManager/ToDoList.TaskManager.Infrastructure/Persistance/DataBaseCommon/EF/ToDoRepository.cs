@@ -6,7 +6,6 @@ namespace ToDoList.TaskManager.Infrastructure.Persistance.DataBaseCommon.EF
 {
     public class ToDoRepository : IToDoRepository
     {
-        private static readonly SemaphoreSlim _semaphore = new(1, 1);
         private readonly ToDoDbContext _context;
         public ToDoRepository(ToDoDbContext context)
         {
@@ -19,35 +18,19 @@ namespace ToDoList.TaskManager.Infrastructure.Persistance.DataBaseCommon.EF
         public async Task<List<ToDoItem>> GetListByUserIdAsync(Guid userId, CancellationToken cancellationToken)
             => await _context.ToDoItems.Where(t => t.UserId == userId).ToListAsync();
 
-        public async Task AddAsync(ToDoItem todo, CancellationToken cancellationToken)
+        public void Add(ToDoItem todo)
         {
-            await _context.ToDoItems.AddAsync(todo);
-            await _context.SaveChangesAsync();
+            _context.ToDoItems.Add(todo);
         }
 
-        public async Task UpdateAsync(ToDoItem todo, CancellationToken cancellationToken)
+        public void Update(ToDoItem todo)
         {
-            await _semaphore.WaitAsync(cancellationToken);
-            try
-            {
-                _context.ToDoItems.Update(todo);
-                await _context.SaveChangesAsync(cancellationToken);
-            }
-            finally
-            {
-                _semaphore.Release();
-            }
+            _context.ToDoItems.Update(todo);
         }
 
-        public async Task DeleteAsync(ToDoItem todo, CancellationToken cancellationToken)
+        public void Delete(ToDoItem todo)
         {
             _context.ToDoItems.Remove(todo);
-            await _context.SaveChangesAsync();
-        }
-
-        public IQueryable<ToDoItem> AsQueryable()
-        {
-            return _context.ToDoItems.AsNoTracking();
         }
     }
 }

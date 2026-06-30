@@ -4,11 +4,10 @@ namespace ToDoList.TaskManager.Application.Interfaces.Repository
 {
     public interface IToDoRepository
     {
-        IQueryable<ToDoItem> AsQueryable();
         Task<ToDoItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
         Task<List<ToDoItem>> GetListByUserIdAsync(Guid userId, CancellationToken cancellationToken);
-        Task AddAsync(ToDoItem todo, CancellationToken cancellationToken);
-        Task UpdateAsync(ToDoItem todo, CancellationToken cancellationToken);
-        Task DeleteAsync(ToDoItem todo, CancellationToken cancellationToken);
+        void Add(ToDoItem todo);
+        void Update(ToDoItem todo);
+        void Delete(ToDoItem todo);
     }
 }

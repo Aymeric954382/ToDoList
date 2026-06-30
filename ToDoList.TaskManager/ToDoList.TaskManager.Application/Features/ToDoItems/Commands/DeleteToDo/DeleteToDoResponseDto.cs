@@ -8,6 +8,6 @@ namespace ToDoList.TaskManager.Application.Features.ToDoItems.Commands.DeleteToD
 {
     public class DeleteToDoResponseDto
     {
-
+        public Guid Id { get; set; }
     }
 }

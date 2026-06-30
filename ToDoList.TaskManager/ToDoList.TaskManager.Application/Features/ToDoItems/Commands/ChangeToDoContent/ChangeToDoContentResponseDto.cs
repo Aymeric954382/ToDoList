@@ -8,5 +8,6 @@ namespace ToDoList.TaskManager.Application.Features.ToDoItems.Commands.ChangeToD
 {
     public class ChangeToDoContentResponseDto
     {
+        public Guid Id { get; set; }
     }
 }

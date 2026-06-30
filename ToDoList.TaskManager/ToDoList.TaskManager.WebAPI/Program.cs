@@ -13,7 +13,7 @@ using ToDoList.TaskManager.Application.Interfaces;
 using ToDoList.TaskManager.Infrastructure.Persistance.DataBaseCommon.EF;
 using ToDoList.TaskManager.Infrastructure.Persistance.DI;
 using ToDoList.TaskManager.Infrastructure.Persistance.Swagger;
-using ToDoList.TaskManager.WebAPI.Middleware;
+using ToDoList.TaskManager.WebAPI.Middlewares;
 using ToDoList.TaskManager.WebAPI.Services;
 
 
@@ -32,6 +32,7 @@ namespace ToDoList.TaskManager.WebAPI
                 .CreateLogger();
 
             builder.Host.UseSerilog();
+            builder.Services.AddSingleton<Serilog.ILogger>(Log.Logger);
 
             builder.Services.AddAutoMapper(
                 Assembly.GetExecutingAssembly(),
@@ -40,6 +41,9 @@ namespace ToDoList.TaskManager.WebAPI
 
             builder.Services.AddApplication();
             builder.Services.AddPersistance(builder.Configuration);
+
+            builder.Services.AddAuthorization();
+
             builder.Services.AddControllers();
 
             builder.Services.AddCors(options =>
