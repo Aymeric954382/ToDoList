@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using ToDoList.TaskStateService.Application.Common.Exceptions.ServiceErrorCodeToResponse;
 using ToDoList.TaskStateService.Application.Features.ResponseServiceResultsContainer;
 using ToDoList.TaskStateService.Application.Interfaces;
+using ToDoList.TaskStateService.WebAPI.Models;
 
 namespace ToDoList.TaskStateService.WebAPI.Filters.ApiResponseFilter
 {
@@ -26,15 +27,14 @@ namespace ToDoList.TaskStateService.WebAPI.Filters.ApiResponseFilter
                         _ => StatusCodes.Status400BadRequest
                     };
 
-                objectResult.Value = new
+                objectResult.Value = new ApiResponse<object>
                 {
-                    success = result.ExecutionSuccess,
-                    code = result.Error,
-                    message = IServiceResult.GetErrorMessage(result.Error),
-                    data = result.Data
+                    ExecutionSuccess = result.ExecutionSuccess,
+                    Code = result.Error,
+                    Message = IServiceResult.GetErrorMessage(result.Error),
+                    Data = result.Data
                 };
             }
-
             return;
         }
     }

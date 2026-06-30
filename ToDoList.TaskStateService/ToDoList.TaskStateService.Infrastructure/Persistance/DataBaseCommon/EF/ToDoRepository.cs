@@ -18,25 +18,31 @@ namespace ToDoList.TaskStateService.Infrastructure.Persistance.DataBaseCommon.EF
         public async Task<ToDoItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
             => await _context.ToDoItems.FindAsync(id);
 
+        public async Task<List<ToDoItem>> GetByIdsAsync(
+            IEnumerable<Guid> ids,
+            CancellationToken cancellationToken)
+        {
+            return await _context.ToDoItems
+                .Where(x => ids.Contains(x.Id))
+                .ToListAsync(cancellationToken);
+        }
+
         public async Task<List<ToDoItem>> GetListByUserIdAsync(Guid userId, CancellationToken cancellationToken)
             => await _context.ToDoItems.Where(t => t.UserId == userId).ToListAsync();
 
-        public async Task AddAsync(ToDoItem todo, CancellationToken cancellationToken)
+        public void Add(ToDoItem todo)
         {
-            await _context.ToDoItems.AddAsync(todo);
-            await _context.SaveChangesAsync();
+            _context.ToDoItems.Add(todo);
         }
 
-        public async Task UpdateAsync(ToDoItem todo, CancellationToken cancellationToken)
+        public void Update(ToDoItem todo)
         {
             _context.ToDoItems.Update(todo);
-            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task DeleteAsync(ToDoItem todo, CancellationToken cancellationToken)
+        public void Delete(ToDoItem todo)
         {
             _context.ToDoItems.Remove(todo);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<List<ToDoItem>> GetByFilterAsync(

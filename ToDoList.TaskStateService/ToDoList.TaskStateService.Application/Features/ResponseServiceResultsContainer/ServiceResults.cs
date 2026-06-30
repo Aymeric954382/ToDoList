@@ -13,6 +13,7 @@ namespace ToDoList.TaskStateService.Application.Features.ResponseServiceResultsC
         public bool ExecutionSuccess { get; init; }
         public ServiceErrorCode Error { get; init; }
         public DateTime ResponseDate { get; } = DateTime.UtcNow;
+        public string Message { get; init; } = string.Empty;
         public static string GetErrorMessage(ServiceErrorCode errorCode) => 
             ServiceErrorCodeMessages.GetMessage(errorCode);
     }
@@ -38,7 +39,8 @@ namespace ToDoList.TaskStateService.Application.Features.ResponseServiceResultsC
             {
                 ExecutionSuccess = false,
                 Error = error,
-                Data = default
+                Data = default,
+                Message = GetErrorMessage(error)
             };
         }
     }
@@ -62,7 +64,8 @@ namespace ToDoList.TaskStateService.Application.Features.ResponseServiceResultsC
             {
                 ExecutionSuccess = false,
                 Error = error,
-                Data = default
+                Data = default,
+                Message = GetErrorMessage(error)
             };
         }
     }

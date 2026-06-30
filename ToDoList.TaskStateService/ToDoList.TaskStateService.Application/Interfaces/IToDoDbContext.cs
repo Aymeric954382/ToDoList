@@ -10,7 +10,6 @@ namespace ToDoList.TaskStateService.Application.Interfaces
 {
     public interface IToDoDbContext
     {
-        DbSet<ToDoItem> ToDoItems { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellatioToken);
     }
 }

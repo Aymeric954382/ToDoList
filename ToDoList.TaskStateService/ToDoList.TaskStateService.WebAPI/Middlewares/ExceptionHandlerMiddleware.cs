@@ -4,17 +4,20 @@ using System.Net;
 using System.Text.Json;
 using ToDoList.TaskStateService.Application.Common.Exceptions;
 using ToDoList.TaskStateService.Application.Common.Exceptions.ServiceErrorCodeToResponse;
+using ToDoList.TaskStateService.Application.Interfaces;
+using ToDoList.TaskStateService.WebAPI.Models;
 
 namespace ToDoList.TaskStateService.WebAPI.Middlewares
 {
     public class ExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
+
         public ExceptionHandlerMiddleware(RequestDelegate next)
         {
             _next = next;
         }
-        public async Task InvokeAsynс(HttpContext context)
+        public async Task InvokeAsync(HttpContext context)
         {
             try
             {
@@ -31,26 +34,26 @@ namespace ToDoList.TaskStateService.WebAPI.Middlewares
 
         private async Task HandleException(HttpContext context, Exception ex)
         {
-            int statusCode = ex switch
+            var (statusCode, errorCode) = ex switch
             {
-                ValidationException => 400,
-                _ => 500
+                ValidationException => (StatusCodes.Status400BadRequest, ServiceErrorCode.ValidationFailed),
+                _ => (StatusCodes.Status500InternalServerError, ServiceErrorCode.Unknown)
             };
 
-            var response = new ObjectResult(new
+            var response = new ApiResponse()
             {
-                success = false,
-                message = statusCode
-            })
-            {
-               StatusCode = statusCode
+                ExecutionSuccess = false,
+                Code = errorCode,
+                Message = IServiceResult.GetErrorMessage(errorCode)
             };
+
 
             var options = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
 
+            context.Response.StatusCode = statusCode;
             context.Response.ContentType = "application/json";
 
             await context.Response.WriteAsync(JsonSerializer.Serialize(response)); ;

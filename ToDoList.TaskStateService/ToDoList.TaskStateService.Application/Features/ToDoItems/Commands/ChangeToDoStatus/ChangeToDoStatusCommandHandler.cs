@@ -1,39 +1,56 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Data;
-using System.Reflection.Metadata.Ecma335;
-using ToDoList.TaskStateService.Application.Common.Exceptions;
+using Serilog;
 using ToDoList.TaskStateService.Application.Common.Exceptions.ServiceErrorCodeToResponse;
 using ToDoList.TaskStateService.Application.Features.ResponseServiceResultsContainer;
+using ToDoList.TaskStateService.Application.Interfaces;
 using ToDoList.TaskStateService.Application.Interfaces.Repository;
-using ToDoList.TaskStateService.Domain;
 
 namespace ToDoList.TaskStateService.Application.Features.ToDoItems.Commands.ChangeToDoStatus
 {
-    public class ChangeToDoStatusCommandHandler 
-        : IRequestHandler<ChangeToDoStatusCommand, 
+    public class ChangeToDoStatusCommandHandler
+        : IRequestHandler<ChangeToDoStatusCommand,
             ServiceResult<ChangeToDoStatusResponseDto>>
     {
-        public readonly IToDoRepository _repository;
+        private readonly IToDoRepository _repository;
+        private readonly IToDoDbContext _context;
+        private readonly ILogger _logger;
 
-        public ChangeToDoStatusCommandHandler(IToDoRepository repository) =>
+        public ChangeToDoStatusCommandHandler(
+            IToDoRepository repository,
+            IToDoDbContext context,
+            ILogger logger)
+        {
             _repository = repository;
+            _context = context;
+            _logger = logger;
+        }
+
         public async Task<ServiceResult<ChangeToDoStatusResponseDto>> Handle(
-            ChangeToDoStatusCommand request, 
+            ChangeToDoStatusCommand request,
             CancellationToken cancellationToken)
         {
+            _logger.Information(
+                "ChangeStatus started. TaskId={TaskId}, UserId={UserId}, NewStatus={Status}",
+                request.Id, request.UserId, request.Status);
+
             var entity = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
-            if (entity == null || entity.UserId != request.UserId)
+            if (entity is null || entity.UserId != request.UserId)
             {
-                //logger throw new NotFoundException(nameof(ToDoItem), request.Id);
+                _logger.Warning(
+                    "ChangeStatus failed: not found or access denied. TaskId={TaskId}, UserId={UserId}",
+                    request.Id, request.UserId);
 
                 return ServiceResult<ChangeToDoStatusResponseDto>
                     .Fail(ServiceErrorCode.NotFound);
             }
+
             if (entity.Status == request.Status)
             {
-                //logger throw new IdenticalReplacementException(nameof(ToDoItem), entity.Status, entity.Id);
+                _logger.Warning(
+                    "ChangeStatus skipped: same status. TaskId={TaskId}, Status={Status}",
+                    request.Id, request.Status);
 
                 return ServiceResult<ChangeToDoStatusResponseDto>
                     .Fail(ServiceErrorCode.ValidationFailed);
@@ -44,18 +61,35 @@ namespace ToDoList.TaskStateService.Application.Features.ToDoItems.Commands.Chan
 
             try
             {
-                await _repository.UpdateAsync(entity, cancellationToken);
+                _repository.Update(entity);
+                await _context.SaveChangesAsync(cancellationToken);
+
+                _logger.Information(
+                    "ChangeStatus success. TaskId={TaskId}, NewStatus={Status}",
+                    request.Id, request.Status);
             }
-            catch(DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
+                _logger.Error(
+                    ex,
+                    "ChangeStatus concurrency conflict. TaskId={TaskId}",
+                    request.Id);
+
                 return ServiceResult<ChangeToDoStatusResponseDto>
                     .Fail(ServiceErrorCode.Conflict);
             }
+            catch (Exception ex)
+            {
+                _logger.Error(
+                    ex,
+                    "ChangeStatus unexpected error. TaskId={TaskId}",
+                    request.Id);
 
-            var response = new ChangeToDoStatusResponseDto();
+                throw;
+            }
 
             return ServiceResult<ChangeToDoStatusResponseDto>
-                .Success(response);
+                .Success(new ChangeToDoStatusResponseDto());
         }
     }
 }

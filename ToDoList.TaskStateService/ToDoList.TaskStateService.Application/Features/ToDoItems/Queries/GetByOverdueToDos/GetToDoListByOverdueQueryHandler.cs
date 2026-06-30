@@ -1,43 +1,60 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Serilog;
 using ToDoList.TaskStateService.Application.Common.Exceptions.ServiceErrorCodeToResponse;
 using ToDoList.TaskStateService.Application.Features.ResponseServiceResultsContainer;
 using ToDoList.TaskStateService.Application.Features.ToDoItems.Filter;
 using ToDoList.TaskStateService.Application.Features.ToDoItems.Queries.Contatiners;
 using ToDoList.TaskStateService.Application.Interfaces.Repository;
-using ToDoList.TaskStateService.Domain;
 
 namespace ToDoList.TaskStateService.Application.Features.ToDoItems.Queries.GetByOverdueToDos
 {
-    public class GetToDoListByOverdueQueryHandler 
-        : IRequestHandler<GetToDoListOverdueQuery, 
-        ServiceResult<GetToDoListByOverdueResponseDto>>
+    public class GetToDoListByOverdueQueryHandler
+        : IRequestHandler<GetToDoListOverdueQuery,
+            ServiceResult<GetToDoListByOverdueResponseDto>>
     {
-        public readonly IToDoRepository _repository;
+        private readonly IToDoRepository _repository;
+        private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public readonly IMapper _mapper;
-        public GetToDoListByOverdueQueryHandler(IToDoRepository repository, IMapper mapper)
+        public GetToDoListByOverdueQueryHandler(
+            IToDoRepository repository,
+            IMapper mapper,
+            ILogger logger)
         {
             _repository = repository;
             _mapper = mapper;
+            _logger = logger;
         }
+
         public async Task<ServiceResult<GetToDoListByOverdueResponseDto>> Handle(
-            GetToDoListOverdueQuery request, 
+            GetToDoListOverdueQuery request,
             CancellationToken cancellationToken)
         {
-            var filtered = new ToDoFilter()
+            _logger.Information(
+                "GetOverdueToDos started. UserId={UserId}",
+                request.UserId);
+
+            var filter = new ToDoFilter
             {
+                UserId = request.UserId,
                 IsOverdue = true
             };
 
             try
             {
-                var resultFiltered = await _repository.GetByFilterAsync(filtered, cancellationToken);
+                var resultFiltered = await _repository
+                    .GetByFilterAsync(filter, cancellationToken);
 
-                var itemsDto = _mapper.Map<List<ToDoItemDto>>(resultFiltered);
+                var itemsDto = _mapper
+                    .Map<List<ToDoItemDto>>(resultFiltered);
 
-                var response = new GetToDoListByOverdueResponseDto()
+                _logger.Information(
+                    "GetOverdueToDos success. UserId={UserId}, Count={Count}",
+                    request.UserId,
+                    itemsDto.Count);
+
+                var response = new GetToDoListByOverdueResponseDto
                 {
                     Items = itemsDto
                 };
@@ -47,12 +64,14 @@ namespace ToDoList.TaskStateService.Application.Features.ToDoItems.Queries.GetBy
             }
             catch (Exception ex)
             {
-                //logger
+                _logger.Error(
+                    ex,
+                    "GetOverdueToDos failed. UserId={UserId}",
+                    request.UserId);
 
                 return ServiceResult<GetToDoListByOverdueResponseDto>
                     .Fail(ServiceErrorCode.Unknown);
             }
-
         }
     }
 }

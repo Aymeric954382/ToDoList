@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
+using ToDoList.TaskStateService.Application.Features.ToDoItems.Commands.CreateToDo;
 using ToDoList.TaskStateService.Application.Interfaces.Repository;
-using ToDoList.TaskStateService.Application.ToDoItems.Commands.CreateToDo;
 using ToDoList.TaskStateService.Domain;
 using ToDoList.TaskStateService.Domain.ValueObjects;
 

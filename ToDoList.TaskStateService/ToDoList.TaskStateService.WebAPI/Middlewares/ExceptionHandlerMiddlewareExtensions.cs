@@ -2,7 +2,7 @@
 {
     public static class ExceptionHandlerMiddlewareExtensions
     {
-        public static IApplicationBuilder UseExceptionHandler(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseCustomExceptionHandler(this IApplicationBuilder builder)
             => builder.UseMiddleware<ExceptionHandlerMiddleware>();
     }
 }

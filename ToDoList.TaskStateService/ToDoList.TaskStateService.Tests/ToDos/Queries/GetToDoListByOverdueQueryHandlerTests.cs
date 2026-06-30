@@ -2,6 +2,7 @@
 using FluentAssertions;
 using MockQueryable;
 using Moq;
+using ToDoList.TaskStateService.Application.Features.ToDoItems.Queries.GetByOverdueToDos;
 using ToDoList.TaskStateService.Application.Interfaces.Repository;
 using ToDoList.TaskStateService.Application.ToDoItems.Queries.GetByOverdueToDos;
 using ToDoList.TaskStateService.Domain;
@@ -31,7 +32,7 @@ namespace ToDoList.TaskStateService.Tests.ToDos.Queries
 
             mockRepo.Setup(x => x.AsQueryable()).Returns(mock);
 
-            var handler = new GetToDoListOverdueQueryHandler(mockRepo.Object, Mapper);
+            var handler = new GetToDoListByOverdueQueryHandler(mockRepo.Object, Mapper);
 
             var query = new GetToDoListOverdueQuery()
             {

@@ -1,39 +1,59 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ToDoList.TaskStateService.Application.Common.Exceptions;
+using Serilog;
 using ToDoList.TaskStateService.Application.Common.Exceptions.ServiceErrorCodeToResponse;
 using ToDoList.TaskStateService.Application.Features.ResponseServiceResultsContainer;
+using ToDoList.TaskStateService.Application.Interfaces;
 using ToDoList.TaskStateService.Application.Interfaces.Repository;
-using ToDoList.TaskStateService.Domain;
 
 namespace ToDoList.TaskStateService.Application.Features.ToDoItems.Commands.ChangeToDoDueDate
 {
-    public class ChangeToDoDueDateCommandHandler 
-        : IRequestHandler<ChangeToDoDueDateCommand, 
-        ServiceResult<ChangeToDoDueDateResponseDto>>
+    public class ChangeToDoDueDateCommandHandler
+        : IRequestHandler<ChangeToDoDueDateCommand,
+            ServiceResult<ChangeToDoDueDateResponseDto>>
     {
-        public readonly IToDoRepository _repository;
-        public ChangeToDoDueDateCommandHandler(IToDoRepository repository) =>
+        private readonly IToDoRepository _repository;
+        private readonly IToDoDbContext _context;
+        private readonly ILogger _logger;
+
+        public ChangeToDoDueDateCommandHandler(
+            IToDoRepository repository,
+            ILogger logger,
+            IToDoDbContext context)
+        {
             _repository = repository;
+            _context = context;
+            _logger = logger;
+        }
+
         public async Task<ServiceResult<ChangeToDoDueDateResponseDto>> Handle(
-            ChangeToDoDueDateCommand request, 
+            ChangeToDoDueDateCommand request,
             CancellationToken cancellationToken)
         {
+            _logger.Information(
+                "ChangeDueDate started. TaskId={TaskId}, UserId={UserId}, NewDueDate={DueDate}",
+                request.Id, request.UserId, request.DueDate);
+
             var entity = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
-            if (entity is null || entity.UserId == request.Id)
+            if (entity is null || entity.UserId != request.UserId)
             {
-                // logger throw new NotFoundException(nameof(ToDoItems), request.Id);
+                _logger.Warning(
+                    "Task not found or access denied. TaskId={TaskId}, UserId={UserId}",
+                    request.Id, request.UserId);
 
-                return ServiceResult<ChangeToDoDueDateResponseDto>.Fail(
-                    ServiceErrorCode.NotFound);
+                return ServiceResult<ChangeToDoDueDateResponseDto>
+                    .Fail(ServiceErrorCode.NotFound);
             }
+
             if (request.DueDate == entity.DueDate)
             {
-                // logger throw new IdenticalReplacementException(nameof(ToDoItem), request.DueDate, request.Id);
+                _logger.Warning(
+                    "DueDate not changed (idempotent request). TaskId={TaskId}, DueDate={DueDate}",
+                    request.Id, request.DueDate);
 
-                return ServiceResult<ChangeToDoDueDateResponseDto>.Fail(
-                    ServiceErrorCode.ValidationFailed);
+                return ServiceResult<ChangeToDoDueDateResponseDto>
+                    .Fail(ServiceErrorCode.ValidationFailed);
             }
 
             entity.EditDate = DateTime.UtcNow;
@@ -41,20 +61,26 @@ namespace ToDoList.TaskStateService.Application.Features.ToDoItems.Commands.Chan
 
             try
             {
-                await _repository.UpdateAsync(entity, cancellationToken);
+                _repository.Update(entity);
+                await _context.SaveChangesAsync(cancellationToken);
+
+                _logger.Information(
+                    "DueDate updated successfully. TaskId={TaskId}",
+                    request.Id);
             }
-            catch(DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
-                //logger ex
+                _logger.Error(
+                    ex,
+                    "Concurrency conflict while updating DueDate. TaskId={TaskId}",
+                    request.Id);
 
-                return ServiceResult<ChangeToDoDueDateResponseDto>.Fail(
-                    ServiceErrorCode.Conflict);
+                return ServiceResult<ChangeToDoDueDateResponseDto>
+                    .Fail(ServiceErrorCode.Conflict);
             }
-
-            var response = new ChangeToDoDueDateResponseDto(); // return something result when will be need 
 
             return ServiceResult<ChangeToDoDueDateResponseDto>
-                .Success(response);
+                .Success(new ChangeToDoDueDateResponseDto());
         }
     }
 }
