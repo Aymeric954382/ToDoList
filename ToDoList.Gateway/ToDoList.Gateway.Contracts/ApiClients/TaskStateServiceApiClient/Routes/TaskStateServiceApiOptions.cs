@@ -2,7 +2,6 @@
 {
     public class TaskStateServiceApiOptions
     {
-        public string BaseUrl { get; set; }
-        public TaskStateServiceRoutes Routes { get; set; }
+        public required string BaseUrl { get; set; }
     }
 }

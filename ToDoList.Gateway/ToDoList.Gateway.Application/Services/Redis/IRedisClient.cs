@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ToDoList.Gateway.Contracts.ApiClients.Stubs;
+using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Stubs;
 
 namespace ToDoList.Gateway.Application.Services.Redis
 {

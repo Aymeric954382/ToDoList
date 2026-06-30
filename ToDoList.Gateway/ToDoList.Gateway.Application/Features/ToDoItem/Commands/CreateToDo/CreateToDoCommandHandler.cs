@@ -1,21 +1,57 @@
 ﻿using MediatR;
+using Serilog;
+using ToDoList.Gateway.Application.Common.Exceptions.ServiceErrorCodeToResponse;
 using ToDoList.Gateway.Application.Features.ResponseServiceResultsContainer;
 using ToDoList.Gateway.Application.Interfaces.Orchestartors;
-using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerResponseDtos.ResponseDtos.Create;
-using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.TaskStateServiceResponseDtos.ResponseDtos.Create;
 
 namespace ToDoList.Gateway.Application.Features.ToDoItem.Commands.CreateToDo
 {
-    public class CreateToDoCommandHandler : IRequestHandler<CreateToDoCommand, ServiceResult<CreateToDoResponseDto>>
+    public class CreateToDoCommandHandler
+        : IRequestHandler<
+            CreateToDoCommand,
+            ServiceResult<CreateToDoResponseDto>>
     {
         private readonly ICreateToDoOrchestrator _orchestrator;
-        public CreateToDoCommandHandler(ICreateToDoOrchestrator orchestrator)
+        private readonly ILogger _logger;
+
+        public CreateToDoCommandHandler(
+            ICreateToDoOrchestrator orchestrator,
+            ILogger logger)
         {
             _orchestrator = orchestrator;
+            _logger = logger;
         }
-        public async Task<ServiceResult<CreateToDoResponseDto>> Handle(CreateToDoCommand request, CancellationToken cancellationToken)
+
+        public async Task<ServiceResult<CreateToDoResponseDto>> Handle(
+            CreateToDoCommand request,
+            CancellationToken cancellationToken)
         {
-           return await _orchestrator.CreateAsync(request, cancellationToken);
+            _logger.Information(
+                "CreateToDo started. UserId={UserId}",
+                request.UserId);
+
+            try
+            {
+                var result = await _orchestrator.CreateAsync(
+                    request,
+                    cancellationToken);
+
+                _logger.Information(
+                    "CreateToDo completed. UserId={UserId}",
+                    request.UserId);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(
+                    ex,
+                    "CreateToDo failed. UserId={UserId}",
+                    request.UserId);
+
+                return ServiceResult<CreateToDoResponseDto>
+                    .Fail(ServiceErrorCode.Unknown);
+            }
         }
     }
 }

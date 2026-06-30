@@ -1,10 +1,10 @@
-﻿using ToDoList.Gateway.Application.Common.Exceptions.ServiceErrorCodeToResponse;
+﻿using Serilog;
+using ToDoList.Gateway.Application.Common.Exceptions.ServiceErrorCodeToResponse;
 using ToDoList.Gateway.Application.Features.ResponseServiceResultsContainer;
 using ToDoList.Gateway.Application.Features.ToDoItem.Commands.CreateToDo;
 using ToDoList.Gateway.Application.Interfaces.ContractsClientAdapter;
 using ToDoList.Gateway.Application.Interfaces.Orchestartors;
-using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerResponseDtos.ResponseDtos.Create;
-using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.TaskStateServiceResponseDtos.ResponseDtos.Create;
+using ToDoList.Gateway.Contracts.Exceptions;
 
 namespace ToDoList.Gateway.Application.Features.Orchestrators.CommandsOrchestrators
 {
@@ -12,59 +12,91 @@ namespace ToDoList.Gateway.Application.Features.Orchestrators.CommandsOrchestrat
     {
         private readonly ITaskStateServiceApiClientAdapter _serviceApiClient;
         private readonly ITaskManagerApiClientAdapter _managerApiClient;
-        public CreateToDoOrchestrator(ITaskStateServiceApiClientAdapter serviceApiClient, 
-            ITaskManagerApiClientAdapter managerApiClient)
+        private readonly ILogger _logger;
+
+        public CreateToDoOrchestrator(
+            ITaskStateServiceApiClientAdapter serviceApiClient,
+            ITaskManagerApiClientAdapter managerApiClient,
+            ILogger logger)
         {
             _serviceApiClient = serviceApiClient;
             _managerApiClient = managerApiClient;
+            _logger = logger;
         }
+
         public async Task<ServiceResult<CreateToDoResponseDto>> CreateAsync(
             CreateToDoCommand command,
             CancellationToken cancellationToken)
         {
-            var managerResult = await _managerApiClient.CreateAsync(command, cancellationToken);
+            _logger.Information(
+                "CreateToDo orchestration started. UserId={UserId}",
+                command.UserId);
 
-            if (!managerResult.ExecutionSuccess)
-                return ServiceResult<CreateToDoResponseDto>.Fail(
-                    managerResult.Error ?? ServiceErrorCode.Unknown);
+            var managerResult = await _managerApiClient.CreateAsync(
+                command,
+                cancellationToken);
+
+            if (managerResult == null)
+            {
+                _logger.Error(
+                    "TaskManager returned null result. UserId={UserId}",
+                    command.UserId);
+
+                return ServiceResult<CreateToDoResponseDto>
+                    .Fail(ServiceErrorCode.Unknown);
+            }
+
+            _logger.Information(
+                "TaskManager create succeeded. TaskId={TaskId}",
+                managerResult.Id);
 
             try
             {
-                var serviceResult = await _serviceApiClient.CreateAsync(
+                await _serviceApiClient.CreateAsync(
                     command,
-                    managerResult.Data.Id,
+                    managerResult.Id,
                     cancellationToken);
 
-                if (!serviceResult.ExecutionSuccess)
-                {
-                    return ServiceResult<CreateToDoResponseDto>.Fail(
-                        serviceResult.Error ?? ServiceErrorCode.Unknown);
-                }
+                _logger.Information(
+                    "TaskStateService create succeeded. TaskId={TaskId}",
+                    managerResult.Id);
 
                 return ServiceResult<CreateToDoResponseDto>.Success(
                     new CreateToDoResponseDto
                     {
-                        Id = managerResult.Data.Id
+                        Id = managerResult.Id
                     });
-            }
-            catch (HttpRequestException)
-            {
-                return ServiceResult<CreateToDoResponseDto>.Fail(ServiceErrorCode.ServiceUnavailable);
             }
             catch (Exception ex)
             {
+                _logger.Error(
+                    ex,
+                    "TaskStateService create failed. TaskId={TaskId}",
+                    managerResult.Id);
+
+                // rollback (best-effort)
                 try
                 {
-                    //await _managerApiClient.DeleteAsync(managerResult.Data.Id, cancellationToken); need service command DeleteById
+                    //await _managerApiClient.DeleteAsync(
+                    //    managerResult.Id,
+                    //    cancellationToken);
+
+                    _logger.Warning(
+                        "Rollback succeeded. TaskId={TaskId}",
+                        managerResult.Id);
                 }
                 catch (Exception rollbackEx)
                 {
-                    //rollback failure (logger)
+                    _logger.Error(
+                        rollbackEx,
+                        "Rollback failed. TaskId={TaskId}",
+                        managerResult.Id);
                 }
 
-                //throw new UnknownException(ex, request.Id); replace to logger
-
-                return ServiceResult<CreateToDoResponseDto>.Fail(ServiceErrorCode.Unknown);
+                throw new ExternalServiceException(
+                    "TaskStateService",
+                    "CreateToDo",
+                    ex);
             }
         }
     }

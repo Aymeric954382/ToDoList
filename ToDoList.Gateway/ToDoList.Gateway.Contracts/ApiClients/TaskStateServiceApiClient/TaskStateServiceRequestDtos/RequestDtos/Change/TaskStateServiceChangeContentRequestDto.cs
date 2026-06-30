@@ -10,7 +10,7 @@ namespace ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.TaskSt
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
-        public string Title { get; set; }
+        public required string Title { get; set; }
         public string? Details { get; set; }
     }
 }

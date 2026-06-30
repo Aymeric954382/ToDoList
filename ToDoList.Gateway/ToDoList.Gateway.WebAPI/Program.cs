@@ -1,11 +1,21 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using Serilog.Events;
 using StackExchange.Redis;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text;
 using ToDoList.Gateway.Application.Common.Mappings.Helpers;
 using ToDoList.Gateway.Application.Common.Mappings.Profiles;
+using ToDoList.Gateway.Application.Interfaces;
 using ToDoList.Gateway.Contracts.Helpers;
+using ToDoList.Gateway.Infrastructure.Persistance.DI;
+using ToDoList.Gateway.Infrastructure.Persistance.Swagger;
+using ToDoList.Gateway.WebAPI.Services;
+using ToDoList.TaskStateService.WebAPI.Middlewares;
 
 namespace ToDoList.Gateway.WebAPI
 {
@@ -21,12 +31,30 @@ namespace ToDoList.Gateway.WebAPI
                 cfg.AddProfile(new AssemblyMappingProfile(typeof(AssemblyMarkerApplication).Assembly));
             });
 
-            string redisConnection = builder.Configuration.GetConnectionString("Redis");
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .WriteTo.File("Logs/ToDoListWebAppLog-.txt", rollingInterval:
+                    RollingInterval.Day)
+                .CreateLogger();
 
-            builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+            builder.Services.AddPersistance(builder.Configuration);
+
+            builder.Services.AddAuthorization();
+
+            builder.Services.AddControllers();
+
+            builder.Services.AddCors(options =>
             {
-                return ConnectionMultiplexer.Connect(redisConnection);
+                options.AddPolicy("AllowFrontend", policy =>
+                {
+                    policy.WithOrigins("Frontend will be ready soon") //Frontend will be ready soon
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
             });
+                        
+            builder.Services.AddSingleton<ICurrentUserService, CurrentUserService>();
+            builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddApiVersioning(options =>
             {
@@ -64,7 +92,39 @@ namespace ToDoList.Gateway.WebAPI
                 };
             });
 
+            builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>,
+                ConfigureSwaggerOptions>();
+            builder.Services.AddSwaggerGen();
+
             var app = builder.Build();
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            app.UseSwagger();
+            app.UseSwaggerUI(config =>
+            {
+                var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    config.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
+                        description.GroupName.ToUpperInvariant());
+                }
+
+                config.RoutePrefix = string.Empty;
+
+                config.ConfigObject.AdditionalItems["cacheBuster"] = true;
+            });
+
+            app.UseCustomExceptionHandler();
+            app.UseRouting();
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.MapControllers();
 
             app.Run();
         }

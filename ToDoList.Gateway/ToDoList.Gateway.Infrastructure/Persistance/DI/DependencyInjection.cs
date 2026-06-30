@@ -2,15 +2,15 @@
 using Microsoft.Extensions.DependencyInjection;
 using ToDoList.Gateway.Application.Common.Mappings.Helpers;
 using ToDoList.Gateway.Application.Common.Mappings.Profiles;
-using ToDoList.Gateway.Contracts.ApiClients.Interfaces;
-using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Commands;
-using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Queries;
 using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Routes;
-using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Commands;
-using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Queries;
 using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Routes;
 using ToDoList.Gateway.Contracts.Helpers;
+using ToDoList.Gateway.Contracts.Interfaces;
 using ToDoList.Gateway.Infrastructure.Persistance.Security.JWT;
+using ToDoList.Gateway.Infrastructure.Persistance.Services.TaskManagerApiClient.Commands;
+using ToDoList.Gateway.Infrastructure.Persistance.Services.TaskManagerApiClient.Queries;
+using ToDoList.Gateway.Infrastructure.Persistance.Services.TaskStateServiceApiClient.Commands;
+using ToDoList.Gateway.Infrastructure.Persistance.Services.TaskStateServiceApiClient.Queries;
 
 namespace ToDoList.Gateway.Infrastructure.Persistance.DI
 {

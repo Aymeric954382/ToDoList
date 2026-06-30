@@ -1,10 +1,9 @@
-﻿using ToDoList.Gateway.Application.Features.ResponseServiceResultsContainer;
+﻿using Serilog;
+using ToDoList.Gateway.Application.Features.ResponseServiceResultsContainer;
 using ToDoList.Gateway.Application.Features.ToDoItem.Commands.DeleteToDo;
 using ToDoList.Gateway.Application.Interfaces.ContractsClientAdapter;
 using ToDoList.Gateway.Application.Interfaces.Orchestartors;
 using ToDoList.Gateway.Application.Common.Exceptions.ServiceErrorCodeToResponse;
-using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerResponseDtos.ResponseDtos.Delete;
-using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.TaskStateServiceResponseDtos.ResponseDtos.Delete;
 
 namespace ToDoList.Gateway.Application.Features.Orchestrators.CommandsOrchestrators
 {
@@ -12,41 +11,41 @@ namespace ToDoList.Gateway.Application.Features.Orchestrators.CommandsOrchestrat
     {
         private readonly ITaskStateServiceApiClientAdapter _serviceApiClient;
         private readonly ITaskManagerApiClientAdapter _managerApiClient;
-        public DeleteToDoOrchestrator(ITaskStateServiceApiClientAdapter serviceApiClient, 
-            ITaskManagerApiClientAdapter managerApiClient)
+        private readonly ILogger _logger;
+
+        public DeleteToDoOrchestrator(
+            ITaskStateServiceApiClientAdapter serviceApiClient,
+            ITaskManagerApiClientAdapter managerApiClient,
+            ILogger logger)
         {
             _serviceApiClient = serviceApiClient;
             _managerApiClient = managerApiClient;
+            _logger = logger;
         }
-        public async Task<ServiceResult<DeleteToDoResponseDto>> DeleteAsync(DeleteToDoCommand command, 
+
+        public async Task<ServiceResult<DeleteToDoResponseDto>> DeleteAsync(
+            DeleteToDoCommand command,
             CancellationToken cancellationToken)
         {
-            var managerResult = await _managerApiClient.DeleteAsync(command, cancellationToken);
-
-            if (!managerResult.ExecutionSuccess)
-                return ServiceResult<DeleteToDoResponseDto>.Fail(
-                    managerResult.Error ?? ServiceErrorCode.Unknown);
+            _logger.Information("DeleteToDo orchestration started");
 
             try
             {
-                var serviceResult = await _serviceApiClient.DeleteAsync(command, cancellationToken);
+                await _managerApiClient.DeleteAsync(command, cancellationToken);
+                _logger.Information("TaskManager delete completed");
 
-                if (!serviceResult.ExecutionSuccess)
-                {
-                    return ServiceResult<DeleteToDoResponseDto>.Fail(serviceResult.Error ?? ServiceErrorCode.Unknown);
-                }
+                await _serviceApiClient.DeleteAsync(command, cancellationToken);
+                _logger.Information("TaskStateService delete completed");
 
-                return ServiceResult<DeleteToDoResponseDto>.VoidDataSuccess();
-            }
-            catch (HttpRequestException)
-            {
-                return ServiceResult<DeleteToDoResponseDto>.Fail(ServiceErrorCode.ServiceUnavailable);
+                return ServiceResult<DeleteToDoResponseDto>
+                    .VoidDataSuccess();
             }
             catch (Exception ex)
             {
-                //logger 
+                _logger.Error(ex, "DeleteToDo orchestration failed");
 
-                return ServiceResult<DeleteToDoResponseDto>.Fail(ServiceErrorCode.Unknown);
+                return ServiceResult<DeleteToDoResponseDto>
+                    .Fail(ServiceErrorCode.Unknown);
             }
         }
     }

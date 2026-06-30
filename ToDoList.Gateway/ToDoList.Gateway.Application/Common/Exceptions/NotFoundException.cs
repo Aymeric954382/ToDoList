@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ToDoList.Gateway.Application.Common.Exceptions
 {
-    internal class NotFoundException
+    public class NotFoundException
     {
     }
 }

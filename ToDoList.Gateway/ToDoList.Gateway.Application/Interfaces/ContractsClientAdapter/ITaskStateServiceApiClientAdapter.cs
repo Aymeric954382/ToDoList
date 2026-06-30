@@ -21,27 +21,27 @@ namespace ToDoList.Gateway.Application.Interfaces.ContractsClientAdapter
     public interface ITaskStateServiceApiClientAdapter
     {
         //command
-        public Task<ServiceResult<TaskStateServiceChangeDueDateResponseDto>> ChangeDueDateAsync(ChangeToDoDueDateCommand command, 
+        public Task<TaskStateServiceChangeDueDateResponseDto> ChangeDueDateAsync(ChangeToDoDueDateCommand command, 
             CancellationToken cancellationToken);
-        public Task<ServiceResult<TaskStateServiceChangeStatusResponseDto>> ChangeStatusAsync(ChangeToDoStatusCommand command, 
+        public Task<TaskStateServiceChangeStatusResponseDto> ChangeStatusAsync(ChangeToDoStatusCommand command, 
             CancellationToken cancellationToken);
-        public Task<ServiceResult<TaskStateServiceChangePriorityResponseDto>> ChangePriorityAsync(ChangeToDoPriorityCommand command, 
+        public Task<TaskStateServiceChangePriorityResponseDto> ChangePriorityAsync(ChangeToDoPriorityCommand command, 
             CancellationToken cancellationToken);
-        public Task<ServiceResult<TaskStateServiceCreateResponseDto>> CreateAsync(CreateToDoCommand command, Guid id, 
+        public Task<TaskStateServiceCreateResponseDto> CreateAsync(CreateToDoCommand command, Guid id, 
             CancellationToken cancellationToken);
-        public Task<ServiceResult<TaskStateServiceDeleteResponseDto>> DeleteAsync(DeleteToDoCommand command, 
+        public Task<TaskStateServiceDeleteResponseDto> DeleteAsync(DeleteToDoCommand command, 
             CancellationToken cancellationToken);
 
         //query
-        public Task<ServiceResult<TaskStateServiceGetToDoListByPriorityResponseDto>> GetToDoListAsync(GetToDoListQuery query, 
+        public Task<TaskStateServiceGetToDoListByPriorityResponseDto> GetToDoListAsync(GetToDoListQuery query, 
             CancellationToken cancellationToken);
-        public Task<ServiceResult<TaskStateServiceGetToDoListByPriorityResponseDto>> GetToDoListByPriorityAsync(GetToDoListByPriorityQuery query, 
+        public Task<TaskStateServiceGetToDoListByPriorityResponseDto> GetToDoListByPriorityAsync(GetToDoListByPriorityQuery query, 
             CancellationToken cancellationToken);
-        public Task<ServiceResult<TaskStateServiceGetToDoListByStatusResponseDto>> GetToDoListByStatusAsync(GetToDoListByStatusQuery query, 
+        public Task<TaskStateServiceGetToDoListByStatusResponseDto> GetToDoListByStatusAsync(GetToDoListByStatusQuery query, 
             CancellationToken cancellationToken);
-        public Task<ServiceResult<TaskStateServiceGetToDoListByOverdueResponseDto>> GetToDoListByOverdueAsync(GetToDoListByOverdueQuery query, 
+        public Task<TaskStateServiceGetToDoListByOverdueResponseDto> GetToDoListByOverdueAsync(GetToDoListByOverdueQuery query, 
             CancellationToken cancellationToken);
-        public Task<ServiceResult<TaskStateServiceGetToDoListByIdsResponseDto>> GetToDoListAsync(GetToDoListByIdsRequestQuery query,
+        public Task<TaskStateServiceGetToDoListByIdsResponseDto> GetToDoListByIdsAsync(GetToDoListByIdsRequestQuery query,
             CancellationToken cancellationToken);
     }
 }

@@ -1,26 +1,49 @@
 ﻿using MediatR;
+using Serilog;
+using ToDoList.Gateway.Application.Common.Exceptions.ServiceErrorCodeToResponse;
 using ToDoList.Gateway.Application.Features.ResponseServiceResultsContainer;
-using ToDoList.Gateway.Application.Interfaces.ContractsClientAdapter;
 using ToDoList.Gateway.Application.Interfaces.Orchestartors;
-using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerResponseDtos.ResponseDtos.Get.ResponseContainers;
-using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.TaskStateServiceResponseDtos.ResponseDtos.Get.ResponseContainers;
 
 namespace ToDoList.Gateway.Application.Features.ToDoItem.Queries.GetOverdueToDo
 {
-    public class GetToDoListByOverdueQueryHandler 
-        : IRequestHandler<GetToDoListByOverdueQuery, 
+    public class GetToDoListByOverdueQueryHandler
+        : IRequestHandler<GetToDoListByOverdueQuery,
             ServiceResult<GetToDoListByOverdueResponseDto>>
     {
         private readonly IGetToDoListByOverdueOrchestrator _orchestrator;
-        public GetToDoListByOverdueQueryHandler(IGetToDoListByOverdueOrchestrator orchestrator)
+        private readonly ILogger _logger;
+
+        public GetToDoListByOverdueQueryHandler(
+            IGetToDoListByOverdueOrchestrator orchestrator,
+            ILogger logger)
         {
             _orchestrator = orchestrator;
+            _logger = logger;
         }
+
         public async Task<ServiceResult<GetToDoListByOverdueResponseDto>> Handle(
-            GetToDoListByOverdueQuery request, 
+            GetToDoListByOverdueQuery request,
             CancellationToken cancellationToken)
         {
-            return await _orchestrator.GetListByOverdueAsync(request, cancellationToken);
+            _logger.Information("GetToDoListByOverdue started");
+
+            try
+            {
+                var result = await _orchestrator.GetListByOverdueAsync(
+                    request,
+                    cancellationToken);
+
+                _logger.Information("GetToDoListByOverdue completed successfully");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "GetToDoListByOverdue failed");
+
+                return ServiceResult<GetToDoListByOverdueResponseDto>
+                    .Fail(ServiceErrorCode.Unknown);
+            }
         }
     }
 }

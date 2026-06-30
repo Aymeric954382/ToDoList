@@ -8,7 +8,7 @@ namespace ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Routes
 {
     public class TaskManagerApiOptions
     {
-        public string BaseUrl { get; set; }
-        public TaskManagerRoutes Routes { get; set; }
+        public required string BaseUrl { get; set; }
+        public required TaskManagerRoutes Routes { get; set; }
     }
 }

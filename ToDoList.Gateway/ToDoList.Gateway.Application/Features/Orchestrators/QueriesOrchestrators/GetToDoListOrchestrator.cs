@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Serilog;
 using ToDoList.Gateway.Application.Common.Exceptions.ServiceErrorCodeToResponse;
 using ToDoList.Gateway.Application.Features.ResponseServiceResultsContainer;
 using ToDoList.Gateway.Application.Features.ToDoItem.Aggregation;
 using ToDoList.Gateway.Application.Features.ToDoItem.Queries.DomainResponseDtos;
 using ToDoList.Gateway.Application.Features.ToDoItem.Queries.GetListToDo;
-using ToDoList.Gateway.Application.Features.ToDoItem.Queries.GetOverdueToDo;
 using ToDoList.Gateway.Application.Features.ToDoItem.Queries.ServiceQueries.GetByIds;
 using ToDoList.Gateway.Application.Interfaces.ContractsClientAdapter;
 using ToDoList.Gateway.Application.Interfaces.Orchestartors;
@@ -21,30 +16,43 @@ namespace ToDoList.Gateway.Application.Features.Orchestrators.QueriesOrchestrato
     {
         private readonly ITaskManagerApiClientAdapter _taskManagerApiClient;
         private readonly ITaskStateServiceApiClientAdapter _taskStateServiceApiClient;
+        private readonly ILogger _logger;
 
         public GetToDoListOrchestrator(
             ITaskManagerApiClientAdapter taskManagerApiClient,
-            ITaskStateServiceApiClientAdapter taskStateServiceApiClient)
+            ITaskStateServiceApiClientAdapter taskStateServiceApiClient,
+            ILogger logger)
         {
             _taskManagerApiClient = taskManagerApiClient;
             _taskStateServiceApiClient = taskStateServiceApiClient;
+            _logger = logger;
         }
+
         public async Task<ServiceResult<GetToDoListResponseDto>> GetListAsync(
-            GetToDoListQuery query, 
+            GetToDoListQuery query,
             CancellationToken cancellationToken)
         {
-            var stateResult = await _taskStateServiceApiClient.GetToDoListAsync(query, cancellationToken);
+            _logger.Information("GetToDoList orchestration started. UserId={UserId}", query.UserId);
 
-            if (!stateResult.ExecutionSuccess)
-                return ServiceResult<GetToDoListResponseDto>.Fail(
-                    stateResult.Error ?? ServiceErrorCode.Unknown);
             try
             {
-                var managerResult = await _taskManagerApiClient.GetToDoListAsync(query, cancellationToken);
+                var stateResult = await _taskStateServiceApiClient
+                    .GetToDoListAsync(query, cancellationToken);
+
+                _logger.Information(
+                    "StateService returned {Count} items",
+                    stateResult?.Items?.Count() ?? 0);
+
+                var managerResult = await _taskManagerApiClient
+                    .GetToDoListAsync(query, cancellationToken);
+
+                _logger.Information(
+                    "ManagerService returned {Count} items",
+                    managerResult?.Items?.Count() ?? 0);
 
                 var aggregated = ToDoListResponseAggregator.Merge(
-                    managerResult.Data.Items ?? Enumerable.Empty<TaskManagerItemResponseDto>(),
-                    stateResult.Data.Items ?? Enumerable.Empty<TaskStateServiceItemResponseDto>()
+                    managerResult.Items ?? Enumerable.Empty<TaskManagerItemResponseDto>(),
+                    stateResult.Items ?? Enumerable.Empty<TaskStateServiceItemResponseDto>()
                 );
 
                 var response = new GetToDoListResponseDto()
@@ -60,18 +68,21 @@ namespace ToDoList.Gateway.Application.Features.Orchestrators.QueriesOrchestrato
                     })
                 };
 
-                return new ServiceResult<GetToDoListResponseDto>() { Data = response };
-            }
-            catch (HttpRequestException)
-            {
-                return ServiceResult<GetToDoListResponseDto>.Fail(
-                    ServiceErrorCode.ServiceUnavailable);
+                _logger.Information(
+                    "GetToDoList completed successfully. ResultCount={Count}",
+                    response.Items?.Count() ?? 0);
+
+                return new ServiceResult<GetToDoListResponseDto>
+                {
+                    Data = response
+                };
             }
             catch (Exception ex)
             {
-                //logger
+                _logger.Error(ex, "GetToDoList orchestration failed. UserId={UserId}", query.UserId);
 
-                return ServiceResult<GetToDoListResponseDto>.Fail(ServiceErrorCode.Unknown);
+                return ServiceResult<GetToDoListResponseDto>
+                    .Fail(ServiceErrorCode.Unknown);
             }
         }
     }

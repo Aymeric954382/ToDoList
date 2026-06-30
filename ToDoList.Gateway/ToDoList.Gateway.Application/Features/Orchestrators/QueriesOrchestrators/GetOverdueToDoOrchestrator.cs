@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Serilog;
 using ToDoList.Gateway.Application.Common.Exceptions.ServiceErrorCodeToResponse;
 using ToDoList.Gateway.Application.Features.ResponseServiceResultsContainer;
 using ToDoList.Gateway.Application.Features.ToDoItem.Aggregation;
 using ToDoList.Gateway.Application.Features.ToDoItem.Queries.DomainResponseDtos;
-using ToDoList.Gateway.Application.Features.ToDoItem.Queries.GetByStatus;
 using ToDoList.Gateway.Application.Features.ToDoItem.Queries.GetOverdueToDo;
 using ToDoList.Gateway.Application.Features.ToDoItem.Queries.ServiceQueries.GetByIds;
 using ToDoList.Gateway.Application.Interfaces.ContractsClientAdapter;
@@ -21,26 +16,35 @@ namespace ToDoList.Gateway.Application.Features.Orchestrators.QueriesOrchestrato
     {
         private readonly ITaskManagerApiClientAdapter _taskManagerApiClient;
         private readonly ITaskStateServiceApiClientAdapter _taskStateServiceApiClient;
+        private readonly ILogger _logger;
 
-        public GetOverdueToDoOrchestrator(ITaskManagerApiClientAdapter taskManagerApiClient, 
-            ITaskStateServiceApiClientAdapter taskStateServiceApiClient)
+        public GetOverdueToDoOrchestrator(
+            ITaskManagerApiClientAdapter taskManagerApiClient,
+            ITaskStateServiceApiClientAdapter taskStateServiceApiClient,
+            ILogger logger)
         {
             _taskManagerApiClient = taskManagerApiClient;
             _taskStateServiceApiClient = taskStateServiceApiClient;
+            _logger = logger;
         }
 
         public async Task<ServiceResult<GetToDoListByOverdueResponseDto>> GetListByOverdueAsync(
             GetToDoListByOverdueQuery query,
             CancellationToken cancellationToken)
         {
-            var stateResult = await _taskStateServiceApiClient.GetToDoListByOverdueAsync(query, cancellationToken);
+            _logger.Information("GetOverdue orchestration started. UserId={UserId}", query.UserId);
 
-            if (!stateResult.ExecutionSuccess)
-                return ServiceResult<GetToDoListByOverdueResponseDto>.Fail(
-                    stateResult.Error ?? ServiceErrorCode.Unknown);
             try
             {
-                var ids = stateResult.Data.Items.Select(x => x.Id);
+                var stateResult = await _taskStateServiceApiClient
+                    .GetToDoListByOverdueAsync(query, cancellationToken);
+
+                _logger.Information(
+                    "StateService returned {Count} items",
+                    stateResult?.Items?.Count() ?? 0);
+
+                var ids = stateResult.Items?.Select(x => x.Id)
+                          ?? Enumerable.Empty<Guid>();
 
                 var getByIdQuery = new GetToDoListByIdsRequestQuery()
                 {
@@ -48,11 +52,16 @@ namespace ToDoList.Gateway.Application.Features.Orchestrators.QueriesOrchestrato
                     UserId = query.UserId
                 };
 
-                var managerResult = await _taskManagerApiClient.GetToDoListByIdAsync(getByIdQuery, cancellationToken);
+                var managerResult = await _taskManagerApiClient
+                    .GetToDoListByIdAsync(getByIdQuery, cancellationToken);
+
+                _logger.Information(
+                    "ManagerService returned {Count} items",
+                    managerResult?.Items?.Count() ?? 0);
 
                 var aggregated = ToDoListResponseAggregator.Merge(
-                    managerResult.Data.Items ?? Enumerable.Empty<TaskManagerItemResponseDto>(),
-                    stateResult.Data.Items ?? Enumerable.Empty<TaskStateServiceItemResponseDto>()
+                    managerResult.Items ?? Enumerable.Empty<TaskManagerItemResponseDto>(),
+                    stateResult.Items ?? Enumerable.Empty<TaskStateServiceItemResponseDto>()
                 );
 
                 var response = new GetToDoListByOverdueResponseDto()
@@ -68,18 +77,21 @@ namespace ToDoList.Gateway.Application.Features.Orchestrators.QueriesOrchestrato
                     })
                 };
 
-                return new ServiceResult<GetToDoListByOverdueResponseDto>() { Data = response };
-            }
-            catch (HttpRequestException)
-            {
-                return ServiceResult<GetToDoListByOverdueResponseDto>.Fail(
-                    ServiceErrorCode.ServiceUnavailable);
+                _logger.Information(
+                    "GetOverdue completed successfully. ResultCount={Count}",
+                    response.Items?.Count() ?? 0);
+
+                return new ServiceResult<GetToDoListByOverdueResponseDto>
+                {
+                    Data = response
+                };
             }
             catch (Exception ex)
             {
-                //logger
+                _logger.Error(ex, "GetOverdue orchestration failed. UserId={UserId}", query.UserId);
 
-                return ServiceResult<GetToDoListByOverdueResponseDto>.Fail(ServiceErrorCode.Unknown);
+                return ServiceResult<GetToDoListByOverdueResponseDto>
+                    .Fail(ServiceErrorCode.Unknown);
             }
         }
     }

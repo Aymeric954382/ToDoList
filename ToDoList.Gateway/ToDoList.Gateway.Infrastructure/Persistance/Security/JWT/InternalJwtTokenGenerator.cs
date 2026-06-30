@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace ToDoList.Gateway.Infrastructure.Persistance.Security.JWT
@@ -14,7 +15,7 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.Security.JWT
             _configuration = config;
         }
 
-        public (string Token, DateTime ExpiredAt) Generate()
+        public (string Token, DateTime ExpiredAt) Generate(IEnumerable<Claim> claims)
         {
             var expiresAt = DateTime.UtcNow.AddMinutes(5);
 
@@ -28,6 +29,7 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.Security.JWT
                 issuer: _configuration["InternalJwt:Issuer"],
                 audience: _configuration["InternalJwt:Audience"],
                 expires: expiresAt,
+                claims: claims,
                 signingCredentials: creds
             );
 

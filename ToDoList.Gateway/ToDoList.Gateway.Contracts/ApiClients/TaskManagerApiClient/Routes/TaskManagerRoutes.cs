@@ -8,10 +8,10 @@ namespace ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Routes
 {
     public class TaskManagerRoutes
     {
-        public string ChangeContent { get; set; }
-        public string Delete { get; set; }
-        public string Create { get; set; }
-        public string GetToDoList { get; set; }
-        public string GetToDoByIdList { get; set; }
+        public required string ChangeContent { get; set; }
+        public required string Delete { get; set; }
+        public required string Create { get; set; }
+        public required string GetToDoList { get; set; }
+        public required string GetToDoByIdList { get; set; }
     }
 }
