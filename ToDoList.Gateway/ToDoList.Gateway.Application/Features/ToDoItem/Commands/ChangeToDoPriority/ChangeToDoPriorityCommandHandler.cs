@@ -2,10 +2,11 @@
 using Serilog;
 using ToDoList.Gateway.Application.Common.Exceptions.ServiceErrorCodeToResponse;
 using ToDoList.Gateway.Application.Features.ResponseServiceResultsContainer;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.ChangeToDoPriority;
 using ToDoList.Gateway.Application.Interfaces.ContractsClientAdapter;
 using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.TaskStateServiceResponseDtos.ResponseDtos.Change;
 
-namespace ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.ChangeToDoPriority
+namespace ToDoList.Gateway.Application.Features.ToDoItem.Commands.ChangeToDoPriority
 {
     public class ChangeToDoPriorityCommandHandler
         : IRequestHandler<

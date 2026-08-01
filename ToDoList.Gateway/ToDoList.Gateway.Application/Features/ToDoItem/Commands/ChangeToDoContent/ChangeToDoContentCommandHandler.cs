@@ -1,11 +1,12 @@
 ﻿using MediatR;
 using Serilog;
 using ToDoList.Gateway.Application.Common.Exceptions.ServiceErrorCodeToResponse;
-using ToDoList.Gateway.Application.Interfaces.ContractsClientAdapter;
 using ToDoList.Gateway.Application.Features.ResponseServiceResultsContainer;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.ChangeToDoContent;
+using ToDoList.Gateway.Application.Interfaces.ContractsClientAdapter;
 using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.TaskStateServiceResponseDtos.ResponseDtos.Change;
 
-namespace ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.ChangeToDoContent
+namespace ToDoList.Gateway.Application.Features.ToDoItem.Commands.ChangeToDoContent
 {
     public class ChangeToDoContentCommandHandler
         : IRequestHandler<

@@ -4,7 +4,7 @@ using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.TaskStateS
 
 namespace ToDoList.Gateway.Application.Interfaces.Orchestartors
 {
-    public interface IDeleteToDoOrchestrator
+    public interface IDeleteToDoWorkflow
     {
         Task<ServiceResult<DeleteToDoResponseDto>> DeleteAsync(DeleteToDoCommand command, CancellationToken cancellationToken);
     }

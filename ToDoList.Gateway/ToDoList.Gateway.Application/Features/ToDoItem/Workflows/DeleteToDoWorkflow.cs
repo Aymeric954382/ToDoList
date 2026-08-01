@@ -1,13 +1,13 @@
 ﻿using Serilog;
+using ToDoList.Gateway.Application.Common.Exceptions.ServiceErrorCodeToResponse;
 using ToDoList.Gateway.Application.Features.ResponseServiceResultsContainer;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.DeleteToDo;
 using ToDoList.Gateway.Application.Interfaces.ContractsClientAdapter;
 using ToDoList.Gateway.Application.Interfaces.Orchestartors;
-using ToDoList.Gateway.Application.Common.Exceptions.ServiceErrorCodeToResponse;
-using ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.DeleteToDo;
 
-namespace ToDoList.Gateway.Application.Features.ToDoItem.Commands.Workflows
+namespace ToDoList.Gateway.Application.Features.ToDoItem.Workflows
 {
-    public class DeleteToDoWorkflow : IDeleteToDoOrchestrator
+    public class DeleteToDoWorkflow : IDeleteToDoWorkflow
     {
         private readonly ITaskStateServiceApiClientAdapter _serviceApiClient;
         private readonly ITaskManagerApiClientAdapter _managerApiClient;

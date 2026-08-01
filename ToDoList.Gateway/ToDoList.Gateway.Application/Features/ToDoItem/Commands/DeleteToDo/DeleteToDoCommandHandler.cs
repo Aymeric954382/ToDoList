@@ -2,24 +2,23 @@
 using Serilog;
 using ToDoList.Gateway.Application.Common.Exceptions.ServiceErrorCodeToResponse;
 using ToDoList.Gateway.Application.Features.ResponseServiceResultsContainer;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.DeleteToDo;
 using ToDoList.Gateway.Application.Interfaces.Orchestartors;
-using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManagerResponseDtos.ResponseDtos.Delete;
-using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.TaskStateServiceResponseDtos.ResponseDtos.Delete;
 
-namespace ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.DeleteToDo
+namespace ToDoList.Gateway.Application.Features.ToDoItem.Commands.DeleteToDo
 {
     public class DeleteToDoCommandHandler
         : IRequestHandler<DeleteToDoCommand,
             ServiceResult<DeleteToDoResponseDto>>
     {
-        private readonly IDeleteToDoOrchestrator _orchestrator;
+        private readonly IDeleteToDoWorkflow _workflow;
         private readonly ILogger _logger;
 
         public DeleteToDoCommandHandler(
-            IDeleteToDoOrchestrator orchestrator,
+            IDeleteToDoWorkflow workflow,
             ILogger logger)
         {
-            _orchestrator = orchestrator;
+            _workflow = workflow;
             _logger = logger;
         }
 
@@ -31,11 +30,12 @@ namespace ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.Delet
 
             try
             {
-                var result = await _orchestrator.DeleteAsync(request, cancellationToken);
+                await _workflow.DeleteAsync(request, cancellationToken);
 
                 _logger.Information("DeleteToDo completed successfully");
 
-                return result;
+                return ServiceResult<DeleteToDoResponseDto>
+                    .VoidDataSuccess();
             }
             catch (Exception ex)
             {

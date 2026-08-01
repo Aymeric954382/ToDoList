@@ -2,23 +2,24 @@
 using Serilog;
 using ToDoList.Gateway.Application.Common.Exceptions.ServiceErrorCodeToResponse;
 using ToDoList.Gateway.Application.Features.ResponseServiceResultsContainer;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.CreateToDo;
 using ToDoList.Gateway.Application.Interfaces.Orchestartors;
 
-namespace ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.CreateToDo
+namespace ToDoList.Gateway.Application.Features.ToDoItem.Commands.CreateToDo
 {
     public class CreateToDoCommandHandler
         : IRequestHandler<
             CreateToDoCommand,
             ServiceResult<CreateToDoResponseDto>>
     {
-        private readonly ICreateToDoOrchestrator _orchestrator;
+        private readonly ICreateToDoWorkflow _workflow;
         private readonly ILogger _logger;
 
         public CreateToDoCommandHandler(
-            ICreateToDoOrchestrator orchestrator,
+            ICreateToDoWorkflow orchestrator,
             ILogger logger)
         {
-            _orchestrator = orchestrator;
+            _workflow = orchestrator;
             _logger = logger;
         }
 
@@ -32,7 +33,7 @@ namespace ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.Creat
 
             try
             {
-                var result = await _orchestrator.CreateAsync(
+                await _workflow.CreateAsync(
                     request,
                     cancellationToken);
 
@@ -40,7 +41,8 @@ namespace ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.Creat
                     "CreateToDo completed. UserId={UserId}",
                     request.UserId);
 
-                return result;
+                return ServiceResult<CreateToDoResponseDto>
+                    .VoidDataSuccess();
             }
             catch (Exception ex)
             {

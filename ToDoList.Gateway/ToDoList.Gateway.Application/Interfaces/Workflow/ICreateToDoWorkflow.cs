@@ -10,8 +10,8 @@ using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.TaskStateS
 
 namespace ToDoList.Gateway.Application.Interfaces.Orchestartors
 {
-    public interface ICreateToDoOrchestrator
+    public interface ICreateToDoWorkflow
     {
-        Task<ServiceResult<CreateToDoResponseDto>> CreateAsync(CreateToDoCommand command, CancellationToken cancellationToken);
+        Task CreateAsync(CreateToDoCommand command, CancellationToken cancellationToken);
     }
 }
