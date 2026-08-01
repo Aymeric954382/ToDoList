@@ -1,15 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ToDoList.Gateway.Application.Common.Mappings.Helpers;
-using ToDoList.Gateway.Application.Common.Mappings.Profiles;
 using ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.Routes;
 using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.Routes;
-using ToDoList.Gateway.Contracts.Helpers;
 using ToDoList.Gateway.Contracts.Interfaces;
+using ToDoList.Gateway.Infrastructure.Persistance.Rabbit;
 using ToDoList.Gateway.Infrastructure.Persistance.Security.JWT;
-using ToDoList.Gateway.Infrastructure.Persistance.Services.TaskManagerApiClient.Commands;
 using ToDoList.Gateway.Infrastructure.Persistance.Services.TaskManagerApiClient.Queries;
-using ToDoList.Gateway.Infrastructure.Persistance.Services.TaskStateServiceApiClient.Commands;
 using ToDoList.Gateway.Infrastructure.Persistance.Services.TaskStateServiceApiClient.Queries;
 
 namespace ToDoList.Gateway.Infrastructure.Persistance.DI
@@ -23,17 +19,6 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.DI
 
             services.AddTransient<JwtAuthorizationHandler>();
 
-            services.AddHttpClient<ITaskManagerApiClientCommands, TaskManagerApiClientCommands>(client =>
-            {
-                client.BaseAddress = new Uri(config["TaskManagerApi:BaseUrl"]);
-            })
-            .AddHttpMessageHandler<JwtAuthorizationHandler>();
-
-            services.AddHttpClient<ITaskStateServiceApiClientCommands, TaskStateServiceApiClientCommands>(client =>
-            {
-                client.BaseAddress = new Uri(config["TaskStateServiceApi:BaseUrl"]);
-            })
-            .AddHttpMessageHandler<JwtAuthorizationHandler>();
 
             services.AddHttpClient<ITaskManagerApiClientQueries, TaskManagerApiClientQueries>(client =>
             {
@@ -54,6 +39,17 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.DI
             services.Configure<TaskManagerApiOptions>(
                 config.GetSection("TaskManagerApi")
             );
+
+            services.AddSingleton<RabbitConnection>();
+
+            services.AddSingleton<MessageSerializer>();
+            services.AddSingleton<RabbitMessageFactory>();
+
+            services.AddSingleton<RabbitTopology>();
+            services.AddSingleton<RabbitPublisherFactory>();
+
+            services.AddSingleton<RabbitPublisher>();
+
 
             return services;
         }

@@ -23,4 +23,8 @@
 	<ProjectReference Include="..\ToDoList.Gateway.Contracts\ToDoList.Gateway.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\ToDoItem\Commands\Publishers\" />
+  </ItemGroup>
+
 </Project>

@@ -1,13 +1,13 @@
 ﻿using ToDoList.Gateway.Application.Features.ResponseServiceResultsContainer;
-using ToDoList.Gateway.Application.Features.ToDoItem.Commands.ChangeToDoDueDate;
-using ToDoList.Gateway.Application.Features.ToDoItem.Commands.ChangeToDoPriority;
-using ToDoList.Gateway.Application.Features.ToDoItem.Commands.ChangeToDoStatus;
-using ToDoList.Gateway.Application.Features.ToDoItem.Commands.CreateToDo;
-using ToDoList.Gateway.Application.Features.ToDoItem.Commands.DeleteToDo;
-using ToDoList.Gateway.Application.Features.ToDoItem.Queries.GetByPriority;
-using ToDoList.Gateway.Application.Features.ToDoItem.Queries.GetByStatus;
-using ToDoList.Gateway.Application.Features.ToDoItem.Queries.GetListToDo;
-using ToDoList.Gateway.Application.Features.ToDoItem.Queries.GetOverdueToDo;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.ChangeToDoDueDate;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.ChangeToDoPriority;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.ChangeToDoStatus;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.CreateToDo;
+using ToDoList.Gateway.Application.Features.ToDoItem.Commands.Handlers.DeleteToDo;
+using ToDoList.Gateway.Application.Features.ToDoItem.Queries.Handlers.GetByPriority;
+using ToDoList.Gateway.Application.Features.ToDoItem.Queries.Handlers.GetByStatus;
+using ToDoList.Gateway.Application.Features.ToDoItem.Queries.Handlers.GetListToDo;
+using ToDoList.Gateway.Application.Features.ToDoItem.Queries.Handlers.GetOverdueToDo;
 using ToDoList.Gateway.Application.Features.ToDoItem.Queries.ServiceQueries;
 using ToDoList.Gateway.Application.Features.ToDoItem.Queries.ServiceQueries.GetByIds;
 using ToDoList.Gateway.Contracts.ApiClients.TaskStateServiceApiClient.TaskStateServiceResponseDtos.ResponseDtos.Change;
@@ -21,15 +21,15 @@ namespace ToDoList.Gateway.Application.Interfaces.ContractsClientAdapter
     public interface ITaskStateServiceApiClientAdapter
     {
         //command
-        public Task<TaskStateServiceChangeDueDateResponseDto> ChangeDueDateAsync(ChangeToDoDueDateCommand command, 
+        public Task ChangeDueDateAsync(ChangeToDoDueDateCommand command, 
             CancellationToken cancellationToken);
-        public Task<TaskStateServiceChangeStatusResponseDto> ChangeStatusAsync(ChangeToDoStatusCommand command, 
+        public Task ChangeStatusAsync(ChangeToDoStatusCommand command, 
             CancellationToken cancellationToken);
-        public Task<TaskStateServiceChangePriorityResponseDto> ChangePriorityAsync(ChangeToDoPriorityCommand command, 
+        public Task ChangePriorityAsync(ChangeToDoPriorityCommand command, 
             CancellationToken cancellationToken);
-        public Task<TaskStateServiceCreateResponseDto> CreateAsync(CreateToDoCommand command, Guid id, 
+        public Task CreateAsync(CreateToDoCommand command, Guid id, 
             CancellationToken cancellationToken);
-        public Task<TaskStateServiceDeleteResponseDto> DeleteAsync(DeleteToDoCommand command, 
+        public Task DeleteAsync(DeleteToDoCommand command, 
             CancellationToken cancellationToken);
 
         //query

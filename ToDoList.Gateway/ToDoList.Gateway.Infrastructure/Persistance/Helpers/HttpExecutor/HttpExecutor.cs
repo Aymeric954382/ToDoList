@@ -12,8 +12,6 @@ namespace ToDoList.Gateway.Infrastructure.Persistance.Helpers.HttpExecutor
     public class HttpExecutor
     {
         private readonly HttpClient _http;
-
-
         public HttpExecutor(HttpClient http)
         {
             _http = http;

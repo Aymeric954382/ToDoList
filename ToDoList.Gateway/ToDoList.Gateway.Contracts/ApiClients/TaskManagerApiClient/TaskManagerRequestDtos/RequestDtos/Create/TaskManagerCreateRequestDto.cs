@@ -8,6 +8,7 @@ namespace ToDoList.Gateway.Contracts.ApiClients.TaskManagerApiClient.TaskManager
 {
     public class TaskManagerCreateRequestDto
     {
+        public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public required string Title { get; set; }
         public string? Description { get; set; }

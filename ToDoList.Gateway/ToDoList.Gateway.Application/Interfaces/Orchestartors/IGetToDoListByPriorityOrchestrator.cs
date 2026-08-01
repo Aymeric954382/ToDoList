@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToDoList.Gateway.Application.Features.ResponseServiceResultsContainer;
-using ToDoList.Gateway.Application.Features.ToDoItem.Queries.GetByPriority;
+using ToDoList.Gateway.Application.Features.ToDoItem.Queries.Handlers.GetByPriority;
 
 namespace ToDoList.Gateway.Application.Interfaces.Orchestartors
 {

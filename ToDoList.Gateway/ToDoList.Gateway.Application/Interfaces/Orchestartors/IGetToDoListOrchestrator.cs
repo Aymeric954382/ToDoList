@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToDoList.Gateway.Application.Features.ResponseServiceResultsContainer;
-using ToDoList.Gateway.Application.Features.ToDoItem.Queries.GetListToDo;
+using ToDoList.Gateway.Application.Features.ToDoItem.Queries.Handlers.GetListToDo;
 
 namespace ToDoList.Gateway.Application.Interfaces.Orchestartors
 {
