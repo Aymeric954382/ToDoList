@@ -12,6 +12,7 @@ using ToDoList.TaskManager.Application.DI;
 using ToDoList.TaskManager.Application.Interfaces;
 using ToDoList.TaskManager.Infrastructure.Persistance.DataBaseCommon.EF;
 using ToDoList.TaskManager.Infrastructure.Persistance.DI;
+using ToDoList.TaskManager.Infrastructure.Persistance.Rabbit;
 using ToDoList.TaskManager.Infrastructure.Persistance.Swagger;
 using ToDoList.TaskManager.WebAPI.Middlewares;
 using ToDoList.TaskManager.WebAPI.Services;
@@ -21,7 +22,7 @@ namespace ToDoList.TaskManager.WebAPI
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -141,6 +142,25 @@ namespace ToDoList.TaskManager.WebAPI
                 catch (Exception exception)
                 {
                     Log.Fatal(exception, "An error occurred while app initialization");
+                }
+            }
+            
+            using (var scope = app.Services.CreateScope())
+            {
+                var serviceProvider = scope.ServiceProvider;
+                
+                try
+                {
+                    var rabbitInitializer =
+                        serviceProvider.GetRequiredService<RabbitInitializer>();
+                    
+                    await rabbitInitializer.InitializeAsync(
+                        CancellationToken.None);
+                }
+                catch (Exception exception)
+                {
+                    Log.Fatal(exception, "An error occurred while rabbit initialization");
+                    throw;
                 }
             }
 
