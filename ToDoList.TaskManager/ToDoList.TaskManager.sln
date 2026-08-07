@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.TaskManager.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.TaskManager.WebAPI", "ToDoList.TaskManager.WebAPI\ToDoList.TaskManager.WebAPI.csproj", "{A2614790-CBB6-2132-0C0F-A217141D76D0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToDoList.TaskManager.Contracts", "ToDoList.TaskManager.Contracts", "{26FC6F1C-EC57-4BB1-96F9-685CDB166990}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.TaskManager.Contracts", "ToDoList.TaskManager.Contracts\ToDoList.TaskManager.Contracts.csproj", "{EC2D6D3F-CD32-41F2-AD1D-7CEECC91ABCD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,10 @@ Global
 		{A2614790-CBB6-2132-0C0F-A217141D76D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2614790-CBB6-2132-0C0F-A217141D76D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2614790-CBB6-2132-0C0F-A217141D76D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC2D6D3F-CD32-41F2-AD1D-7CEECC91ABCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC2D6D3F-CD32-41F2-AD1D-7CEECC91ABCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC2D6D3F-CD32-41F2-AD1D-7CEECC91ABCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC2D6D3F-CD32-41F2-AD1D-7CEECC91ABCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +74,8 @@ Global
 		{377FE2E2-08DD-332C-2EBA-CFFAFB1D9AFE} = {FC6108EB-5C08-4107-B6D3-163F8D17B306}
 		{397D014B-8C0C-F060-7FB0-B28381404FA3} = {455B9EFF-902B-4FA0-921F-384E2A85B3DE}
 		{A2614790-CBB6-2132-0C0F-A217141D76D0} = {D132C6B6-AEEE-41E9-8217-3AD445126F73}
+		{26FC6F1C-EC57-4BB1-96F9-685CDB166990} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
+		{EC2D6D3F-CD32-41F2-AD1D-7CEECC91ABCD} = {26FC6F1C-EC57-4BB1-96F9-685CDB166990}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BAA3AC02-EDD5-481D-8D0D-07F57F88B252}
