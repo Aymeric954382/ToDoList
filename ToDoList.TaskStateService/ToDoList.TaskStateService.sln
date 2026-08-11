@@ -23,6 +23,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToDoList.TaskStateService.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.TaskStateService.Tests", "ToDoList.TaskStateService.Tests\ToDoList.TaskStateService.Tests.csproj", "{AA1733C8-1420-4C73-8FF8-7123550F9BA3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToDoList.TaskStateService.Contracts", "ToDoList.TaskStateService.Contracts", "{09877F36-5372-42FF-A149-10940C3A23B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.TaskStateService.Contracts", "ToDoList.TaskStateService.Contracts\ToDoList.TaskStateService.Contracts.csproj", "{424DF1ED-751F-4445-AADC-A555C677401C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,10 @@ Global
 		{AA1733C8-1420-4C73-8FF8-7123550F9BA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA1733C8-1420-4C73-8FF8-7123550F9BA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA1733C8-1420-4C73-8FF8-7123550F9BA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{424DF1ED-751F-4445-AADC-A555C677401C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{424DF1ED-751F-4445-AADC-A555C677401C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{424DF1ED-751F-4445-AADC-A555C677401C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{424DF1ED-751F-4445-AADC-A555C677401C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +67,7 @@ Global
 		{6D1EEB46-83F8-9AF6-401A-709504FAD7D2} = {A089A5A1-2DCC-4FA5-9BB5-03ADA7537F74}
 		{F2CDEAAE-81BE-5AF5-2099-A9FD5F218A99} = {D832ABD9-6A6C-4AAC-9CF6-D4D2E5325538}
 		{AA1733C8-1420-4C73-8FF8-7123550F9BA3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{424DF1ED-751F-4445-AADC-A555C677401C} = {09877F36-5372-42FF-A149-10940C3A23B2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {10E420A9-F0E0-44B6-87C9-624045C386F9}

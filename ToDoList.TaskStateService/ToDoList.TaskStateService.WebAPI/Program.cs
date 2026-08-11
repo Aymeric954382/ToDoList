@@ -13,6 +13,7 @@ using ToDoList.TaskStateService.Application.DI;
 using ToDoList.TaskStateService.Application.Interfaces;
 using ToDoList.TaskStateService.Infrastructure.Persistance.DataBaseCommon.EF;
 using ToDoList.TaskStateService.Infrastructure.Persistance.DI;
+using ToDoList.TaskStateService.Infrastructure.Persistance.Rabbit;
 using ToDoList.TaskStateService.Infrastructure.Persistance.Swagger;
 using ToDoList.TaskStateService.WebAPI.Middlewares;
 using ToDoList.TaskStateService.WebAPI.Services;
@@ -147,6 +148,25 @@ namespace ToDoList.TaskStateService.WebAPI
                 catch (Exception exception)
                 {
                     Log.Fatal(exception, "An error occurred while app initialization");
+                }
+            }
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var serviceProvider = scope.ServiceProvider;
+
+                try
+                {
+                    var rabbitInitializer =
+                        serviceProvider.GetRequiredService<RabbitInitializer>();
+
+                    await rabbitInitializer.InitializeAsync(
+                        CancellationToken.None);
+                }
+                catch (Exception exception)
+                {
+                    Log.Fatal(exception, "An error occurred while rabbit initialization");
+                    throw;
                 }
             }
 
