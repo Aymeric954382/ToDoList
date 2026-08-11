@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ToDoList.TaskManager.Contracts\ToDoList.TaskManager.Contracts.csproj" />
     <ProjectReference Include="..\ToDoList.TaskManager.Domain\ToDoList.TaskManager.Domain.csproj" />
   </ItemGroup>
 

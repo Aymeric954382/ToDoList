@@ -35,7 +35,7 @@ namespace ToDoList.TaskManager.Application.Features.ToDoItems.Commands.CreateToD
 
             var toDoItem = new ToDoItem
             {
-                Id = Guid.NewGuid(),
+                Id = request.Id,
                 UserId = request.UserId,
                 Title = request.Title,
                 Details = request.Details,

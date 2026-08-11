@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ToDoList.TaskManager.Application.Interfaces;
 using ToDoList.TaskManager.Application.Interfaces.Repository;
 using ToDoList.TaskManager.Infrastructure.Persistance.DataBaseCommon.EF;
+using ToDoList.TaskManager.Infrastructure.Persistance.Rabbit;
 
 namespace ToDoList.TaskManager.Infrastructure.Persistance.DI
 {
@@ -21,6 +22,9 @@ namespace ToDoList.TaskManager.Infrastructure.Persistance.DI
                 provider.GetService<ToDoDbContext>());
 
             services.AddScoped<IToDoRepository, ToDoRepository>();
+
+            services.AddSingleton<RabbitOperationCatalog>();
+            services.AddSingleton<RabbitConnection>();
 
             return services;
         }

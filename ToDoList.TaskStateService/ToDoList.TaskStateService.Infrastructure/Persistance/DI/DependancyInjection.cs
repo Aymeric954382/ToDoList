@@ -6,6 +6,7 @@ using ToDoList.TaskStateService.Application.Interfaces;
 using ToDoList.TaskStateService.Application.Interfaces.Redis;
 using ToDoList.TaskStateService.Application.Interfaces.Repository;
 using ToDoList.TaskStateService.Infrastructure.Persistance.DataBaseCommon.EF;
+using ToDoList.TaskStateService.Infrastructure.Persistance.Rabbit;
 using ToDoList.TaskStateService.Infrastructure.Persistance.Redis;
 
 namespace ToDoList.TaskStateService.Infrastructure.Persistance.DI
@@ -36,6 +37,9 @@ namespace ToDoList.TaskStateService.Infrastructure.Persistance.DI
             });
 
             services.AddSingleton<IDeadLineQueue, DeadLineQueue>();
+
+            services.AddSingleton<RabbitOperationCatalog>();
+            services.AddSingleton<RabbitConnection>();
 
             return services;
         }
