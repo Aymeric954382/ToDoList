@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-WorkerService-example-id</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ToDoList.DeadLineIndexer.Application\ToDoList.DeadlineIndexer.Application.csproj" />
+    <ProjectReference Include="..\ToDoList.DeadLineIndexer.Infrastructure\ToDoList.DeadlineIndexer.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

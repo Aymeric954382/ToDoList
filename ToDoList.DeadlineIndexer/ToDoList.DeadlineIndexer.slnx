@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="ToDoList.DeadLineIndexer.Application/ToDoList.DeadLineIndexer.Application.csproj" />
+  <Project Path="ToDoList.DeadLineIndexer.Contracts/ToDoList.DeadLineIndexer.Contracts.csproj" />
+  <Project Path="ToDoList.DeadLineIndexer.Domain/ToDoList.DeadLineIndexer.Domain.csproj" />
+  <Project Path="ToDoList.DeadLineIndexer.Infrastructure/ToDoList.DeadLineIndexer.Infrastructure.csproj" />
+  <Project Path="ToDoList.DeadLineIndexer.Worker/ToDoList.DeadLineIndexer.Worker.csproj" />
+</Solution>

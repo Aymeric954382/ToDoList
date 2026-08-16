@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.35.1" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.83.0" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.83.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.83.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
+    <PackageReference Include="MongoDB.Driver" Version="3.10.0" />
+    <PackageReference Include="StackExchange.Redis" Version="3.1.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ToDoList.DeadlineIndexer.Application\ToDoList.DeadlineIndexer.Application.csproj" />
+    <ProjectReference Include="..\ToDoList.DeadlineIndexer.Contracts\ToDoList.DeadlineIndexer.Contracts.csproj" />
+    <ProjectReference Include="..\ToDoList.DeadlineIndexer.Domain\ToDoList.DeadlineIndexer.Domain.csproj" />
+	  <Protobuf Include="..\ToDoList.DeadlineIndexer.Contracts\Protos\CacheTransferIndexer.proto" GrpcServices="Client" />
+  </ItemGroup>
+
+</Project>
