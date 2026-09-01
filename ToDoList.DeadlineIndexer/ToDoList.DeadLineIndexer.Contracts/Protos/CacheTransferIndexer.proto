@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option csharp_namespace = "ToDoList.DeadlineIndexer.Contracts.Protos";
+
+package deadline;
+
+service DeadlineTransferService {
+  rpc TransferDeadlineBatch (DeadlineBatchRequest) returns (TransferResult);
+}
+
+message DeadlineBatchRequest {
+  repeated DeadlineModel items = 1; 
+}
+
+message DeadlineModel {
+  string task_id = 1;       
+  string user_id = 2;      
+  int64 deadline_unix = 3;  
+  string operation_id = 4;
+  int64 created_at_unix = 5;
+}
+
+message TransferResult {
+  bool is_success = 1;
+}
