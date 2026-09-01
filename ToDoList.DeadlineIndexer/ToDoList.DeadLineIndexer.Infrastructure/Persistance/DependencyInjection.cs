@@ -67,7 +67,7 @@ namespace ToDoList.DeadlineIndexer.Infrastructure.Persistance
                 o.Address = new Uri(new Uri(options.BaseAddress), options.UpdateAll);
             });
 
-            services.AddScoped<IDeadlineNotificationClient, GRPCDeadlineNotificationClient>();
+            services.AddScoped<IDeadlineNotificationClient, GRPCTransferClient>();
 
             return services;
         }

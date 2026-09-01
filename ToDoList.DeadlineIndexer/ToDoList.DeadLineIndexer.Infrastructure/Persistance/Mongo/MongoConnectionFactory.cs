@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Serilog;
+using Serilog.Core;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
@@ -17,12 +19,16 @@ namespace ToDoList.DeadlineIndexer.Infrastructure.Persistance.Mongo
         private readonly CollectionConfigurations _collectionConfigurations;
         private readonly MongoOptions _mongoOptions;
 
+        private readonly ILogger _logger;
+
         public MongoConnectionFactory(
             IOptions<CollectionConfigurations> collectionConfigurations,
-            IOptions<MongoOptions> mongoOptions)
+            IOptions<MongoOptions> mongoOptions,
+            ILogger logger)
         {
             _mongoOptions = mongoOptions.Value;
             _collectionConfigurations = collectionConfigurations.Value;
+            _logger = logger;
         }
 
         public void CreateContext(IMongoClient client)
@@ -35,6 +41,8 @@ namespace ToDoList.DeadlineIndexer.Infrastructure.Persistance.Mongo
         {
             if (_database != null)
                 return;
+
+            _logger.Information("Create mongo collection");
 
             var filter = new BsonDocument("name", _collectionConfigurations.CollectionName);
             var collections = _database.ListCollections(new ListCollectionsOptions { Filter = filter });
@@ -49,6 +57,8 @@ namespace ToDoList.DeadlineIndexer.Infrastructure.Persistance.Mongo
         {
             if (_database == null)
             {
+                _logger.Fatal("Mongo is not initilized");
+
                 throw new InvalidOperationException("Mongo is not initilized");
             }
 

@@ -10,6 +10,7 @@ namespace ToDoList.DeadlineIndexer.Application.Interfaces
     public interface IDeadlineNotificationClient
     {
         Task SendDeadlinesAsync(List<DeadlineStub> stubs, 
+            string operationId,
             CancellationToken cancellationToken);
     }
 }

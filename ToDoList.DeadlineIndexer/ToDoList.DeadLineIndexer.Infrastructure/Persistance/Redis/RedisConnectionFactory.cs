@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using StackExchange.Redis;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,8 +16,14 @@ namespace ToDoList.DeadlineIndexer.Infrastructure.Persistance.Redis
 
         private readonly IDatabase _database;
 
-        public RedisConnectionFactory(IOptions<RedisOptions> options)
+        private readonly ILogger _logger;
+
+        public RedisConnectionFactory(
+            IOptions<RedisOptions> options,
+            ILogger logger)
         {
+            _logger = logger;
+
             var redis = options.Value;
 
             var redisOptions = new ConfigurationOptions
@@ -28,8 +35,22 @@ namespace ToDoList.DeadlineIndexer.Infrastructure.Persistance.Redis
             };
 
             _connection = ConnectionMultiplexer.Connect(redisOptions);
+            _database = _connection.GetDatabase();
         }
 
-        public IDatabase GetDatabase() => _connection.GetDatabase();
+        public IDatabase GetDatabase()
+        {
+            if (_database == null)
+            {
+                _logger.Fatal("No connection to Redis db");
+
+                throw new RedisException("No connection to Redis db");
+            }
+            else
+            {
+                return _database;
+            }
+        }
+            
     }
 }

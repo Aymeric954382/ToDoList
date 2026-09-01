@@ -15,7 +15,8 @@ namespace ToDoList.DeadLineIndexer.Contracts
         public static IServiceCollection AddContracts(this IServiceCollection services, 
             IConfiguration configuration)
         {
-            services.Configure<TaskStateUpdaterRoutes>(options => configuration.GetSection("TaskStateUpdaterRoutes").Bind(options));
+            services.Configure<TaskStateUpdaterRoutes>(options => 
+                    configuration.GetSection("TaskStateUpdaterRoutes").Bind(options));
 
             return services;
         }

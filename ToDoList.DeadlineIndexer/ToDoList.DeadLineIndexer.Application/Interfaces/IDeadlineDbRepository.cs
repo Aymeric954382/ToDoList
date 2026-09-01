@@ -10,7 +10,7 @@ namespace ToDoList.DeadlineIndexer.Application.Interfaces
     public interface IDeadlineDbRepository
     {
         Task SaveProcessedDeadlinesAsync(
-            List<DeadLineCache> models,
+            List<DeadlineStub> models,
             Guid transactionId,
             CancellationToken cancellationToken);
     }

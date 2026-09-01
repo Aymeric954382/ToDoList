@@ -1,50 +1,55 @@
 using Microsoft.Extensions.Options;
 using ToDoList.DeadlineIndexer.Application.TransferService;
+using Serilog;
 
 namespace ToDoList.DeadlineIndexer.Worker;
 
 public class Worker : BackgroundService
 {
-    private readonly ILogger<Worker> _logger;
+    private readonly Serilog.ILogger _logger;
     private readonly IServiceScopeFactory _scopeFactory;
-    private readonly IOptions<WorkerOptions> _options;
 
-    public Worker(ILogger<Worker> logger, 
-        IOptions<WorkerOptions> workerOptions,
+    public Worker(Serilog.ILogger logger,
         IServiceScopeFactory scopeFactory)
     {
         _logger = logger;
-        _options = workerOptions;
         _scopeFactory = scopeFactory;
     }
 
     protected override async Task ExecuteAsync(
         CancellationToken stoppingToken)
     {
-        var interval = _options.Value.IntervalTimeMinutes;
-
         while (!stoppingToken.IsCancellationRequested)
         {
-            if (_logger.IsEnabled(LogLevel.Information))
-            {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-            }
+            _logger.Information("Worker running at: {time}", DateTimeOffset.Now);
 
-            using (var scope = _scopeFactory.CreateScope())
+            try
             {
-                try
+                using (var scope = _scopeFactory.CreateScope())
                 {
                     var processor = scope.ServiceProvider.GetRequiredService<DeadlineProcessor>();
-
                     await processor.ProcessPendingDeadlinesAsync(stoppingToken);
                 }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Batch management error");
-                }
-            } 
+            }
+            catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+            {
+                _logger.Information("Worker is stopping via cancellation token.");
+                break;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Processing troubles");
+            }
 
-            await Task.Delay(interval, stoppingToken);
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+            }
+            catch (OperationCanceledException)
+            {
+
+            }
         }
     }
 }
+

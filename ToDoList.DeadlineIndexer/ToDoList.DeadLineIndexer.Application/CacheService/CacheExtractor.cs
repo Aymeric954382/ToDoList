@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using ToDoList.DeadlineIndexer.Application.Interfaces;
 using ToDoList.DeadlineIndexer.Domain;
+using Serilog;
+using StackExchange.Redis;
 
 namespace ToDoList.DeadlineIndexer.Application.CacheService
 {
@@ -12,12 +14,18 @@ namespace ToDoList.DeadlineIndexer.Application.CacheService
     {
         public readonly IRedisCacheRepository _repository;
 
-        public CacheExtractor(IRedisCacheRepository repository)
+        private readonly ILogger _logger;
+
+        public CacheExtractor(
+            IRedisCacheRepository repository,
+            ILogger logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
-        public async Task<List<DeadlineStub>> ExtructCacheAsync(CancellationToken cancellationToken)
+        public async Task<List<DeadlineStub>> ExtructCacheAsync(
+            CancellationToken cancellationToken)
         {
             try 
             {
@@ -29,7 +37,9 @@ namespace ToDoList.DeadlineIndexer.Application.CacheService
             }
             catch (Exception ex) 
             {
-                throw new InvalidOperationException($"Cache retrieval error: {ex}");
+                _logger.Error(ex, "Error while extructing cache");
+
+                throw new RedisException("Extructing cache error");
             }
         }
     }

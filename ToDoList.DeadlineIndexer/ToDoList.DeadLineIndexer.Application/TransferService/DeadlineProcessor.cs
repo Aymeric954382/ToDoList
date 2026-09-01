@@ -1,6 +1,7 @@
 ﻿using ToDoList.DeadlineIndexer.Application.CacheService;
 using ToDoList.DeadlineIndexer.Application.Interfaces;
 using ToDoList.DeadlineIndexer.Domain;
+using Serilog;
 
 namespace ToDoList.DeadlineIndexer.Application.TransferService
 {
@@ -9,47 +10,44 @@ namespace ToDoList.DeadlineIndexer.Application.TransferService
         private readonly CacheExtractor _cacheExtractor;
         private readonly IDeadlineNotificationClient _client;
         private readonly IDeadlineDbRepository _repository;
-        private readonly IRedisCacheRepository _redisRepository;
+        private readonly ILogger _logger;
 
         public DeadlineProcessor(
             CacheExtractor cacheExtractor,
             IDeadlineNotificationClient client,
             IDeadlineDbRepository repository,
-            IRedisCacheRepository redisRepository)
+            ILogger logger)
         {
             _cacheExtractor = cacheExtractor;
             _client = client;
             _repository = repository;
-            _redisRepository = redisRepository;
+            _logger = logger;
         }
 
-        public async Task ProcessPendingDeadlinesAsync(CancellationToken cancellationToken)
+        public async Task ProcessPendingDeadlinesAsync(
+            CancellationToken cancellationToken)
         {
             var stubs = await _cacheExtractor.ExtructCacheAsync(cancellationToken);
 
-            List<DeadLineCache> cache = stubs.Select(stub => new DeadLineCache
-            {
-                Id = stub.TaskId.GetHashCode(),
-                Deadline = DateTimeOffset.FromUnixTimeSeconds(stub.DeadLineUnix).UtcDateTime,
-                CreateAt = stub.CreatedAt
-            }).ToList();
+            _logger.Debug("Extracting deadlines in redis");
 
             if (stubs.Count == 0) return;
 
             try
             {
                 var operationId = Guid.NewGuid();
+                
+                await _client.SendDeadlinesAsync(stubs, operationId.ToString(), cancellationToken);
 
-                await _client.SendDeadlinesAsync(stubs, cancellationToken);
+                _logger.Debug($"Deadlines sent. Operation Id: {operationId}, Count records: {stubs.Count}");
 
-                await _repository.SaveProcessedDeadlinesAsync(cache, operationId, cancellationToken);
+                await _repository.SaveProcessedDeadlinesAsync(stubs, operationId, cancellationToken);
 
-                var keysToRemove = stubs.Select(s => (StackExchange.Redis.RedisValue)s.TaskId.ToString()).ToList();
-                await _redisRepository.RemoveCacheItemAsync(keysToRemove, cancellationToken);
+                _logger.Debug($"Deadlines write to db. Operation Id {operationId}, Count records {stubs.Count}");
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException();
+                _logger.Error(ex, "Error while processing");
             }
         }
     }

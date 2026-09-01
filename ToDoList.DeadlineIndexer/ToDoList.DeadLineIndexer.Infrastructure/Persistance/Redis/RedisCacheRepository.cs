@@ -17,10 +17,10 @@ namespace ToDoList.DeadlineIndexer.Infrastructure.Persistance.Redis
         private readonly int _LeadSeconds;
 
         public RedisCacheRepository(
-            IDatabase database, 
+            RedisConnectionFactory connectionFactory, 
             IOptions<CacheOptions> options)
         {
-            _database = database;
+            _database = connectionFactory.GetDatabase();
 
             var cacheOptions = options.Value;
 
@@ -62,7 +62,8 @@ namespace ToDoList.DeadlineIndexer.Infrastructure.Persistance.Redis
                 {
                     TaskId = Guid.Parse(hash.First(x => x.Name == "taskId").Value),
                     UserId = Guid.Parse(hash.First(x => x.Name == "userId").Value),
-                    DeadLineUnix = (long)hash.First(x => x.Name == "deadline").Value
+                    DeadLineUnix = (long)hash.First(x => x.Name == "deadline").Value,
+                    CreatedAtUnix = (long)hash.First(x => x.Name == "createdAt").Value
                 };
 
                 stubs.Add(stub);
